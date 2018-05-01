@@ -189,7 +189,7 @@ pugi::xml_node Application::LoadConfig(pugi::xml_document &config_file) const
 {
     pugi::xml_node ret;
 
-    char *buf = NULL;
+    char *buf = nullptr;
     int size = App->fs->LoadFile("config.xml", &buf);
     pugi::xml_parse_result result = config_file.load_buffer(buf, size);
     RELEASE(buf);
@@ -207,7 +207,7 @@ pugi::xml_node Application::LoadGameDataFile(pugi::xml_document &gameDatafile) c
 {
     pugi::xml_node ret;
 
-    char *buf = NULL;
+    char *buf = nullptr;
     int size = App->fs->LoadFile("GameData.xml", &buf);
     pugi::xml_parse_result result = gameDatafile.load_buffer(buf, size);
     RELEASE(buf);
@@ -225,7 +225,7 @@ pugi::xml_node Application::LoadHUDDataFile(pugi::xml_document &HUDDatafile) con
 {
     pugi::xml_node ret;
 
-    char *buf = NULL;
+    char *buf = nullptr;
     int size = App->fs->LoadFile("HUDData.xml", &buf);
     pugi::xml_parse_result result = HUDDatafile.load_buffer(buf, size);
     RELEASE(buf);
@@ -243,7 +243,7 @@ pugi::xml_node Application::LoadParticleDataFile(pugi::xml_document &ParticleDat
 {
     pugi::xml_node ret;
 
-    char *buf = NULL;
+    char *buf = nullptr;
     int size = App->fs->LoadFile("ParticleData.xml", &buf);
     pugi::xml_parse_result result = ParticleDatafile.load_buffer(buf, size);
     RELEASE(buf);
@@ -367,7 +367,7 @@ const char *Application::GetArgv(int index) const
     if (index < argc) {
         return args[index];
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 

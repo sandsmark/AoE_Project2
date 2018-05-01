@@ -94,7 +94,7 @@ unsigned int FileSystem::LoadFile(const char *file, char **buffer) const
 
     PHYSFS_file *fs_file = PHYSFS_openRead(file);
 
-    if (fs_file != NULL) {
+    if (fs_file != nullptr) {
         PHYSFS_sint64 size = PHYSFS_fileLength(fs_file);
 
         if (size > 0) {
@@ -126,13 +126,13 @@ SDL_RWops *FileSystem::LoadFile(const char *file) const
 
     if (size > 0) {
         SDL_RWops *r = SDL_RWFromConstMem(buffer, size);
-        if (r != NULL) {
+        if (r != nullptr) {
             r->close = close_sdl_rwops;
         }
 
         return r;
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -150,7 +150,7 @@ unsigned int FileSystem::Save(const char *file, const char *buffer, unsigned int
 
     PHYSFS_file *fs_file = PHYSFS_openWrite(file);
 
-    if (fs_file != NULL) {
+    if (fs_file != nullptr) {
         PHYSFS_sint64 written = PHYSFS_write(fs_file, (const void *)buffer, 1, size);
         if (written != size) {
             LOG("File System error while writing to file %s: %s\n", file, PHYSFS_getLastError());

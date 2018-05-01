@@ -6,8 +6,8 @@
 Window::Window() :
     Module()
 {
-    window = NULL;
-    screen_surface = NULL;
+    window = nullptr;
+    screen_surface = nullptr;
     name = "window";
 }
 
@@ -55,7 +55,7 @@ bool Window::Awake(pugi::xml_node &config)
 
         window = SDL_CreateWindow(App->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
-        if (window == NULL) {
+        if (window == nullptr) {
             LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
             ret = false;
         } else {
@@ -73,7 +73,7 @@ bool Window::CleanUp()
     LOG("Destroying SDL window and quitting all SDL systems", 0);
 
     //Destroy window
-    if (window != NULL) {
+    if (window != nullptr) {
         SDL_DestroyWindow(window);
     }
 
@@ -118,7 +118,7 @@ bool Window::ChangeToFullScreen()
         SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
     }
 
-    if (window == NULL) {
+    if (window == nullptr) {
         LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
         ret = false;
     } else {
@@ -138,7 +138,7 @@ bool Window::ChangeToWindow()
         SDL_SetWindowFullscreen(window, SDL_FALSE);
     }
 
-    if (window == NULL) {
+    if (window == nullptr) {
         LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
         ret = false;
     } else {

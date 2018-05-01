@@ -54,7 +54,7 @@ bool Scene::Start()
     if (start == false) {
         if (App->map->LoadFile("map_1.tmx") == true) {
             int w, h;
-            uchar *data = NULL;
+            uchar *data = nullptr;
             if (App->map->CreateWalkabilityMap(w, h, &data)) {
                 App->pathfinding->SetMap(w, h, data);
             }

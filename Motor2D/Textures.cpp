@@ -60,10 +60,10 @@ bool Textures::CleanUp()
 // Load new texture from file path
 SDL_Texture *Textures::LoadTexture(const char *path)
 {
-    SDL_Texture *texture = NULL;
+    SDL_Texture *texture = nullptr;
     SDL_Surface *surface = IMG_Load_RW(App->fs->LoadFile(path), 1);
 
-    if (surface == NULL) {
+    if (surface == nullptr) {
         LOG("Could not load surface with path: %s. IMG_Load: %s", path, IMG_GetError());
     } else {
         texture = LoadStaticSurface(surface);
@@ -78,7 +78,7 @@ SDL_Surface *Textures::LoadImageAsSurface(const char *path)
 
     SDL_Surface *surface = IMG_Load_RW(App->fs->LoadFile(path), 1);
 
-    if (surface == NULL) {
+    if (surface == nullptr) {
         LOG("Could not load surface with path: %s. IMG_Load: %s", path, IMG_GetError());
     }
 
@@ -105,7 +105,7 @@ SDL_Texture *Textures::LoadStaticSurface(SDL_Surface *surface)
 {
     SDL_Texture *texture = SDL_CreateTextureFromSurface(App->render->renderer, surface);
 
-    if (texture == NULL) {
+    if (texture == nullptr) {
         LOG("Unable to create texture from surface! SDL Error: %s\n", SDL_GetError());
     } else {
         textures.push_back(texture);
@@ -119,7 +119,7 @@ SDL_Texture *Textures::LoadStreamingTextureFromSurface(SDL_Surface *surface)
 {
     SDL_Texture *texture = SDL_CreateTexture(App->render->renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, surface->w, surface->h);
 
-    if (texture == NULL) {
+    if (texture == nullptr) {
         LOG("Unable to create streaming texture from surface! SDL Error: %s\n", SDL_GetError());
     } else {
         textures.push_back(texture);
@@ -131,5 +131,5 @@ SDL_Texture *Textures::LoadStreamingTextureFromSurface(SDL_Surface *surface)
 // Retrieve size of a texture
 void Textures::GetSize(const SDL_Texture *texture, uint &width, uint &height) const
 {
-    SDL_QueryTexture((SDL_Texture *)texture, NULL, NULL, (int *)&width, (int *)&height);
+    SDL_QueryTexture((SDL_Texture *)texture, nullptr, nullptr, (int *)&width, (int *)&height);
 }

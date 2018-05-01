@@ -29,7 +29,7 @@ bool ParticleManager::Awake(pugi::xml_node &config)
 
 bool ParticleManager::Start()
 {
-    srand(time(NULL));
+    srand(time(nullptr));
     App->win->GetWindowSize(window_size.first, window_size.second);
 
     LoadParticleData();

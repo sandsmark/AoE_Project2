@@ -42,7 +42,7 @@ struct MapLayer
     Properties properties;
 
     MapLayer() :
-        data(NULL)
+        data(nullptr)
     {
     }
 

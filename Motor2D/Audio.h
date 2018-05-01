@@ -103,7 +103,7 @@ public:
     void PlayGatherSound(Resource *resource);
 
 private:
-    _Mix_Music *music = NULL;
+    _Mix_Music *music = nullptr;
     vector<Mix_Chunk *> fx;
 };
 

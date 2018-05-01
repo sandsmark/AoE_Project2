@@ -93,26 +93,26 @@ private:
 
 public:
     // Modules
-    Window *win = NULL;
-    Input *input = NULL;
-    Render *render = NULL;
-    Textures *tex = NULL;
-    Audio *audio = NULL;
-    SceneManager *sceneManager = NULL;
-    FileSystem *fs = NULL;
-    Map *map = NULL;
-    PathFinding *pathfinding = NULL;
-    Fonts *font = NULL;
-    ParticleManager *particlemanager = NULL;
-    EntityManager *entityManager = NULL;
-    Collision *collision = NULL;
-    Gui *gui = NULL;
-    FogOfWar *fog = NULL;
-    AI *ai = NULL;
-    Minimap *minimap = NULL;
-    QuestManager *quest = NULL;
-    CutSceneManager *cutscene = NULL;
-    Video *video = NULL;
+    Window *win = nullptr;
+    Input *input = nullptr;
+    Render *render = nullptr;
+    Textures *tex = nullptr;
+    Audio *audio = nullptr;
+    SceneManager *sceneManager = nullptr;
+    FileSystem *fs = nullptr;
+    Map *map = nullptr;
+    PathFinding *pathfinding = nullptr;
+    Fonts *font = nullptr;
+    ParticleManager *particlemanager = nullptr;
+    EntityManager *entityManager = nullptr;
+    Collision *collision = nullptr;
+    Gui *gui = nullptr;
+    FogOfWar *fog = nullptr;
+    AI *ai = nullptr;
+    Minimap *minimap = nullptr;
+    QuestManager *quest = nullptr;
+    CutSceneManager *cutscene = nullptr;
+    Video *video = nullptr;
 
     bool quit = false;
 

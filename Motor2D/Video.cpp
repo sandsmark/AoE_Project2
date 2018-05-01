@@ -20,12 +20,12 @@ namespace fs = experimental::filesystem;
 Video::Video() :
     Module()
 {
-    decoder = NULL;
-    video = NULL;
-    audio = NULL;
-    screen = NULL;
-    texture = NULL;
-    pixels = NULL;
+    decoder = nullptr;
+    video = nullptr;
+    audio = nullptr;
+    screen = nullptr;
+    texture = nullptr;
+    pixels = nullptr;
 
     baseticks = 0;
     framems = 0;
@@ -75,8 +75,8 @@ bool Video::CleanUp()
 
 // Audio =============================================================================================
 
-AudioQueue *Video::audio_queue = NULL;
-AudioQueue *Video::audio_queue_tail = NULL;
+AudioQueue *Video::audio_queue = nullptr;
+AudioQueue *Video::audio_queue_tail = nullptr;
 
 void SDLCALL Video::audio_callback(void *userdata, Uint8 *stream, int len)
 {
@@ -117,7 +117,7 @@ void SDLCALL Video::audio_callback(void *userdata, Uint8 *stream, int len)
     }
 
     if (!audio_queue) {
-        audio_queue_tail = NULL;
+        audio_queue_tail = nullptr;
     }
 
     if (len > 0) {
@@ -135,7 +135,7 @@ void Video::queue_audio(const THEORAPLAY_AudioPacket *audio)
 
     item->audio = audio;
     item->offset = 0;
-    item->next = NULL;
+    item->next = nullptr;
 
     SDL_LockAudio();
     if (audio_queue_tail) {
@@ -225,7 +225,7 @@ bool Video::Update(float dt)
             if (video && (video->playms <= now)) {
                 if (framems && ((now - video->playms) >= framems)) {
                     const THEORAPLAY_VideoFrame *last = video;
-                    while ((video = THEORAPLAY_getVideo(decoder)) != NULL) {
+                    while ((video = THEORAPLAY_getVideo(decoder)) != nullptr) {
                         THEORAPLAY_freeVideo(last);
                         last = video;
                         if ((now - video->playms) < framems) {
@@ -239,7 +239,7 @@ bool Video::Update(float dt)
 
                 // Locking a portion of a texture for write only pixel access
 
-                SDL_LockTexture(texture, NULL, &pixels, &pitch);
+                SDL_LockTexture(texture, nullptr, &pixels, &pitch);
                 const int w = video->width;
                 const int h = video->height;
                 const Uint8 *y = (const Uint8 *)video->pixels;
@@ -263,12 +263,12 @@ bool Video::Update(float dt)
                 SDL_UnlockTexture(texture);
 
                 THEORAPLAY_freeVideo(video);
-                video = NULL;
+                video = nullptr;
             }
         }
         // TODO 4: Render the texture. Use SDL_RenderCopy and the rendering rect (if you want).
         SDL_RenderClear(App->render->renderer);
-        SDL_RenderCopy(App->render->renderer, texture, NULL, NULL);
+        SDL_RenderCopy(App->render->renderer, texture, nullptr, nullptr);
         SDL_RenderPresent(App->render->renderer);
     }
     if (videoPlaying && THEORAPLAY_isDecoding(decoder) == 0) {
@@ -293,12 +293,12 @@ void Video::ResetValues()
         THEORAPLAY_stopDecode(decoder);
     }
 
-    decoder = NULL;
-    video = NULL;
-    audio = NULL;
-    screen = NULL;
-    texture = NULL;
-    pixels = NULL;
+    decoder = nullptr;
+    video = nullptr;
+    audio = nullptr;
+    screen = nullptr;
+    texture = nullptr;
+    pixels = nullptr;
 
     baseticks = 0;
     framems = 0;
@@ -307,6 +307,6 @@ void Video::ResetValues()
     pitch = 0;
     want_to_play = false;
 
-    audio_queue = NULL;
-    audio_queue_tail = NULL;
+    audio_queue = nullptr;
+    audio_queue_tail = nullptr;
 }

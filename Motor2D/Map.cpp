@@ -269,7 +269,7 @@ bool Map::LoadMap()
     bool ret = true;
     pugi::xml_node map = map_file.child("map");
 
-    if (map == NULL) {
+    if (map == nullptr) {
         LOG("Error parsing map xml file: Cannot find 'map' tag.", 0);
         ret = false;
     } else {
@@ -335,7 +335,7 @@ bool Map::LoadTilesetDetails(pugi::xml_node &tileset_node, TileSet *set)
     set->spacing = tileset_node.attribute("spacing").as_int();
     pugi::xml_node offset = tileset_node.child("tileoffset");
 
-    if (offset != NULL) {
+    if (offset != nullptr) {
         set->offset_x = offset.attribute("x").as_int();
         set->offset_y = offset.attribute("y").as_int();
     } else {
@@ -351,13 +351,13 @@ bool Map::LoadTilesetImage(pugi::xml_node &tileset_node, TileSet *set)
     bool ret = true;
     pugi::xml_node image = tileset_node.child("image");
 
-    if (image == NULL) {
+    if (image == nullptr) {
         LOG("Error parsing tileset xml file: Cannot find 'image' tag.", 0);
         ret = false;
     } else {
         set->texture = App->tex->LoadTexture(PATH(folder.c_str(), image.attribute("source").as_string()));
         int w, h;
-        SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
+        SDL_QueryTexture(set->texture, nullptr, nullptr, &w, &h);
         set->tex_width = image.attribute("width").as_int();
 
         if (set->tex_width <= 0) {
@@ -387,7 +387,7 @@ bool Map::LoadLayer(pugi::xml_node &node, MapLayer *layer)
     LoadProperties(node, layer->properties);
     pugi::xml_node layer_data = node.child("data");
 
-    if (layer_data == NULL) {
+    if (layer_data == nullptr) {
         LOG("Error parsing map xml file: Cannot find 'layer/data' tag.", 0);
         ret = false;
         RELEASE(layer);
@@ -411,7 +411,7 @@ bool Map::LoadProperties(pugi::xml_node &node, Properties &properties)
 
     pugi::xml_node data = node.child("properties");
 
-    if (data != NULL) {
+    if (data != nullptr) {
         pugi::xml_node prop;
 
         for (prop = data.child("property"); prop; prop = prop.next_sibling("property")) {
@@ -495,9 +495,9 @@ bool Map::CreateWalkabilityMap(int &width, int &height, uchar **buffer) const
                 int i = (y * layer->width) + x;
 
                 int tile_id = layer->Get(x, y);
-                TileSet *tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : NULL;
+                TileSet *tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : nullptr;
 
-                if (tileset != NULL) {
+                if (tileset != nullptr) {
                     map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
                     /*TileType* ts = tileset->GetTileType(tile_id);
 					if(ts != NULL)

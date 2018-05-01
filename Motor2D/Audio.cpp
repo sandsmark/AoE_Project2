@@ -12,7 +12,7 @@
 Audio::Audio() :
     Module()
 {
-    music = NULL;
+    music = nullptr;
     name = "audio";
 }
 
@@ -179,7 +179,7 @@ bool Audio::CleanUp()
 
     LOG("Freeing sound FX, closing Mixer and Audio subsystem", 0);
 
-    if (music != NULL) {
+    if (music != nullptr) {
         Mix_FreeMusic(music);
     }
 
@@ -205,7 +205,7 @@ bool Audio::PlayMusic(const char *path, float fade_time)
         return false;
     }
 
-    if (music != NULL) {
+    if (music != nullptr) {
         if (fade_time > 0.0f) {
             Mix_FadeOutMusic(int(fade_time * 1000.0f));
         } else {
@@ -218,7 +218,7 @@ bool Audio::PlayMusic(const char *path, float fade_time)
 
     music = Mix_LoadMUS_RW(App->fs->LoadFile(path), 1);
 
-    if (music == NULL) {
+    if (music == nullptr) {
         LOG("Cannot load music %s. Mix_GetError(): %s\n", path, Mix_GetError());
         ret = false;
     } else {
@@ -250,7 +250,7 @@ unsigned int Audio::LoadFx(const char *path)
 
     Mix_Chunk *chunk = Mix_LoadWAV_RW(App->fs->LoadFile(path), 1);
 
-    if (chunk == NULL) {
+    if (chunk == nullptr) {
         LOG("Cannot load wav %s. Mix_GetError(): %s", path, Mix_GetError());
     } else {
         fx.push_back(chunk);

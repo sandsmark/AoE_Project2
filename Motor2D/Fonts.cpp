@@ -70,7 +70,7 @@ TTF_Font *Fonts::LoadFile(const char *path, int size)
     } else {
         font = TTF_OpenFontRW(App->fs->LoadFile(default_path), 1, size);
     }
-    if (font == NULL) {
+    if (font == nullptr) {
         LOG("Could not load TTF font with path: %s. TTF_OpenFont: %s", path, TTF_GetError());
     } else {
         LOG("Successfully loaded font %s size %d", path, size);
@@ -83,10 +83,10 @@ TTF_Font *Fonts::LoadFile(const char *path, int size)
 // Print text using font
 SDL_Texture *Fonts::Print(const char *text, SDL_Color color, _TTF_Font *font)
 {
-    SDL_Texture *ret = NULL;
+    SDL_Texture *ret = nullptr;
     SDL_Surface *surface = TTF_RenderText_Blended((font) ? font : defaultFont, text, color);
 
-    if (surface == NULL) {
+    if (surface == nullptr) {
         LOG("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
     } else {
         ret = App->tex->LoadStaticSurface(surface);

@@ -6,7 +6,7 @@
 #include "p2Log.h"
 
 PathFinding::PathFinding() :
-    Module(), map(NULL), width(0), height(0)
+    Module(), map(nullptr), width(0), height(0)
 {
     name = "pathfinding";
 }
@@ -101,7 +101,7 @@ list<PathNode>::iterator PathList::GetNodeLowestScore()
 // Convenient constructors
 // ----------------------------------------------------------------------------------
 PathNode::PathNode() :
-    g(-1), h(-1), pos(-1, -1), parent(NULL)
+    g(-1), h(-1), pos(-1, -1), parent(nullptr)
 {
 }
 
@@ -369,7 +369,7 @@ iPoint PathFinding::FindNearestAvailable(iPoint origin, int range, iPoint target
     }
 
     PathList nodes;
-    PathNode first_node(0, 0, origin, NULL);
+    PathNode first_node(0, 0, origin, nullptr);
 
     first_node.FindWalkableAdjacents(nodes, range);
 

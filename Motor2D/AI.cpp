@@ -13,7 +13,7 @@ bool AI::Awake(pugi::xml_node &gameData)
 {
 
     Enemies = App->entityManager->AI_faction;
-    srand(time(NULL));
+    srand(time(nullptr));
     return true;
 }
 

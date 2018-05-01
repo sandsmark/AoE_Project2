@@ -302,7 +302,7 @@ void CutSceneManager::LoadMap(pugi::xml_node &node)
     if (node.attribute("preload").as_bool() == false) {
         if (App->map->LoadFile(node.attribute("path").as_string())) {
             int w, h;
-            uchar *data = NULL;
+            uchar *data = nullptr;
             if (App->map->CreateWalkabilityMap(w, h, &data)) {
                 App->pathfinding->SetMap(w, h, data);
             }
