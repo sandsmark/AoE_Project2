@@ -33,19 +33,20 @@ int main(int argc, char *args[])
 
             App = new Application(argc, args);
 
-            if (App != NULL)
+            if (App != NULL) {
                 state = AWAKE;
-            else
+            } else {
                 state = FAIL;
+            }
 
             break;
 
         // Awake all modules -----------------------------------------------
         case AWAKE:
             LOG("AWAKE PHASE ===============================", 0);
-            if (App->Awake() == true)
+            if (App->Awake() == true) {
                 state = START;
-            else {
+            } else {
                 LOG("ERROR: Awake failed", 0);
                 state = FAIL;
             }
@@ -66,8 +67,9 @@ int main(int argc, char *args[])
 
         // Loop all modules until we are asked to leave ---------------------
         case LOOP:
-            if (App->Update() == false)
+            if (App->Update() == false) {
                 state = CLEAN;
+            }
             break;
 
         // Cleanup allocated memory -----------------------------------------
@@ -77,8 +79,9 @@ int main(int argc, char *args[])
                 RELEASE(App);
                 result = EXIT_SUCCESS;
                 state = EXIT;
-            } else
+            } else {
                 state = FAIL;
+            }
 
             break;
 

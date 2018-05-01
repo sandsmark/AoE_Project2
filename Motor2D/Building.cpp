@@ -41,9 +41,9 @@ Building::Building(int posX, int posY, Building *building)
         entityTexture = building->entityTexture;
     } else {
         Life = 1;
-        if (faction == FREE_MEN)
+        if (faction == FREE_MEN) {
             state = BEING_BUILT;
-        else {
+        } else {
             state = DESTROYED;
             creation_timer.Start();
         }
@@ -55,15 +55,17 @@ Building::Building(int posX, int posY, Building *building)
 
     collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y }, imageWidth / 2, COLLIDER_BUILDING, App->entityManager, (Entity *)this);
 
-    if (building->canAttack)
+    if (building->canAttack) {
         range = App->collision->AddCollider({ entityPosition.x, entityPosition.y }, imageWidth, COLLIDER_RANGE, App->entityManager, (Entity *)this);
+    }
 
     attack_timer.Start();
 
     entityType = ENTITY_BUILDING;
 
-    if (type == MILL)
+    if (type == MILL) {
         mill_food.Start();
+    }
 }
 
 Building::~Building()
@@ -89,8 +91,9 @@ bool Building::Update(float dt)
         }
         if (!units_in_queue.empty()) {
 
-            if (App->entityManager->unitsDB[units_in_queue.front()]->faction == FREE_MEN)
+            if (App->entityManager->unitsDB[units_in_queue.front()]->faction == FREE_MEN) {
                 drawUnitsInQueue((int)(App->entityManager->unitsDB[units_in_queue.front()]->cooldown_time * 1000), (int)creation_timer.Read() - (int)aux_timer, App->entityManager->unitsDB[units_in_queue.front()]->IsHero);
+            }
 
             /*(int)(tech->research_time * 1000), (int)tech->research_timer.Read() - (int)tech->aux_timer*/
 
@@ -102,27 +105,32 @@ bool Building::Update(float dt)
 
                 Unit *unit = App->entityManager->CreateUnit(creation_place.x, creation_place.y, units_in_queue.front());
 
-                if (unit->faction == SAURON_ARMY && App->ai->state == OFFENSIVE)
+                if (unit->faction == SAURON_ARMY && App->ai->state == OFFENSIVE) {
                     App->ai->last_attack_squad.push_back(unit);
+                }
 
                 units_in_queue.pop_front();
                 aux_timer = creation_timer.Read();
             }
-        } else
+        } else {
             aux_timer = creation_timer.Read();
+        }
 
         if (state == ATTACKING && attack_timer.ReadSec() > 3) { //  3: building atatack speed (provisional)
 
             if (Entity *enemy = App->entityManager->FindTarget(this)) {
-                if (range->CheckCollision(enemy->collider))
+                if (range->CheckCollision(enemy->collider)) {
                     enemy->Life -= MAX(Attack - enemy->Defense, buildingPiercingDamage); // this should cast an arrow particle
-                else
+                } else {
                     state = IDLE;
-            } else
+                }
+            } else {
                 state = IDLE;
+            }
         }
-    } else if (Life <= 0)
+    } else if (Life <= 0) {
         Destroy();
+    }
 
     return true;
 }
@@ -164,10 +172,12 @@ bool Building::Draw()
 
     if (lifebar_timer.ReadSec() < 5) {
         iPoint p;
-        if (state == BEING_BUILT || (faction == SAURON_ARMY && state == DESTROYED && type != SAURON_TOWER && type != ORC_BARRACKS && type != ORC_ARCHERY_RANGE))
+        if (state == BEING_BUILT || (faction == SAURON_ARMY && state == DESTROYED && type != SAURON_TOWER && type != ORC_BARRACKS && type != ORC_ARCHERY_RANGE)) {
             p = { entityPosition.x - 25, entityPosition.y };
-        else
-            p = { entityPosition.x - 25, entityPosition.y - selectionAreaCenterPoint.y };
+        } else {
+            p = { entityPosition.x - 25,
+                  entityPosition.y - selectionAreaCenterPoint.y };
+        }
 
         drawLife(p);
     }
@@ -184,22 +194,26 @@ void Building::Destroy()
         Life = 1;
         creation_timer.Start();
     } else {
-        if (faction == App->entityManager->player->faction)
+        if (faction == App->entityManager->player->faction) {
             App->entityManager->player->buildings.remove(this);
-        else
+        } else {
             App->entityManager->AI_faction->buildings.remove(this);
+        }
 
         App->collision->DeleteCollider(collider);
 
-        if (canAttack)
+        if (canAttack) {
             App->collision->DeleteCollider(range);
+        }
 
-        if (faction == FREE_MEN)
+        if (faction == FREE_MEN) {
             App->fog->DeleteEntityFog(this->entityID);
+        }
 
         if (Life <= 0) {
-            if (App->render->CullingCam(this->entityPosition))
+            if (App->render->CullingCam(this->entityPosition)) {
                 App->audio->PlayFx(rand() % ((BUILDING_DEATH_4 - BUILDING_DEATH_1) + 1) + BUILDING_DEATH_1);
+            }
         }
 
         App->entityManager->DeleteEntity(this);
@@ -251,8 +265,9 @@ void Building::drawUnitsInQueue(int MaxTime, int Time, bool isHero)
     Sprite bar;
     Sprite bar2;
 
-    if (MaxTime <= 0)
+    if (MaxTime <= 0) {
         MaxTime = Time;
+    }
     int percent = (((MaxTime - Time) * 100) / MaxTime);
     int barPercent = (percent * TECHBAR_WIDTH) / 100;
 

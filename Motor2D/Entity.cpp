@@ -105,8 +105,9 @@ bool Cost::Spend(Cost cost)
     gold -= cost.gold;
     stone -= cost.stone;
 
-    if (this == &App->entityManager->player->resources)
+    if (this == &App->entityManager->player->resources) {
         App->sceneManager->level1_scene->UpdateResources();
+    }
 
     return true;
 }

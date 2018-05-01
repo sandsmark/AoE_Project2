@@ -41,9 +41,9 @@ bool FileSystem::Awake(pugi::xml_node &config)
     // Ask SDL for a write dir
     char *write_path = SDL_GetPrefPath(App->GetOrganization(), App->GetTitle());
 
-    if (PHYSFS_setWriteDir(write_path) == 0)
+    if (PHYSFS_setWriteDir(write_path) == 0) {
         LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
-    else {
+    } else {
         // We add the writing directory as a reading directory too with speacial mount point
         LOG("Writing directory is %s\n", write_path);
         AddPath(write_path, GetSaveDirectory());
@@ -66,10 +66,11 @@ bool FileSystem::AddPath(const char *path_or_zip, const char *mount_point)
 {
     bool ret = false;
 
-    if (PHYSFS_mount(path_or_zip, mount_point, 1) == 0)
+    if (PHYSFS_mount(path_or_zip, mount_point, 1) == 0) {
         LOG("File System error while adding a path or zip(%s): %s\n", path_or_zip, PHYSFS_getLastError());
-    else
+    } else {
         ret = true;
+    }
 
     return ret;
 }
@@ -102,14 +103,17 @@ unsigned int FileSystem::Load(const char *file, char **buffer) const
             if (readed != size) {
                 LOG("File System error while reading from file %s: %s\n", file, PHYSFS_getLastError());
                 RELEASE(buffer);
-            } else
+            } else {
                 ret = (uint)readed;
+            }
         }
 
-        if (PHYSFS_close(fs_file) == 0)
+        if (PHYSFS_close(fs_file) == 0) {
             LOG("File System error while closing file %s: %s\n", file, PHYSFS_getLastError());
-    } else
+        }
+    } else {
         LOG("File System error while opening file %s: %s\n", file, PHYSFS_getLastError());
+    }
 
     return ret;
 }
@@ -122,12 +126,14 @@ SDL_RWops *FileSystem::Load(const char *file) const
 
     if (size > 0) {
         SDL_RWops *r = SDL_RWFromConstMem(buffer, size);
-        if (r != NULL)
+        if (r != NULL) {
             r->close = close_sdl_rwops;
+        }
 
         return r;
-    } else
+    } else {
         return NULL;
+    }
 }
 
 int close_sdl_rwops(SDL_RWops *rw)
@@ -146,15 +152,18 @@ unsigned int FileSystem::Save(const char *file, const char *buffer, unsigned int
 
     if (fs_file != NULL) {
         PHYSFS_sint64 written = PHYSFS_write(fs_file, (const void *)buffer, 1, size);
-        if (written != size)
+        if (written != size) {
             LOG("File System error while writing to file %s: %s\n", file, PHYSFS_getLastError());
-        else
+        } else {
             ret = (uint)written;
+        }
 
-        if (PHYSFS_close(fs_file) == 0)
+        if (PHYSFS_close(fs_file) == 0) {
             LOG("File System error while closing file %s: %s\n", file, PHYSFS_getLastError());
-    } else
+        }
+    } else {
         LOG("File System error while opening file %s: %s\n", file, PHYSFS_getLastError());
+    }
 
     return ret;
 }

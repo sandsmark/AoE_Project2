@@ -156,12 +156,13 @@ void HUD::Update()
                 if (App->entityManager->selectedEntityList.size() > 1) {
 
                     if (type != MULTIPLESELECTION) {
-                        if (type == SINGLEINFO)
+                        if (type == SINGLEINFO) {
                             ClearSingle();
-                        else if (type == BUILDINGINFO)
+                        } else if (type == BUILDINGINFO) {
                             ClearBuilding();
-                        else if (type == RESOURCEINFO)
+                        } else if (type == RESOURCEINFO) {
                             ClearResource();
+                        }
 
                         type = MULTIPLESELECTION;
                         GetSelection();
@@ -176,8 +177,9 @@ void HUD::Update()
                                 }
                                 Unit *unit = (Unit *)(*it_unit);
                                 if (it_sprite->GetID() == unit->type && (*it_unit)->Life > 0) {
-                                    if ((*it_unit)->MaxLife == 0)
+                                    if ((*it_unit)->MaxLife == 0) {
                                         (*it_unit)->MaxLife = (*it_unit)->Life;
+                                    }
                                     percent = (((*it_unit)->MaxLife - (*it_unit)->Life) * 100) / (*it_unit)->MaxLife;
                                     barPercent = (percent * App->gui->SpriteUnits.front().GetRect().w) / 100;
                                     bar.rect.x = posx + x - App->render->camera.x;
@@ -207,12 +209,13 @@ void HUD::Update()
                     }
                 } else {
                     if (type != SINGLEINFO) {
-                        if (type == MULTIPLESELECTION)
+                        if (type == MULTIPLESELECTION) {
                             ClearMultiple();
-                        else if (type == BUILDINGINFO)
+                        } else if (type == BUILDINGINFO) {
                             ClearBuilding();
-                        else if (type == RESOURCEINFO)
+                        } else if (type == RESOURCEINFO) {
                             ClearResource();
+                        }
 
                         type = SINGLEINFO;
                         GetSelection();
@@ -239,8 +242,9 @@ void HUD::Update()
 
                             life->SetString(life_str);
 
-                            if (max_life <= 0)
+                            if (max_life <= 0) {
                                 max_life = curr_life;
+                            }
                             percent = ((max_life - curr_life) * 100) / max_life;
                             barPercent = (percent * App->gui->SpriteUnits.front().GetRect().w) / 100;
                             bar.rect.x = posx - App->render->camera.x;
@@ -278,9 +282,9 @@ void HUD::Update()
                                     if (villager_state != VILLAGERCREATEBUILDINGS) {
                                         HUDCreateBuildings();
                                     } else {
-                                        if (cancel_bt->current == CLICKUP)
+                                        if (cancel_bt->current == CLICKUP) {
                                             HUDVillagerMenu();
-                                        else {
+                                        } else {
                                             for (uint i = 0; i < App->gui->building_bt.size(); ++i) {
                                                 if (App->gui->building_bt[i].button != nullptr) {
 
@@ -310,8 +314,9 @@ void HUD::Update()
 
                                     max_life = hero->skill->cooldown;
                                     curr_life = (int)hero->skill_timer.ReadSec();
-                                    if (curr_life >= max_life)
+                                    if (curr_life >= max_life) {
                                         curr_life = max_life;
+                                    }
                                     currlife = to_string(curr_life);
                                     life_str += "     ";
                                     life_str += currlife;
@@ -320,8 +325,9 @@ void HUD::Update()
                                     life_str += maxlife;
                                     life_str += "(sec)";
                                     life->SetString(life_str);
-                                    if (max_life == 0)
+                                    if (max_life == 0) {
                                         max_life = curr_life;
+                                    }
                                     percent = ((max_life - curr_life) * 100) / max_life;
                                     barPercent = (percent * App->gui->SpriteBuildings.front().GetRect().w) / 100;
                                     bar.rect.y = bar.rect.y + bar.rect.h;
@@ -340,14 +346,17 @@ void HUD::Update()
                                     case VILLAGERMENU:
                                         if (hero_state != HEROMENU) {
                                             HUDHeroMenu(hero->skill->type);
-                                            if (skill_bt_support != nullptr)
+                                            if (skill_bt_support != nullptr) {
                                                 skill_bt_support->enabled = false;
+                                            }
                                         } else {
                                             if (hero->skill->ready) {
-                                                if (skill_bt_support != nullptr)
+                                                if (skill_bt_support != nullptr) {
                                                     skill_bt_support->enabled = true;
-                                            } else if (skill_bt_support != nullptr)
+                                                }
+                                            } else if (skill_bt_support != nullptr) {
                                                 skill_bt_support->enabled = false;
+                                            }
                                             if ((skill_bt_support != nullptr) && (skill_bt_support->current == CLICKUP || App->input->GetKey(App->input->controls[HERO_SPECIAL_ATTACK]) == KEY_DOWN)) {
                                                 hero->skill->Activate(hero);
                                             }
@@ -466,9 +475,9 @@ void HUD::Update()
                             if (building_state != BUILDINGCREATEUNITS) {
                                 HUDCreateUnits();
                             } else {
-                                if (cancel_bt->current == CLICKUP)
+                                if (cancel_bt->current == CLICKUP) {
                                     HUDBuildingMenu();
-                                else {
+                                } else {
                                     for (uint i = 0; i < App->gui->unit_bt.size(); ++i) {
                                         if (App->gui->unit_bt[i].button != nullptr) {
                                             if (App->gui->unit_bt[i].button->current == CLICKUP) {
@@ -476,8 +485,9 @@ void HUD::Update()
                                                     if (App->entityManager->player->resources.Spend(App->entityManager->unitsDB[App->gui->unit_bt[i].type]->cost)) {
                                                         building->units_in_queue.push_back(App->gui->unit_bt[i].type);
                                                     }
-                                                } else
+                                                } else {
                                                     AlertText("NOT ENOUGH HOUSES", 5);
+                                                }
                                             }
                                         }
                                     }
@@ -488,8 +498,9 @@ void HUD::Update()
                             if (building_state != BUILDINGCREATEHERO) {
                                 HUDCreateHero();
                             }
-                            if (cancel_bt->current == CLICKUP)
+                            if (cancel_bt->current == CLICKUP) {
                                 HUDBuildingMenu();
+                            }
                             for (uint i = 0; i < App->gui->unit_bt.size(); ++i) {
                                 if (App->gui->unit_bt[i].button != nullptr) {
                                     if (App->gui->unit_bt[i].button->current == CLICKUP) {
@@ -497,8 +508,9 @@ void HUD::Update()
                                             if (App->entityManager->player->resources.Spend(App->entityManager->unitsDB[App->gui->unit_bt[i].type]->cost)) {
                                                 building->units_in_queue.push_back(App->gui->unit_bt[i].type);
                                             }
-                                        } else
+                                        } else {
                                             AlertText("NOT ENOUGH HOUSES", 5);
+                                        }
                                     }
                                 }
                             }
@@ -533,14 +545,15 @@ void HUD::Update()
     } else {
 
         if (type != NONE) {
-            if (type == SINGLEINFO)
+            if (type == SINGLEINFO) {
                 ClearSingle();
-            else if (type == MULTIPLESELECTION)
+            } else if (type == MULTIPLESELECTION) {
                 ClearMultiple();
-            else if (type == BUILDINGINFO)
+            } else if (type == BUILDINGINFO) {
                 ClearBuilding();
-            else if (type == RESOURCEINFO)
+            } else if (type == RESOURCEINFO) {
                 ClearResource();
+            }
             type = NONE;
             ClearAll();
         }

@@ -83,12 +83,13 @@ void HUD::HUDCreateBuildings()
     uint c = 0;
     for (uint i = 0; i < available_buildings.size(); ++i) {
         for (uint i2 = 0; i2 < App->gui->building_bt.size(); ++i2) {
-            if (App->gui->building_bt[i2].type == available_buildings[i])
+            if (App->gui->building_bt[i2].type == available_buildings[i]) {
                 if (App->gui->building_bt[i2].button == nullptr) {
                     App->gui->building_bt[i2].button = (Button *)App->gui->CreateButton("gui/BuildingMiniatures.png", buttons_positions[c].x - CAMERA_OFFSET_X, buttons_positions[c].y - CAMERA_OFFSET_Y, App->gui->building_bt[i2].blit_sections, buttons_positions, TIER2);
                     c++;
                     all_bt.push_back(App->gui->building_bt[i2].button);
                 }
+            }
         }
     }
 
@@ -248,8 +249,9 @@ void HUD::HUDCreateUnits()
 
     vector<unitType> available_units;
     for (list<pair<unitType, buildingType>>::iterator it = App->entityManager->player->tech_tree->available_units.begin(); it != App->entityManager->player->tech_tree->available_units.end(); ++it) {
-        if (id == it->second)
+        if (id == it->second) {
             available_units.push_back(it->first);
+        }
     }
 
     //TOWN_CENTER, HOUSE, ORC_BARRACKS, ARCHERY_RANGE, STABLES, SIEGE_WORKSHOP, MARKET, BLACKSMITH, MILL, OUTPOST, MONASTERY, CASTLE, SAURON_TOWER, FARM
@@ -503,12 +505,15 @@ void HUD::ClearMultiple()
 void HUD::ClearBuilding()
 {
 
-    if (single != nullptr)
+    if (single != nullptr) {
         App->gui->DestroyUIElement(single);
-    if (name != nullptr)
+    }
+    if (name != nullptr) {
         App->gui->DestroyUIElement(name);
-    if (life != nullptr)
+    }
+    if (life != nullptr) {
         App->gui->DestroyUIElement(life);
+    }
 
     HUDClearBuildingMenu();
 
@@ -626,8 +631,9 @@ void HUD::DrawResourceBar()
     life_str += maxlife;
     life->SetString(life_str);
     if (curr_life > 0) {
-        if (max_life == 0)
+        if (max_life == 0) {
             max_life = curr_life;
+        }
         percent = ((max_life - curr_life) * 100) / max_life;
         barPercent = (percent * App->gui->SpriteBuildings.front().GetRect().w) / 100;
         bar.rect.x = posx - App->render->camera.x;
@@ -661,8 +667,9 @@ void HUD::DrawBuildingBar()
     life_str += maxlife;
     life->SetString(life_str);
     if (curr_life > 0) {
-        if (max_life == 0)
+        if (max_life == 0) {
             max_life = curr_life;
+        }
         percent = ((max_life - curr_life) * 100) / max_life;
         barPercent = (percent * App->gui->SpriteBuildings.front().GetRect().w) / 100;
         bar.rect.x = posx - App->render->camera.x;

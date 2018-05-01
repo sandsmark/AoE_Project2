@@ -90,10 +90,11 @@ bool Gui::Update(float dt)
         }
     }
 
-    if (cursoron == true)
+    if (cursoron == true) {
         cursor->SetCursor(3);
-    else
+    } else {
         cursor->SetCursor(0);
+    }
 
     return true;
 }
@@ -103,10 +104,11 @@ bool Gui::PostUpdate()
 {
     if (Elements.empty() != true) {
         for (list<UIElement *>::iterator it = Elements.begin(); it != Elements.end(); ++it) {
-            if ((*it)->enabled == true)
+            if ((*it)->enabled == true) {
                 (*it)->Update();
-            else if ((*it)->type == BUTTON && (*it)->current != FREE)
+            } else if ((*it)->type == BUTTON && (*it)->current != FREE) {
                 (*it)->current = FREE;
+            }
         }
     }
     if (App->sceneManager->current_scene->name == "scene") {
@@ -207,8 +209,9 @@ void Gui::SetPriority()
 void Gui::Focus(SDL_Rect rect)
 {
     for (list<UIElement *>::iterator it = Elements.begin(); it != Elements.end(); ++it) {
-        if ((*it)->pos.first < rect.x || (*it)->pos.first > rect.x + rect.w || (*it)->pos.second < rect.y || (*it)->pos.second > rect.y + rect.h)
+        if ((*it)->pos.first < rect.x || (*it)->pos.first > rect.x + rect.w || (*it)->pos.second < rect.y || (*it)->pos.second > rect.y + rect.h) {
             (*it)->focused = false;
+        }
     }
 }
 
@@ -414,13 +417,15 @@ Image::Image(int x, int y, SDL_Texture *argtexture) :
 void Image::Update()
 {
     Draw();
-    if (!App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+    if ((!(App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)) == KEY_DOWN)) {
         current = MouseDetect();
+    }
 
     current = MouseDetect();
 
-    if (debug)
+    if (debug) {
         DebugMode();
+    }
 }
 
 void Image::Draw()
@@ -469,8 +474,9 @@ void Image::DebugMode()
 void Image::CleanUp()
 {
     parent = nullptr;
-    if (!loaded_tex)
+    if (!loaded_tex) {
         App->tex->UnLoad(texture);
+    }
 }
 // LABEL
 Label::Label(char *text, int x, int y, _TTF_Font *font) :
@@ -551,8 +557,9 @@ void Label::SetSize(int size)
 
 void Label::SetColor(SDL_Color color)
 {
-    if (texture != nullptr)
+    if (texture != nullptr) {
         App->tex->UnLoad(texture);
+    }
     this->color = color;
     texture = App->font->Print(str.c_str(), color, font);
 }
@@ -583,39 +590,46 @@ Button::Button(int x, int y, vector<SDL_Rect> blit_sections, vector<SDL_Rect> de
 
 void Button::Update()
 {
-    if (!App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+    if ((!(App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)) == KEY_DOWN)) {
         current = MouseDetect();
+    }
 
     switch (button_tier) {
     case TIER1:
-        if (current == HOVER)
+        if (current == HOVER) {
             current = MouseDetect();
-        if (current == HOVER)
+        }
+        if (current == HOVER) {
             Draw(blit_sections[1]);
-        else if (current == CLICKIN)
+        } else if (current == CLICKIN) {
             Draw(blit_sections[2]);
-        else
+        } else {
             Draw(blit_sections[0]);
+        }
         break;
     case TIER2:
-        if (current == HOVER)
+        if (current == HOVER) {
             current = MouseDetect();
-        if (current == CLICKIN)
+        }
+        if (current == CLICKIN) {
             Draw(blit_sections[1]);
-        else
+        } else {
             Draw(blit_sections[0]);
+        }
         break;
     }
 
-    if (debug)
+    if (debug) {
         DebugMode();
+    }
 }
 
 void Button::CleanUp()
 {
     parent = nullptr;
-    if (!loaded_tex)
+    if (!loaded_tex) {
         App->tex->UnLoad(texture);
+    }
     blit_sections.clear();
     detect_sections.clear();
 }
@@ -699,13 +713,15 @@ void InputText::Update()
     if (current == CLICKIN) {
         editable = true;
         SetBarToEnd();
-    } else if (current == CLICKOUT)
+    } else if (current == CLICKOUT) {
         editable = false;
+    }
 
     SDL_StartTextInput();
     if (editable) {
-        if (str.size() >= MAX_CHAR)
+        if (str.size() >= MAX_CHAR) {
             App->input->GetText();
+        }
         if (App->input->TextSize() > 0) {
             str.insert(bar_pos, App->input->GetText());
             bar_pos++;
@@ -719,12 +735,14 @@ void InputText::Update()
         UpdateWordsLength();
         MoveCursor();
         DrawBar();
-    } else
+    } else {
         SDL_StopTextInput();
+    }
 
     Draw();
-    if (debug)
+    if (debug) {
         DebugMode();
+    }
 }
 
 void InputText::Draw()
@@ -774,13 +792,15 @@ MouseState InputText::MouseDetect()
 void InputText::MoveCursor()
 {
     if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN) {
-        if (bar_pos > 0)
+        if (bar_pos > 0) {
             bar_pos--;
+        }
     }
 
     if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN) {
-        if (bar_pos < str.size())
+        if (bar_pos < str.size()) {
             bar_pos++;
+        }
     }
 
     if (bar_pos != 0) {
@@ -791,8 +811,9 @@ void InputText::MoveCursor()
                 break;
             }
         }
-    } else
+    } else {
         bar_pos_x = 0;
+    }
 }
 
 void InputText::UpdateWordsLength()
@@ -805,8 +826,9 @@ void InputText::UpdateWordsLength()
         word = str[i];
         int x = 0, y = 0;
         App->font->CalcSize(word.c_str(), x, y, font);
-        if ((strcmp(word.c_str(), "f") == 0) || (strcmp(word.c_str(), "j") == 0))
+        if ((strcmp(word.c_str(), "f") == 0) || (strcmp(word.c_str(), "j") == 0)) {
             x--;
+        }
 
         acumulated += x;
         words_lenght.push_back(acumulated);
@@ -828,8 +850,9 @@ void InputText::SetBarToEnd()
     if (bar_pos != 0) {
         int i = 0;
         for (list<int>::iterator it = words_lenght.begin(); it != words_lenght.end(); it++, i++) {
-            if (i = bar_pos - 1)
+            if ((i == bar_pos - 1)) {
                 bar_pos_x = *it;
+            }
         }
     }
 }
@@ -893,56 +916,66 @@ void ScrollBar::Update()
     switch (model) {
     case MODEL1:
 
-        if (!App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+        if ((!(App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)) == KEY_DOWN)) {
+            current = Thumb->MouseDetect();
+        }
+
+        if (current == HOVER) {
             current = Thumb->MouseDetect();
 
-        if (current == HOVER)
-            current = Thumb->MouseDetect();
-
-        else if (current == CLICKIN && Thumb->pos.second >= Up->pos.second && Thumb->pos.second <= Down->pos.second - Thumb->section.h) {
+        } else if (current == CLICKIN && Thumb->pos.second >= Up->pos.second && Thumb->pos.second <= Down->pos.second - Thumb->section.h) {
             Thumb->Move(0, motion.second);
-            if (Thumb->pos.second < Up->pos.second + 23)
+            if (Thumb->pos.second < Up->pos.second + 23) {
                 Thumb->pos.second = Up->pos.second + 23;
-            if (Thumb->pos.second > Down->pos.second - Thumb->section.h)
+            }
+            if (Thumb->pos.second > Down->pos.second - Thumb->section.h) {
                 Thumb->pos.second = Down->pos.second - Thumb->section.h;
+            }
         }
         if (Up->current == CLICKIN) {
             Thumb->Move(0, -3);
             Thumb->Move(0, motion.second);
-            if (Thumb->pos.second < Up->pos.second + 23)
+            if (Thumb->pos.second < Up->pos.second + 23) {
                 Thumb->pos.second = Up->pos.second + 23;
+            }
         }
         if (Down->current == CLICKIN) {
             Thumb->Move(0, 3);
             Thumb->Move(0, motion.second);
-            if (Thumb->pos.second > Down->pos.second - Thumb->section.h)
+            if (Thumb->pos.second > Down->pos.second - Thumb->section.h) {
                 Thumb->pos.second = Down->pos.second - Thumb->section.h;
+            }
         }
         break;
     case MODEL2:
-        if (!App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+        if ((!(App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)) == KEY_DOWN)) {
             current = MouseDetect();
-        if (current == HOVER)
+        }
+        if (current == HOVER) {
             current = MouseDetect();
-        else if (current == CLICKIN && ABar.SmallSquare->area.y >= BarRect->area.y && ABar.SmallSquare->area.y + ABar.SmallSquare->area.h <= BarRect->area.y + BarRect->area.h) {
+        } else if (current == CLICKIN && ABar.SmallSquare->area.y >= BarRect->area.y && ABar.SmallSquare->area.y + ABar.SmallSquare->area.h <= BarRect->area.y + BarRect->area.h) {
             ABar.SmallSquare->area.y += motion.second;
-            if (ABar.SmallSquare->area.y <= BarRect->area.y)
+            if (ABar.SmallSquare->area.y <= BarRect->area.y) {
                 ABar.SmallSquare->area.y = BarRect->area.y;
-            if (ABar.SmallSquare->area.y + ABar.SmallSquare->area.h >= BarRect->area.y + BarRect->area.h)
+            }
+            if (ABar.SmallSquare->area.y + ABar.SmallSquare->area.h >= BarRect->area.y + BarRect->area.h) {
                 ABar.SmallSquare->area.y = BarRect->area.y + BarRect->area.h - ABar.SmallSquare->area.h;
+            }
         }
     }
 
-    if (debug)
+    if (debug) {
         DebugMode();
+    }
 }
 
 int ScrollBar::GetData()
 {
     data = Thumb->pos.second - Bar->pos.second - 25;
     data *= 2;
-    if (data > 100)
+    if (data > 100) {
         data = 100;
+    }
     return data;
 }
 
@@ -1036,8 +1069,9 @@ void Cursor::Update()
         pos.first = cursor_pos.first - App->render->camera.x;
         pos.second = cursor_pos.second - App->render->camera.y;
         Draw();
-        if (id == 1 || id == 2 || id == 5 || id == 7 || id == 8 || id == 12 || id == 16)
+        if (id == 1 || id == 2 || id == 5 || id == 7 || id == 8 || id == 12 || id == 16) {
             blitoffset.second = 20;
+        }
     }
 }
 void Cursor::Draw()
@@ -1072,8 +1106,9 @@ void WindowUI::WindowOn()
 void WindowUI::WindowOff()
 {
     for (list<UIElement *>::iterator it = in_window.begin(); it != in_window.end(); ++it) {
-        if ((*it) != nullptr)
+        if ((*it) != nullptr) {
             (*it)->enabled = false;
+        }
     }
     enabled = false;
 }

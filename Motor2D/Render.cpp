@@ -91,13 +91,14 @@ bool Render::PostUpdate()
         } else {
             SDL_SetTextureColorMod(sprites_toDraw[it].texture, 255, 255, 255);
         }
-        if (sprites_toDraw[it].texture != nullptr && sprites_toDraw[it].flip >= 0 && sprites_toDraw[it].flip < 3)
+        if (sprites_toDraw[it].texture != nullptr && sprites_toDraw[it].flip >= 0 && sprites_toDraw[it].flip < 3) {
             Blit(sprites_toDraw[it].texture, sprites_toDraw[it].pos.x, sprites_toDraw[it].pos.y, &sprites_toDraw[it].rect, sprites_toDraw[it].flip);
-        else {
-            if (sprites_toDraw[it].radius == 0)
+        } else {
+            if (sprites_toDraw[it].radius == 0) {
                 DrawQuad(sprites_toDraw[it].rect, sprites_toDraw[it].r, sprites_toDraw[it].g, sprites_toDraw[it].b, sprites_toDraw[it].filled);
-            else
+            } else {
                 DrawCircle(sprites_toDraw[it].pos.x, sprites_toDraw[it].pos.y, sprites_toDraw[it].radius, sprites_toDraw[it].r, sprites_toDraw[it].g, sprites_toDraw[it].b);
+            }
         }
     }
 
@@ -111,13 +112,14 @@ bool Render::PostUpdate()
     std::sort(ui_toDraw.begin(), ui_toDraw.end(), [](const Sprite &lhs, const Sprite &rhs) { return lhs.priority < rhs.priority; });
 
     for (int it = 0; it < ui_toDraw.size(); it++) {
-        if (ui_toDraw[it].texture != nullptr && ui_toDraw[it].flip >= 0 && ui_toDraw[it].flip < 3)
+        if (ui_toDraw[it].texture != nullptr && ui_toDraw[it].flip >= 0 && ui_toDraw[it].flip < 3) {
             Blit(ui_toDraw[it].texture, ui_toDraw[it].pos.x, ui_toDraw[it].pos.y, &ui_toDraw[it].rect, ui_toDraw[it].flip);
-        else {
-            if (ui_toDraw[it].radius == 0)
+        } else {
+            if (ui_toDraw[it].radius == 0) {
                 DrawQuad(ui_toDraw[it].rect, ui_toDraw[it].r, ui_toDraw[it].g, ui_toDraw[it].b, ui_toDraw[it].filled, ui_toDraw[it].a);
-            else
+            } else {
                 DrawCircle(ui_toDraw[it].pos.x, ui_toDraw[it].pos.y, ui_toDraw[it].radius, ui_toDraw[it].r, ui_toDraw[it].g, ui_toDraw[it].b);
+            }
         }
     }
 
@@ -129,8 +131,9 @@ bool Render::PostUpdate()
         for (list<MapLayer *>::iterator it = App->map->data.layers.begin(); it != App->map->data.layers.end(); it++) {
             MapLayer *layer = *it;
 
-            if (layer->properties.Get("Nodraw") != 0)
+            if (layer->properties.Get("Nodraw") != 0) {
                 continue;
+            }
 
             for (int y = 0; y < App->map->data.height; ++y) {
                 for (int x = 0; x < App->map->data.width; ++x) {
@@ -139,11 +142,12 @@ bool Render::PostUpdate()
 
                     iPoint tileWorld = App->map->MapToWorld(x, y);
 
-                    if ((0 < tile_id && tile_id < 6 || 12 > tile_id && tile_id < 14) && visibility != 0)
+                    if (((0 < tile_id && tile_id < 6) || (12 > tile_id && tile_id < 14)) && visibility != 0) {
                         App->minimap->DrawTerrain(tileWorld.x, tileWorld.y, 0, 153, 51);
 
-                    else if (visibility != 0)
+                    } else if (visibility != 0) {
                         App->minimap->DrawTerrain(tileWorld.x, tileWorld.y, 105, 105, 105);
+                    }
                 }
             }
         }
@@ -210,17 +214,19 @@ pair<int, int> Render::MoveCameraWithCursor(float dt)
     pair<int, int> movement;
     App->input->GetMousePosition(mousePosX, mousePosY);
 
-    if (mousePosX < 10 && camera.x < cameraScene.left) //Move left
+    if (mousePosX < 10 && camera.x < cameraScene.left) { //Move left
         movement.first = 10;
 
-    else if (mousePosX > camera.w - 10 && camera.x > cameraScene.right) //Move right
+    } else if (mousePosX > camera.w - 10 && camera.x > cameraScene.right) { //Move right
         movement.first = -10;
+    }
 
-    if (mousePosY < 10 && camera.y < cameraScene.up) //Move up
+    if (mousePosY < 10 && camera.y < cameraScene.up) { //Move up
         movement.second = 10;
 
-    else if (mousePosY > camera.h - 10 && camera.y > cameraScene.down) //Move down
+    } else if (mousePosY > camera.h - 10 && camera.y > cameraScene.down) { //Move down
         movement.second = -10;
+    }
 
     //LOG("cam: %d, %d", camera.x, camera.y);
     //LOG("iso_cam: %d, %d", cam_pos_iso.x, cam_pos_iso.y);
@@ -338,10 +344,11 @@ bool Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b,
 
     int result = -1;
 
-    if (use_camera)
+    if (use_camera) {
         result = SDL_RenderDrawLine(renderer, camera.x + x1 * scale, camera.y + y1 * scale, camera.x + x2 * scale, camera.y + y2 * scale);
-    else
+    } else {
         result = SDL_RenderDrawLine(renderer, x1 * scale, y1 * scale, x2 * scale, y2 * scale);
+    }
 
     if (result != 0) {
         LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());

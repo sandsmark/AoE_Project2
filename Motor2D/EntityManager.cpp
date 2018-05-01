@@ -65,8 +65,9 @@ bool EntityManager::Update(float arg_dt)
     iPoint mouse = { mouseX, mouseY };
 
     for (list<Entity *>::iterator it = selectedEntityList.begin(); it != selectedEntityList.end(); it++) {
-        if ((*it)->state == DESTROYED)
+        if ((*it)->state == DESTROYED) {
             selectedEntityList.erase(it);
+        }
     }
 
     for (list<Entity *>::iterator it = WorldEntityList.begin(); it != WorldEntityList.end(); it++) {
@@ -75,16 +76,18 @@ bool EntityManager::Update(float arg_dt)
         }
 
         if (App->render->CullingCam((*it)->entityPosition)) {
-            if ((*it)->faction == SAURON_ARMY && (*it)->isActive == true || App->map->godmode)
+            if (((*it)->faction == SAURON_ARMY && (*it)->isActive == true) || App->map->godmode) {
                 (*it)->Draw();
-            else if ((*it)->faction == FREE_MEN)
+            } else if ((*it)->faction == FREE_MEN) {
                 (*it)->Draw();
+            }
         }
     }
 
     for (list<Resource *>::iterator it = resource_list.begin(); it != resource_list.end(); it++) {
-        if (App->render->CullingCam((*it)->entityPosition) && ((*it)->isActive == true || App->map->godmode))
+        if (App->render->CullingCam((*it)->entityPosition) && ((*it)->isActive == true || App->map->godmode)) {
             (*it)->Draw();
+        }
     }
 
     if (!game_stops) {
@@ -145,8 +148,9 @@ bool EntityManager::Update(float arg_dt)
 
                         for (list<Entity *>::iterator it = selectedEntityList.begin(); it != selectedEntityList.end(); it++) {
                             unit = (Unit *)(*it);
-                            if (unit->IsVillager)
+                            if (unit->IsVillager) {
                                 unit->order_list.push_back(new BuildOrder());
+                            }
                         }
                     }
 
@@ -174,8 +178,9 @@ bool EntityManager::Update(float arg_dt)
                 }
             }
 
-            if (placingBuilding)
+            if (placingBuilding) {
                 placingBuilding = false;
+            }
         }
 
         if (mouseY > NotHUD.y - CAMERA_OFFSET_Y && mouseY < NotHUD.h - CAMERA_OFFSET_Y) {
@@ -207,8 +212,9 @@ bool EntityManager::Update(float arg_dt)
 
                                 for (list<Entity *>::iterator it = selectedEntityList.begin(); it != selectedEntityList.end(); it++) {
                                     unit = (Unit *)(*it);
-                                    if (unit->IsVillager)
+                                    if (unit->IsVillager) {
                                         unit->order_list.push_front(new BuildOrder());
+                                    }
                                 }
                             }
                         }
@@ -245,8 +251,9 @@ bool EntityManager::Update(float arg_dt)
                         if (App->render->CullingCam((*it)->entityPosition)) {
                             if ((*it)->faction == FREE_MEN && (*it)->entityType == ENTITY_UNIT) {
                                 Unit *aux = (Unit *)(*it);
-                                if (aux->IsVillager == false)
+                                if (aux->IsVillager == false) {
                                     selectedEntityList.push_back((Entity *)(*it));
+                                }
                             }
                         }
                     }
@@ -263,8 +270,9 @@ bool EntityManager::Update(float arg_dt)
                         if (App->render->CullingCam((*it)->entityPosition)) {
                             if ((*it)->faction == FREE_MEN && (*it)->entityType == ENTITY_UNIT) {
                                 Unit *aux = (Unit *)(*it);
-                                if (aux->IsVillager == true)
+                                if (aux->IsVillager == true) {
                                     selectedEntityList.push_back((Entity *)(*it));
+                                }
                             }
                         }
                     }
@@ -277,8 +285,9 @@ bool EntityManager::Update(float arg_dt)
             }
         }
 
-        if (!selectedEntityList.empty())
+        if (!selectedEntityList.empty()) {
             DrawSelectedList();
+        }
 
         if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
             Sprite square;
@@ -305,8 +314,9 @@ bool EntityManager::PostUpdate()
             list<Entity *>::iterator unitToDestroy = i;
             ++i;
 
-            if ((*unitToDestroy)->entityType == ENTITY_BUILDING)
+            if ((*unitToDestroy)->entityType == ENTITY_BUILDING) {
                 App->quest->StepCallback((Building *)(*unitToDestroy));
+            }
 
             (*unitToDestroy)->state = DESTROYED;
         }
@@ -748,12 +758,13 @@ bool EntityManager::LoadGameData()
             Unit *unitTemplate;
             unitType type = (unitType)unitNodeInfo.child("Info").child("ID").attribute("value").as_int();
 
-            if (type == SLAVE_VILLAGER || type == ELF_VILLAGER)
+            if (type == SLAVE_VILLAGER || type == ELF_VILLAGER) {
                 unitTemplate = (Unit *)new Villager();
-            else if (type == LEGOLAS || type == GANDALF || type == BALROG)
+            } else if (type == LEGOLAS || type == GANDALF || type == BALROG) {
                 unitTemplate = (Unit *)new Hero();
-            else
+            } else {
                 unitTemplate = new Unit();
+            }
 
             unitTemplate->name = unitNodeInfo.child("Info").child("Name").attribute("value").as_string();
             unitTemplate->type = (unitType)unitNodeInfo.child("Info").child("ID").attribute("value").as_int();
@@ -978,36 +989,41 @@ Unit *EntityManager::CreateUnit(int posX, int posY, unitType type)
     if (type == SLAVE_VILLAGER || type == ELF_VILLAGER) {
         unit = (Unit *)new Villager(posX, posY, (Villager *)unitsDB[type]);
 
-        if (unit->faction == player->faction)
+        if (unit->faction == player->faction) {
             player->villagers.push_back((Villager *)unit);
-        else
+        } else {
             AI_faction->villagers.push_back((Villager *)unit);
+        }
 
-        if (App->render->CullingCam(unit->entityPosition))
+        if (App->render->CullingCam(unit->entityPosition)) {
             App->audio->PlayFx(CREATE_VILLAGER_SOUND);
+        }
     } else {
         if (type == LEGOLAS || type == GANDALF || type == BALROG) {
             unit = (Unit *)new Hero(posX, posY, (Hero *)unitsDB[type]);
 
-            if (App->render->CullingCam(unit->entityPosition))
+            if (App->render->CullingCam(unit->entityPosition)) {
                 App->audio->PlayFx(CREATE_HERO_SOUND);
+            }
         }
 
         else {
             unit = new Unit(posX, posY, unitsDB[type]);
 
-            if (App->render->CullingCam(unit->entityPosition))
+            if (App->render->CullingCam(unit->entityPosition)) {
                 App->audio->PlayFx(CREATE_UNIT_SOUND);
+            }
         }
     }
 
     unit->entityID = nextID;
     nextID++;
 
-    if (unit->faction == player->faction)
+    if (unit->faction == player->faction) {
         player->units.push_back(unit);
-    else
+    } else {
         AI_faction->units.push_back(unit);
+    }
 
     WorldEntityList.push_back(unit);
     App->fog->AddEntity(unit);
@@ -1020,10 +1036,11 @@ Building *EntityManager::CreateBuilding(int posX, int posY, buildingType type)
     Building *building = new Building(posX, posY, buildingsDB[type]);
     building->entityID = nextID;
     nextID++;
-    if (building->faction == player->faction)
+    if (building->faction == player->faction) {
         player->buildings.push_back(building);
-    else
+    } else {
         AI_faction->buildings.push_back(building);
+    }
 
     WorldEntityList.push_back(building);
 
@@ -1047,20 +1064,22 @@ Resource *EntityManager::CreateResource(int posX, int posY, resourceItem item)
 void EntityManager::DeleteEntity(Entity *entity)
 {
     removeEntityList.push_back(entity);
-    if (entity->entityType == ENTITY_RESOURCE)
+    if (entity->entityType == ENTITY_RESOURCE) {
         resource_list.remove((Resource *)entity);
-    else
+    } else {
         WorldEntityList.remove(entity);
+    }
 }
 
 void EntityManager::AddResources(Villager *villager)
 {
 
     StoredResources *resources = nullptr;
-    if (villager->faction == player->faction)
+    if (villager->faction == player->faction) {
         resources = &player->resources;
-    else
+    } else {
         resources = &AI_faction->resources;
+    }
 
     switch (villager->resource_carried) {
     case WOOD:
@@ -1077,8 +1096,9 @@ void EntityManager::AddResources(Villager *villager)
         break;
     }
 
-    if (villager->faction == player->faction)
+    if (villager->faction == player->faction) {
         App->sceneManager->level1_scene->UpdateResources();
+    }
 
     villager->curr_capacity = 0;
 }
@@ -1091,10 +1111,11 @@ Resource *EntityManager::FindNearestResource(resourceType contains, iPoint pos)
     for (list<Resource *>::iterator it = resource_list.begin(); it != resource_list.end(); it++) {
         if ((*it)->state != DESTROYED && (*it)->contains == contains) {
 
-            if (resource == nullptr)
+            if (resource == nullptr) {
                 resource = (*it);
-            else if ((*it)->collider != nullptr && resource->collider != nullptr && pos.DistanceTo((*it)->collider->pos) < pos.DistanceTo(resource->collider->pos))
+            } else if ((*it)->collider != nullptr && resource->collider != nullptr && pos.DistanceTo((*it)->collider->pos) < pos.DistanceTo(resource->collider->pos)) {
                 resource = (*it);
+            }
         }
     }
 
@@ -1105,21 +1126,24 @@ void EntityManager::RallyCall(Entity *entity)
 {
 
     list<Unit *> *allied_units = nullptr;
-    if (entity == nullptr)
+    if (entity == nullptr) {
         return;
+    }
 
-    if (entity->faction == player->faction)
+    if (entity->faction == player->faction) {
         allied_units = &player->units;
-    else
+    } else {
         allied_units = &AI_faction->units;
+    }
 
     for (list<Unit *>::iterator it = allied_units->begin(); it != allied_units->end(); it++) {
         if (entity->collider->pos.DistanceTo((*it)->collider->pos) < (*it)->los->r && (*it)->type != SLAVE_VILLAGER && (*it)->type != ELF_VILLAGER) {
 
-            if ((*it)->order_list.empty())
+            if ((*it)->order_list.empty()) {
                 return;
-            else if (((*it)->order_list.front()->order_type == MOVETO))
+            } else if ((*it)->order_list.front()->order_type = MOVETO) {
                 return;
+            }
 
             (*it)->order_list.push_front(new MoveToOrder((*it), entity->entityPosition));
 
@@ -1143,10 +1167,11 @@ Building *EntityManager::FindNearestBuilding(Unit *unit)
     list<Building *> *ally_buildings = nullptr;
     Building *ret = nullptr;
 
-    if (unit->faction == player->faction)
+    if (unit->faction == player->faction) {
         ally_buildings = &player->buildings;
-    else
+    } else {
         ally_buildings = &AI_faction->buildings;
+    }
 
     iPoint aux{ -1, -1 };
     for (list<Building *>::iterator it = ally_buildings->begin(); it != ally_buildings->end(); it++) {
@@ -1221,20 +1246,22 @@ Collider *EntityManager::CheckCursorHover(iPoint cursor_pos)
 
     Collider *nearest_col = nullptr;
 
-    if (nearest_col = App->collision->FindCollider(cursor_pos, 5)) {
+    if ((nearest_col == App->collision->FindCollider(cursor_pos, 5))) {
 
-        if (nearest_col->type == COLLIDER_RESOURCE)
+        if (nearest_col->type == COLLIDER_RESOURCE) {
             cursor_hover = HOVERING_RESOURCE;
-        else if (nearest_col->entity->faction == SAURON_ARMY)
+        } else if (nearest_col->entity->faction == SAURON_ARMY) {
             cursor_hover = HOVERING_ENEMY;
-        else {
-            if (nearest_col->type == COLLIDER_UNIT)
+        } else {
+            if (nearest_col->type == COLLIDER_UNIT) {
                 cursor_hover = HOVERING_ALLY_UNIT;
-            else
+            } else {
                 cursor_hover = HOVERING_ALLY_BUILDING;
+            }
         }
-    } else
+    } else {
         cursor_hover = HOVERING_TERRAIN;
+    }
 
     return nearest_col;
 }
@@ -1259,8 +1286,9 @@ void EntityManager::FillSelectedList()
 
                     for (list<Unit *>::iterator it = player->units.begin(); it != player->units.end(); it++) {
 
-                        if (unit->type == (*it)->type)
+                        if (unit->type == (*it)->type) {
                             selectedEntityList.push_back((Entity *)(*it));
+                        }
                     }
                     clicked_entity = nullptr;
                 } else { // single click
@@ -1321,8 +1349,9 @@ void EntityManager::FillSelectedList()
 
     if (!selectedEntityList.empty() && selectedEntityList.front()->collider != nullptr) {
         selectedListType = selectedEntityList.front()->collider->type;
-        if (selectedListType == COLLIDER_UNIT)
+        if (selectedListType == COLLIDER_UNIT) {
             App->audio->PlaySelectSound((Unit *)selectedEntityList.front());
+        }
     }
 
     multiSelectionRect = { 0, 0, 0, 0 };

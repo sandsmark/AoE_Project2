@@ -6,8 +6,9 @@
 TechTree::TechTree()
 {
 
-    for (int i = 0; i < MAX_MULTIPLIERS; i++)
+    for (int i = 0; i < MAX_MULTIPLIERS; i++) {
         multiplier_list.push_back(1);
+    }
 }
 
 void TechTree::Reset(Faction faction)
@@ -63,8 +64,9 @@ void TechTree::Update()
                     tech = (*it2);
                 }
             }
-            if ((*it) >= 10)
+            if ((*it) >= 10) {
                 break;
+            }
             if (tech != nullptr && tech->researching) {
                 researching_tech = true;
                 //  --------------- GUI --------------
@@ -105,17 +107,20 @@ void TechTree::Researched(TechType tech_id)
     }
     if (tech != nullptr) {
         if (tech->unlocks_tech.size() > 0) {
-            for (list<TechType>::iterator it = tech->unlocks_tech.begin(); it != tech->unlocks_tech.end(); it++)
+            for (list<TechType>::iterator it = tech->unlocks_tech.begin(); it != tech->unlocks_tech.end(); it++) {
                 available_techs.push_back(*it);
+            }
         }
 
-        if (tech->unlocks_unit.front().first != -1)
+        if (tech->unlocks_unit.front().first != -1) {
             for (list<pair<unitType, buildingType>>::iterator it = tech->unlocks_unit.begin(); it != tech->unlocks_unit.end(); ++it) {
                 available_units.push_back((*it));
             }
+        }
 
-        if (tech->unlocks_building != -1)
+        if (tech->unlocks_building != -1) {
             available_buildings.push_back(tech->unlocks_building);
+        }
 
         if (tech->multipliers.first != -1) {
             for (list<pair<unitType, buildingType>>::iterator it = tech->unlocks_unit.begin(); it != tech->unlocks_unit.end(); ++it) {
@@ -144,8 +149,9 @@ void TechTree::LoadTechTree(pugi::xml_node Techs)
 
             Tech *new_Tech = new Tech();
             new_Tech->name = TechData.child("Name").attribute("value").as_string();
-            for (pugi::xml_node unlocked_techs = TechData.child("Unlockedtech"); unlocked_techs; unlocked_techs = unlocked_techs.next_sibling("Unlockedtech"))
+            for (pugi::xml_node unlocked_techs = TechData.child("Unlockedtech"); unlocked_techs; unlocked_techs = unlocked_techs.next_sibling("Unlockedtech")) {
                 new_Tech->unlocks_tech.push_back((TechType)unlocked_techs.attribute("value").as_int());
+            }
 
             new_Tech->unlocks_building = (buildingType)TechData.child("Unlockedbuilding").attribute("value").as_int();
 

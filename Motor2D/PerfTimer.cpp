@@ -12,8 +12,9 @@ uint64 PerfTimer::frequency = 0;
 // ---------------------------------------------
 PerfTimer::PerfTimer()
 {
-    if (frequency == 0)
+    if (frequency == 0) {
         frequency = SDL_GetPerformanceFrequency();
+    }
 
     Start();
 }

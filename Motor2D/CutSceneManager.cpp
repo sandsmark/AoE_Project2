@@ -63,8 +63,9 @@ bool CutSceneManager::Update(float dt)
         if ((*act)->start + (*act)->duration < scene_timer.ReadSec()) {
             RELEASE(*act);
             act = active_actions.erase(act);
-        } else
+        } else {
             ++act;
+        }
     }
 
     //Add to active actions the ones that need to start
@@ -80,8 +81,9 @@ bool CutSceneManager::Update(float dt)
     UpdateElements(dt);
 
     //Chenge between 2 cutscenes
-    if (change_scene)
+    if (change_scene) {
         ChangeScene();
+    }
 
     //If cutscene finished, change scene
     if (!change_scene && remaining_actions.empty() && active_actions.empty() && !finished) {
@@ -109,10 +111,11 @@ int CutSceneManager::GetNextID() const
 
 void CutSceneManager::Play(const char *path, Scene *next_scene)
 {
-    if (App->sceneManager->current_scene == App->sceneManager->menu_scene)
+    if (App->sceneManager->current_scene == App->sceneManager->menu_scene) {
         App->sceneManager->ChangeScene(App->sceneManager->menu_scene, App->sceneManager->play_scene);
-    else
+    } else {
         App->sceneManager->ChangeScene(App->sceneManager->level1_scene, App->sceneManager->play_scene);
+    }
 
     Load(path);
     scene_timer.Start();
@@ -192,8 +195,9 @@ void CutSceneManager::Load(const char *path)
 elements_groups CutSceneManager::GetElementGroup(const char *ele) const
 {
     for (std::list<CutsceneElement *>::const_iterator e = elements.begin(); e != elements.end(); ++e) {
-        if ((*e)->name == ele)
+        if ((*e)->name == ele) {
             return (*e)->group;
+        }
     }
 
     return e_g_null;
@@ -202,8 +206,9 @@ elements_groups CutSceneManager::GetElementGroup(const char *ele) const
 CutsceneElement *CutSceneManager::GetElement(const char *ele) const
 {
     for (std::list<CutsceneElement *>::const_iterator e = elements.begin(); e != elements.end(); ++e) {
-        if ((*e)->name == ele)
+        if ((*e)->name == ele) {
             return *e;
+        }
     }
 
     return nullptr;
@@ -298,8 +303,9 @@ void CutSceneManager::LoadMap(pugi::xml_node &node)
         if (App->map->Load(node.attribute("path").as_string())) {
             int w, h;
             uchar *data = NULL;
-            if (App->map->CreateWalkabilityMap(w, h, &data))
+            if (App->map->CreateWalkabilityMap(w, h, &data)) {
                 App->pathfinding->SetMap(w, h, data);
+            }
 
             RELEASE_ARRAY(data);
         }
@@ -384,16 +390,17 @@ void CutSceneManager::LoadAction(pugi::xml_node &node)
 
     actions a = a_null;
 
-    if (type == "action")
+    if (type == "action") {
         a = a_action;
-    else if (type == "play")
+    } else if (type == "play") {
         a = a_play;
-    else if (type == "stop")
+    } else if (type == "stop") {
         a = a_stop;
-    else if (type == "enable")
+    } else if (type == "enable") {
         a = a_enable;
-    else if (type == "disable")
+    } else if (type == "disable") {
         a = a_disable;
+    }
 
     CutsceneAction *action = new CutsceneAction(a, node.attribute("element").as_string(), node.attribute("start").as_int(), node.attribute("duration").as_int());
 
@@ -413,12 +420,13 @@ void CutSceneManager::LoadMove(pugi::xml_node &node)
     reference_type ref = r_t_null;
     string ref_str = move.attribute("ref").as_string();
 
-    if (ref_str == "local")
+    if (ref_str == "local") {
         ref = r_t_local;
-    else if (ref_str == "map")
+    } else if (ref_str == "map") {
         ref = r_t_map;
-    else
+    } else {
         ref = r_t_global;
+    }
 
     m->reference = ref;
 
@@ -443,12 +451,13 @@ void CutSceneManager::LoadModify(pugi::xml_node &node)
             unit_actions e_action = e_a_null;
             string e_action_str = modify.attribute("action").as_string();
 
-            if (e_action_str == "kill")
+            if (e_action_str == "kill") {
                 e_action = e_a_kill;
-            else if (e_action_str == "spawn")
+            } else if (e_action_str == "spawn") {
                 e_action = e_a_spawn;
-            else
+            } else {
                 e_action = e_a_change_pos;
+            }
 
             me->unit_action = e_action;
 
@@ -562,11 +571,11 @@ void CutSceneManager::PerformModify(CutsceneElement *ele, CutsceneAction *act)
             CutsceneImage *i = static_cast<CutsceneImage *>(ele);
             CutsceneModifyImage *modify = static_cast<CutsceneModifyImage *>(act);
 
-            if (modify->var == "tex")
+            if (modify->var == "tex") {
                 i->ChangeTex(modify->path.c_str());
-            else if (modify->var == "rect")
+            } else if (modify->var == "rect") {
                 i->ChangeRect(modify->rect);
-            else if (modify->var == "both") {
+            } else if (modify->var == "both") {
                 i->ChangeTex(modify->path.c_str());
                 i->ChangeRect(modify->rect);
             }
@@ -841,8 +850,9 @@ void CutsceneSoundEffect::Play()
 CutsceneText::CutsceneText(elements_groups group, const char *path, const char *name, bool active, iPoint pos) :
     CutsceneElement(group, path, name, active)
 {
-    if (!active)
+    if (!active) {
         label->enabled = false;
+    }
 }
 
 CutsceneText::~CutsceneText()

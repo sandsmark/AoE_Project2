@@ -42,17 +42,19 @@ bool Hero::HeroUpdate()
 {
 
     if (skill->active) {
-        if (skill_timer.ReadSec() > skill->duration)
+        if (skill_timer.ReadSec() > skill->duration) {
             skill->Deactivate(this);
+        }
 
         // this should be replaced by skill_effect bliting
 
         App->render->DrawIsometricCircle(entityPosition.x, entityPosition.y + selectionAreaCenterPoint.y, selectionRadius + 10, 0, 0, 255, 255);
     }
-    if (skill_timer.ReadSec() > skill->cooldown)
+    if (skill_timer.ReadSec() > skill->cooldown) {
         skill->ready = true;
-    else
+    } else {
         skill->ready = false;
+    }
 
     return true;
 }

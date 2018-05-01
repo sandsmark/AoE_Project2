@@ -134,14 +134,16 @@ MoveToOrder::MoveToOrder(Unit *unit, iPoint destWorld)
         iPoint origin = App->map->WorldToMap(unit->collider->pos.x, unit->collider->pos.y);
         iPoint destMap = App->map->WorldToMap(destWorld.x, destWorld.y);
 
-        if (!App->pathfinding->IsWalkable(destMap, unit->collider) /*&& !App->collision->FindCollider(destMap, unit->collider->r, unit->collider)*/)
+        if (!App->pathfinding->IsWalkable(destMap, unit->collider) /*&& !App->collision->FindCollider(destMap, unit->collider->r, unit->collider)*/) {
             destMap = App->pathfinding->FindNearestAvailable(destMap, 5);
+        }
 
-        if (!App->pathfinding->IsWalkable(origin, unit->collider))
+        if (!App->pathfinding->IsWalkable(origin, unit->collider)) {
             origin = App->pathfinding->FindNearestAvailable(origin, 5);
+        }
 
         if (origin.x == -1 || destMap.x == -1) {
-            state == COMPLETED;
+            state = COMPLETED;
             return;
         }
 
@@ -200,8 +202,9 @@ void MoveToOrder::Execute(Unit *unit)
         velocity.x = unit->destinationTileWorld.x - unit->collider->pos.x;
         velocity.y = unit->destinationTileWorld.y - unit->collider->pos.y;
 
-        if (velocity.x != 0 || velocity.y != 0)
+        if (velocity.x != 0 || velocity.y != 0) {
             velocity.Normalize();
+        }
 
         velocity = velocity * unit->unitMovementSpeed * App->entityManager->dt;
         roundf(velocity.x);
@@ -268,14 +271,16 @@ void UnitAttackOrder::Start(Unit *unit)
                 RELEASE(unit->sub_movement);
                 unit->sub_movement = nullptr;
             }
-        } else if ((unit->los->CheckCollision(nearest_enemy->collider) || (nearest_enemy->isActive && unit->faction == FREE_MEN)))
+        } else if ((unit->los->CheckCollision(nearest_enemy->collider) || (nearest_enemy->isActive && unit->faction == FREE_MEN))) {
             unit->SubordinatedMovement(nearest_enemy->collider->pos);
-        else
+        } else {
             state = COMPLETED;
+        }
 
         unit->state = ATTACKING;
-    } else
+    } else {
         state = COMPLETED;
+    }
 }
 
 //Attack order:
@@ -296,8 +301,9 @@ void UnitAttackOrder::Execute(Unit *unit)
                     App->particlemanager->CreateArrow(400, unitpos, enemypos);
                 }
                 nearest_enemy->Life -= MAX(unit->Attack - nearest_enemy->Defense, unit->unitPiercingDamage);
-                if (nearest_enemy->state != ATTACKING)
+                if (nearest_enemy->state != ATTACKING) {
                     App->entityManager->RallyCall(nearest_enemy);
+                }
 
                 if (nearest_enemy->Life <= 0) {
                     nearest_enemy->state = DESTROYED;
@@ -307,10 +313,12 @@ void UnitAttackOrder::Execute(Unit *unit)
                     enemy->order_list.push_front(new UnitAttackOrder());
                     enemy->state = ATTACKING;
                 }
-            } else
+            } else {
                 state = NEEDS_START;
-        } else
+            }
+        } else {
             state = COMPLETED;
+        }
     }
 }
 
@@ -334,8 +342,9 @@ void GatherOrder::Start(Unit *unit)
                     RELEASE(unit->sub_movement);
                     unit->sub_movement = nullptr;
                 }
-            } else
+            } else {
                 unit->SubordinatedMovement(App->entityManager->player->Town_center->collider->pos);
+            }
         } else {
             if (villager->collider->CheckCollision(App->entityManager->AI_faction->Town_center->collider)) {
 
@@ -347,8 +356,9 @@ void GatherOrder::Start(Unit *unit)
                 App->entityManager->AddResources(villager);
                 state = COMPLETED;
                 return;
-            } else
+            } else {
                 unit->SubordinatedMovement(App->entityManager->AI_faction->Town_center->collider->pos);
+            }
         }
     }
 
@@ -356,9 +366,9 @@ void GatherOrder::Start(Unit *unit)
         if (Resource *resource = App->entityManager->FindNearestResource(villager->resource_carried, villager->entityPosition)) {
 
             if (!(villager->curr_capacity > 0)) {
-                if (resource->collider != nullptr && !villager->collider->CheckCollision(resource->collider))
+                if (resource->collider != nullptr && !villager->collider->CheckCollision(resource->collider)) {
                     unit->SubordinatedMovement(resource->collider->pos);
-                else {
+                } else {
 
                     if (unit->sub_movement) {
                         RELEASE(unit->sub_movement);
@@ -369,8 +379,9 @@ void GatherOrder::Start(Unit *unit)
                     return;
                 }
             }
-        } else
+        } else {
             state = COMPLETED;
+        }
     }
 }
 
@@ -389,15 +400,18 @@ void GatherOrder::Execute(Unit *unit)
                 resource->Life -= MIN(resource->Life, villager->gathering_speed);
 
                 if (resource->Life <= 0 || villager->curr_capacity >= villager->max_capacity) {
-                    if (resource->Life <= 0)
+                    if (resource->Life <= 0) {
                         resource->Destroy();
+                    }
 
                     state = NEEDS_START;
                 }
-            } else
+            } else {
                 state = NEEDS_START;
-        } else
+            }
+        } else {
             state = COMPLETED;
+        }
     }
 }
 
@@ -424,8 +438,9 @@ void BuildOrder::Start(Unit *unit)
             unit->SetTexture(CONSTRUCTING);
             state = EXECUTING;
         }
-    } else
+    } else {
         state = COMPLETED;
+    }
 }
 
 void BuildOrder::Execute(Unit *unit)
@@ -456,10 +471,12 @@ void BuildOrder::Execute(Unit *unit)
                     to_build->entityTexture = App->entityManager->constructingPhase2;
                     to_build->GetBuildingBoundaries();
                 }
-            } else
+            } else {
                 unit->order_list.push_front(new MoveToOrder(unit, to_build->collider->pos));
-        } else
+            }
+        } else {
             state = COMPLETED;
+        }
     }
 }
 

@@ -64,10 +64,11 @@ Unit::Unit(int posX, int posY, Unit *unit)
     collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y + selectionAreaCenterPoint.y }, r.w / 2, COLLIDER_UNIT, App->entityManager, (Entity *)this);
     los = App->collision->AddCollider({ entityPosition.x, entityPosition.y + selectionAreaCenterPoint.y }, unit->los_value, COLLIDER_LOS, App->entityManager, (Entity *)this);
 
-    if (unit->range_value)
+    if (unit->range_value) {
         range = App->collision->AddCollider({ entityPosition.x, entityPosition.y + selectionAreaCenterPoint.y }, unit->range_value, COLLIDER_RANGE, App->entityManager, (Entity *)this);
-    else
+    } else {
         range = App->collision->AddCollider({ entityPosition.x, entityPosition.y + selectionAreaCenterPoint.y }, collider->r, COLLIDER_RANGE, App->entityManager, (Entity *)this);
+    }
 
     next_pos = destinationTileWorld = entityPosition;
 
@@ -93,17 +94,21 @@ bool Unit::Update(float dt)
 
         if (!order_list.empty()) {
 
-            if (order_list.front()->state == NEEDS_START)
+            if (order_list.front()->state == NEEDS_START) {
                 order_list.front()->Start(this);
+            }
 
-            if (order_list.front()->state == EXECUTING)
+            if (order_list.front()->state == EXECUTING) {
                 order_list.front()->Execute(this);
+            }
 
-            if (order_list.front()->state == COMPLETED)
+            if (order_list.front()->state == COMPLETED) {
                 order_list.pop_front();
+            }
         } else {
-            if (entityTexture != unitIdleTexture)
+            if (entityTexture != unitIdleTexture) {
                 SetTexture(state = IDLE);
+            }
         }
     } else {
 
@@ -115,20 +120,23 @@ bool Unit::Update(float dt)
         if (currentAnim->at(currentDirection).Finished()) {
             if (faction == App->entityManager->player->faction) {
                 App->entityManager->player->units.remove(this);
-                if (IsVillager)
+                if (IsVillager) {
                     App->entityManager->player->villagers.remove((Villager *)this);
+                }
             } else {
                 App->entityManager->AI_faction->units.remove(this);
-                if (IsVillager)
+                if (IsVillager) {
                     App->entityManager->AI_faction->villagers.remove((Villager *)this);
+                }
             }
 
             App->collision->DeleteCollider(collider);
             App->collision->DeleteCollider(range);
             App->collision->DeleteCollider(los);
 
-            if (faction == FREE_MEN)
+            if (faction == FREE_MEN) {
                 App->fog->DeleteEntityFog(this->entityID);
+            }
 
             App->entityManager->DeleteEntity(this);
         }
@@ -142,20 +150,23 @@ void Unit::Destroy()
 
     if (faction == App->entityManager->player->faction) {
         App->entityManager->player->units.remove(this);
-        if (IsVillager)
+        if (IsVillager) {
             App->entityManager->player->villagers.remove((Villager *)this);
+        }
     } else {
         App->entityManager->AI_faction->units.remove(this);
-        if (IsVillager)
+        if (IsVillager) {
             App->entityManager->AI_faction->villagers.remove((Villager *)this);
+        }
     }
 
     App->collision->DeleteCollider(collider);
     App->collision->DeleteCollider(range);
     App->collision->DeleteCollider(los);
 
-    if (faction == FREE_MEN)
+    if (faction == FREE_MEN) {
         App->fog->DeleteEntityFog(this->entityID);
+    }
 
     App->entityManager->DeleteEntity(this);
 }
@@ -182,8 +193,9 @@ bool Unit::Draw()
         last_life = Life;
     }
 
-    if (lifebar_timer.ReadSec() < 5)
+    if (lifebar_timer.ReadSec() < 5) {
         drawLife({ entityPosition.x - 25, entityPosition.y - (r.h / 2) }); //25:  HPBAR_WIDTH / 2
+    }
 
     if (!path.empty() && App->collision->debug) {
         for (vector<iPoint>::iterator it = path.begin(); it != path.end(); it++) {
@@ -200,22 +212,23 @@ void Unit::LookAt(fPoint dest)
 {
     float angle = atan2f(dest.y, dest.x) * RADTODEG;
 
-    if (angle < 22.5 && angle > -22.5)
+    if (angle < 22.5 && angle > -22.5) {
         currentDirection = RIGHT;
-    else if (angle >= 22.5 && angle <= 67.5)
+    } else if (angle >= 22.5 && angle <= 67.5) {
         currentDirection = DOWN_RIGHT;
-    else if (angle > 67.5 && angle < 112.5)
+    } else if (angle > 67.5 && angle < 112.5) {
         currentDirection = DOWN;
-    else if (angle >= 112.5 && angle <= 157.5)
+    } else if (angle >= 112.5 && angle <= 157.5) {
         currentDirection = DOWN_LEFT;
-    else if (angle > 157.5 || angle < -157.5)
+    } else if (angle > 157.5 || angle < -157.5) {
         currentDirection = LEFT;
-    else if (angle >= -157.5 && angle <= -112.5)
+    } else if (angle >= -157.5 && angle <= -112.5) {
         currentDirection = UP_LEFT;
-    else if (angle > -112.5 && angle < -67.5)
+    } else if (angle > -112.5 && angle < -67.5) {
         currentDirection = UP;
-    else if (angle >= -67.5 && angle <= -22.5)
+    } else if (angle >= -67.5 && angle <= -22.5) {
         currentDirection = UP_RIGHT;
+    }
 }
 
 void Unit::SetTexture(EntityState texture_of)
@@ -257,13 +270,15 @@ void Unit::SubordinatedMovement(iPoint p)
 
     if (sub_movement == nullptr) {
         sub_movement = new MoveToOrder(this, p);
-        if (sub_movement->state == NEEDS_START)
+        if (sub_movement->state == NEEDS_START) {
             sub_movement->Start(this);
+        }
     } else {
         if (sub_movement->state == COMPLETED) {
             RELEASE(sub_movement);
             sub_movement = nullptr;
-        } else
+        } else {
             sub_movement->Execute(this);
+        }
     }
 }

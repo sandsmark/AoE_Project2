@@ -58,7 +58,7 @@ bool Textures::CleanUp()
 }
 
 // Load new texture from file path
-SDL_Texture *const Textures::Load(const char *path)
+SDL_Texture *Textures::Load(const char *path)
 {
     SDL_Texture *texture = NULL;
     SDL_Surface *surface = IMG_Load_RW(App->fs->Load(path), 1);
@@ -73,7 +73,7 @@ SDL_Texture *const Textures::Load(const char *path)
     return texture;
 }
 
-SDL_Surface *const Textures::LoadImageAsSurface(const char *path)
+SDL_Surface *Textures::LoadImageAsSurface(const char *path)
 {
 
     SDL_Surface *surface = IMG_Load_RW(App->fs->Load(path), 1);
@@ -101,7 +101,7 @@ bool Textures::UnLoad(SDL_Texture *texture)
 }
 
 // Translate a surface into a static texture
-SDL_Texture *const Textures::LoadStaticSurface(SDL_Surface *surface)
+SDL_Texture *Textures::LoadStaticSurface(SDL_Surface *surface)
 {
     SDL_Texture *texture = SDL_CreateTextureFromSurface(App->render->renderer, surface);
 
@@ -115,7 +115,7 @@ SDL_Texture *const Textures::LoadStaticSurface(SDL_Surface *surface)
 }
 
 // Translate a surface into a streaming texture (can be locked/unlocked (modify pixels))
-SDL_Texture *const Textures::LoadStreamingTextureFromSurface(SDL_Surface *surface)
+SDL_Texture *Textures::LoadStreamingTextureFromSurface(SDL_Surface *surface)
 {
     SDL_Texture *texture = SDL_CreateTexture(App->render->renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, surface->w, surface->h);
 

@@ -76,11 +76,13 @@ bool Collision::PreUpdate()
 
 bool Collision::Update(float dt)
 {
-    if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+    if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
         debug = !debug;
+    }
 
-    if (debug)
+    if (debug) {
         DebugDraw();
+    }
 
     return true;
 }
@@ -190,8 +192,9 @@ bool Collider::CheckCollision(Collider *c2) const
         int deltaX = pos.x - c2->pos.x;
         int deltaY = pos.y - c2->pos.y;
         return (abs(deltaX) < radius && abs(deltaY) < radius * sin(0.54f));
-    } else
+    } else {
         return false;
+    }
 }
 
 Unit *Collider::GetUnit()
@@ -199,8 +202,9 @@ Unit *Collider::GetUnit()
 
     Unit *unit = nullptr;
 
-    if (entity->collider->type == COLLIDER_UNIT)
+    if (entity->collider->type == COLLIDER_UNIT) {
         unit = (Unit *)entity;
+    }
 
     return unit;
 }
@@ -210,8 +214,9 @@ Building *Collider::GetBuilding()
 
     Building *building = nullptr;
 
-    if (entity->collider->type == COLLIDER_BUILDING)
+    if (entity->collider->type == COLLIDER_BUILDING) {
         building = (Building *)entity;
+    }
 
     return building;
 }
@@ -221,8 +226,9 @@ Resource *Collider::GetResource()
 
     Resource *resource = nullptr;
 
-    if (entity->collider->type == COLLIDER_RESOURCE)
+    if (entity->collider->type == COLLIDER_RESOURCE) {
         resource = (Resource *)entity;
+    }
 
     return resource;
 }
@@ -232,10 +238,11 @@ void Collision::DebugDraw()
 
     for (list<Collider *>::iterator it = colliders.begin(); it != colliders.end(); it++) {
         if (App->render->CullingCam((*it)->pos)) {
-            if ((*it)->colliding)
+            if ((*it)->colliding) {
                 App->render->DrawIsometricCircle((*it)->pos.x, (*it)->pos.y, (*it)->r, 255, 0, 0, 255);
-            else
+            } else {
                 App->render->DrawIsometricCircle((*it)->pos.x, (*it)->pos.y, (*it)->r, 0, 0, 255, 255);
+            }
         }
     }
 }
@@ -250,15 +257,18 @@ Collider *Collision::FindCollider(iPoint worldPos, int radius, Collider *collide
     if (colliders.size() > 0 && (quadtree_node >= 0 && quadtree_node < 99)) {
         col = colliders.front();
         for (list<Collider *>::iterator it = quadTree->nodes.at(quadtree_node).begin(); it != quadTree->nodes.at(quadtree_node).end(); it++) {
-            if ((*it)->type == COLLIDER_RANGE || (*it)->type == COLLIDER_LOS)
+            if ((*it)->type == COLLIDER_RANGE || (*it)->type == COLLIDER_LOS) {
                 continue;
+            }
 
-            if ((*it)->pos.DistanceTo(worldPos) < col->pos.DistanceTo(worldPos))
+            if ((*it)->pos.DistanceTo(worldPos) < col->pos.DistanceTo(worldPos)) {
                 col = (*it);
+            }
         }
 
-        if (col->pos.DistanceTo(worldPos) > (col->r + radius) || col->entity->state == DESTROYED || col == collider_to_ignore)
+        if (col->pos.DistanceTo(worldPos) > (col->r + radius) || col->entity->state == DESTROYED || col == collider_to_ignore) {
             col = nullptr;
+        }
     }
 
     return col;
@@ -273,8 +283,9 @@ bool Collision::CheckCollisionsIn(iPoint worldPos)
     col->pos = worldPos;
 
     for (list<Collider *>::iterator it = colliders.begin(); it != colliders.end(); it++) {
-        if (col->CheckCollision(*it))
+        if (col->CheckCollision(*it)) {
             ret = true;
+        }
     }
     RELEASE(col);
 

@@ -15,8 +15,9 @@ QuestManager::QuestManager() :
 
 QuestManager::~QuestManager()
 {
-    for (std::list<Quest *>::iterator it = AllQuests.begin(); it != AllQuests.end(); it++)
+    for (std::list<Quest *>::iterator it = AllQuests.begin(); it != AllQuests.end(); it++) {
         AllQuests.erase(it);
+    }
 }
 
 bool QuestManager::Awake(pugi::xml_node &config)
@@ -44,7 +45,7 @@ bool QuestManager::Start()
         ret = false;
     }
 
-    else
+    else {
         for (pugi::xml_node quest = questDataFile.child("quests").first_child(); quest; quest = quest.next_sibling("quest")) {
             //Load quest data from XML
             Quest *new_quest = new Quest();
@@ -61,6 +62,7 @@ bool QuestManager::Start()
             // We first add the quest to the all quest list
             AllQuests.push_back(new_quest);
         }
+    }
 
     // If it's already active we add the gui
     App->sceneManager->level1_scene->questHUD.AddActiveQuest("Explorer", "Explore the map, there are hidden quests!", 0);
@@ -106,11 +108,13 @@ bool QuestManager::TriggerCallback(Building *t)
                     // Check if both quests are completed
                     uint counter = 0;
                     for (std::list<Quest *>::iterator it = AllQuests.begin(); it != AllQuests.end(); it++) {
-                        if ((*it)->state == 1)
+                        if ((*it)->state == 1) {
                             counter++;
+                        }
                     }
-                    if (counter == 2)
+                    if (counter == 2) {
                         App->sceneManager->level1_scene->questHUD.RemoveQuest(0);
+                    }
 
                     App->gui->hud->AlertText("New side quest!", 5);
                     App->sceneManager->level1_scene->questHUD.AddActiveQuest((*it)->name, (*it)->description, (*it)->id);
@@ -179,8 +183,9 @@ bool QuestManager::Load(pugi::xml_node &d)
 
     for (list<Quest *>::iterator it = AllQuests.begin(); it != AllQuests.end(); it++) {
         (*it)->state = node.attribute("state").as_uint();
-        if ((*it)->state == 1)
+        if ((*it)->state == 1) {
             App->sceneManager->level1_scene->questHUD.AddActiveQuest((*it)->name, (*it)->description, (*it)->id);
+        }
         node = node.next_sibling("Quest");
     }
 

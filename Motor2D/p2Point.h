@@ -141,10 +141,11 @@ public:
     {
         int xDistance = abs(x - v.x);
         int yDistance = abs(y - v.y);
-        if (xDistance > yDistance)
+        if (xDistance > yDistance) {
             return 14 * yDistance + 10 * (xDistance - yDistance);
-        else
+        } else {
             return 14 * xDistance + 10 * (yDistance - xDistance);
+}
     }
 
     void Normalize()

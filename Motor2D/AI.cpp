@@ -56,8 +56,9 @@ bool AI::Update(float dt)
 
             if (state == EXPANDING) {
 
-                if (selected_building->type == SAURON_TOWER)
+                if (selected_building->type == SAURON_TOWER) {
                     return (completed = true);
+                }
 
                 if ((selected_building->Life >= selected_building->MaxLife)) {
                     selected_building->Life = selected_building->MaxLife;
@@ -69,16 +70,18 @@ bool AI::Update(float dt)
                     selected_building->Life += 100;
                     build_timer.Start();
                 }
-            } else //state OFFENSIVE or DEFENSIVE
+            } else { //state OFFENSIVE or DEFENSIVE
                 completed = (selected_building->units_in_queue.empty());
+            }
         }
 
         if (completed && AI_timer.ReadSec() > 60) {
 
             ChangeState();
 
-            if (state == OFFENSIVE && !last_attack_squad.empty())
+            if (state == OFFENSIVE && !last_attack_squad.empty()) {
                 LaunchAttack();
+            }
 
             completed = false;
         }
@@ -91,15 +94,17 @@ void AI::QueueUnits()
 
     int num = 0, life = App->entityManager->unitsDB[available_unit[selected_building->type]]->MaxLife;
 
-    if (life < 50)
+    if (life < 50) {
         num = 5;
-    else if (life < 200)
+    } else if (life < 200) {
         num = 3;
-    else
+    } else {
         num = 1;
+    }
 
-    for (int i = 0; i < num; i++)
+    for (int i = 0; i < num; i++) {
         selected_building->units_in_queue.push_back(available_unit[selected_building->type]);
+    }
 }
 
 void AI::SelectBuilding(AI_state ai_state)
@@ -108,8 +113,9 @@ void AI::SelectBuilding(AI_state ai_state)
     vector<Building *> buildings;
 
     for (list<Building *>::iterator it = Enemies->buildings.begin(); it != Enemies->buildings.end(); it++) {
-        if (((*it)->state == DESTROYED && ai_state == EXPANDING && (*it)->creation_timer.ReadSec() > 30) || ((*it)->state != DESTROYED && ai_state != EXPANDING))
+        if (((*it)->state == DESTROYED && ai_state == EXPANDING && (*it)->creation_timer.ReadSec() > 30) || ((*it)->state != DESTROYED && ai_state != EXPANDING)) {
             buildings.push_back(*it);
+        }
     }
 
     if (!buildings.empty()) {
@@ -118,15 +124,17 @@ void AI::SelectBuilding(AI_state ai_state)
 
         if (ai_state == EXPANDING) {
             for (vector<Building *>::iterator it2 = buildings.begin(); it2 != buildings.end(); it2++) {
-                if ((*it2)->MaxLife < selected_building->MaxLife)
+                if ((*it2)->MaxLife < selected_building->MaxLife) {
                     selected_building = (*it2);
+                }
             }
         } else {
             int random = rand() % buildings.size();
             selected_building = buildings.at(random);
         }
-    } else
+    } else {
         selected_building = App->entityManager->AI_faction->Town_center;
+    }
 }
 
 void AI::ChangeState()
@@ -142,8 +150,9 @@ void AI::ChangeState()
         SelectBuilding(state);
     }
 
-    if (state == OFFENSIVE || state == DEFENSIVE)
+    if (state == OFFENSIVE || state == DEFENSIVE) {
         QueueUnits();
+    }
 
     AI_timer.Start();
 }
@@ -151,8 +160,9 @@ void AI::ChangeState()
 void AI::LaunchAttack()
 {
 
-    for (list<Unit *>::iterator it = last_attack_squad.begin(); it != last_attack_squad.end(); it++)
+    for (list<Unit *>::iterator it = last_attack_squad.begin(); it != last_attack_squad.end(); it++) {
         (*it)->order_list.push_front(new MoveToOrder((*it), { TOWN_HALL_POS_X, TOWN_HALL_POS_Y + 200 }));
+    }
 
     last_attack_squad.clear();
 }
@@ -203,10 +213,12 @@ bool AI::Save(pugi::xml_node &data) const
     data.append_child("State").append_attribute("value") = (int)state;
     data.append_child("ForcedState").append_attribute("value") = (int)forced_state;
     data.append_child("Enabled").append_attribute("value") = enabled;
-    if (selected_building != nullptr)
+    if (selected_building != nullptr) {
         data.append_child("SelectedBuilding").append_attribute("value") = selected_building->entityID;
-    if (forced_building != nullptr)
+    }
+    if (forced_building != nullptr) {
         data.append_child("ForcedBuilding").append_attribute("value") = forced_building->entityID;
+    }
 
     pugi::xml_node lastsquad = data.append_child("LastAttacks");
 
@@ -260,11 +272,12 @@ void AI::CheckCollisions()
             if ((*enemy)->collider->CheckCollision((*enemy2)->collider) && (*enemy) != (*enemy2)) {
                 bool needs_to_move = false;
 
-                if ((*enemy)->order_list.empty() && (*enemy2)->order_list.empty())
+                if ((*enemy)->order_list.empty() && (*enemy2)->order_list.empty()) {
                     needs_to_move = true;
-                else if (!(*enemy)->order_list.empty() && !(*enemy2)->order_list.empty()) {
-                    if ((*enemy)->order_list.front()->order_type != MOVETO && ((*enemy2)->order_list.front()->order_type != MOVETO))
+                } else if (!(*enemy)->order_list.empty() && !(*enemy2)->order_list.empty()) {
+                    if ((*enemy)->order_list.front()->order_type != MOVETO && ((*enemy2)->order_list.front()->order_type != MOVETO)) {
                         needs_to_move = true;
+                    }
                 }
 
                 if (needs_to_move) {

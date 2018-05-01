@@ -121,10 +121,11 @@ void Audio::PlayUnitDeadSound(Unit *unit)
 {
 
     if (App->render->CullingCam(unit->entityPosition) && (unit->faction == FREE_MEN || unit->isActive == true)) {
-        if (unit->type == ELVEN_CAVALRY || unit->type == GONDOR_KNIGHT || unit->type == ROHAN_KNIGHT || unit->type == MOUNTED_DUNEDAIN)
+        if (unit->type == ELVEN_CAVALRY || unit->type == GONDOR_KNIGHT || unit->type == ROHAN_KNIGHT || unit->type == MOUNTED_DUNEDAIN) {
             App->audio->PlayFx(rand() % ((HORSE_DEAD_3 - HORSE_DEAD_1) + 1) + HORSE_DEAD_1);
-        else
+        } else {
             App->audio->PlayFx(rand() % ((DEAD_SOUND_6 - DEAD_SOUND_1) + 1) + DEAD_SOUND_1);
+        }
     }
 }
 
@@ -132,20 +133,22 @@ void Audio::PlayFightSound(Unit *unit)
 {
 
     if (App->render->CullingCam(unit->entityPosition) && (unit->faction == FREE_MEN || unit->isActive == true)) {
-        if (unit->type == ORC_ARCHER || unit->type == ELVEN_ARCHER || unit->type == ELVEN_CAVALRY || unit->type == DUNEDAIN_RANGE || unit->type == LEGOLAS)
+        if (unit->type == ORC_ARCHER || unit->type == ELVEN_ARCHER || unit->type == ELVEN_CAVALRY || unit->type == DUNEDAIN_RANGE || unit->type == LEGOLAS) {
             App->audio->PlayFx(rand() % ((BOW_ATTACK_7 - BOW_ATTACK_1) + 1) + BOW_ATTACK_1);
-        else
+        } else {
             App->audio->PlayFx(rand() % ((SWORD_ATTACK_7 - SWORD_ATTACK_1) + 1) + SWORD_ATTACK_1);
+        }
     }
 }
 
 void Audio::PlaySelectSound(Unit *unit)
 {
     if (App->render->CullingCam(unit->entityPosition) && (unit->faction == FREE_MEN || unit->isActive == true)) {
-        if (unit->type == ELVEN_CAVALRY || unit->type == GONDOR_KNIGHT || unit->type == ROHAN_KNIGHT || unit->type == MOUNTED_DUNEDAIN)
+        if (unit->type == ELVEN_CAVALRY || unit->type == GONDOR_KNIGHT || unit->type == ROHAN_KNIGHT || unit->type == MOUNTED_DUNEDAIN) {
             App->audio->PlayFx(rand() % ((SELECT_HORSE_3 - SELECT_HORSE_1) + 1) + SELECT_HORSE_1);
-        else
+        } else {
             App->audio->PlayFx(rand() % ((SELECT_UNIT_4 - SELECT_UNIT_1) + 1) + SELECT_UNIT_1);
+        }
     }
 }
 
@@ -154,22 +157,25 @@ void Audio::PlayGatherSound(Resource *resource)
     if (App->render->CullingCam(resource->entityPosition)) {
         // Falta posar wood
 
-        if (resource->contains == FOOD)
+        if (resource->contains == FOOD) {
             App->audio->PlayFx(FARMING);
-        if (resource->contains == WOOD)
+        }
+        if (resource->contains == WOOD) {
             App->audio->PlayFx(rand() % ((BUILDING_2 - BUILDING_1) + 1) + BUILDING_1);
-        else if (resource->contains == GOLD)
+        } else if (resource->contains == GOLD) {
             App->audio->PlayFx(rand() % ((MINE_3 - MINE_1) + 1) + MINE_1);
-        else if (resource->contains == STONE)
+        } else if (resource->contains == STONE) {
             App->audio->PlayFx(SWORD_ATTACK_7);
+        }
     }
 }
 
 // Called before quitting
 bool Audio::CleanUp()
 {
-    if (!active)
+    if (!active) {
         return true;
+    }
 
     LOG("Freeing sound FX, closing Mixer and Audio subsystem", 0);
 
@@ -195,8 +201,9 @@ bool Audio::PlayMusic(const char *path, float fade_time)
 {
     bool ret = true;
 
-    if (!active)
+    if (!active) {
         return false;
+    }
 
     if (music != NULL) {
         if (fade_time > 0.0f) {
@@ -237,8 +244,9 @@ unsigned int Audio::LoadFx(const char *path)
 {
     unsigned int ret = 0;
 
-    if (!active)
+    if (!active) {
         return 0;
+    }
 
     Mix_Chunk *chunk = Mix_LoadWAV_RW(App->fs->Load(path), 1);
 
@@ -257,8 +265,9 @@ bool Audio::PlayFx(int fx_id, int repeat)
 {
     bool ret = false;
 
-    if (!active)
+    if (!active) {
         return false;
+    }
 
     if (fx_id > 0 && fx_id <= fx.size()) {
         Mix_PlayChannel(-1, fx[fx_id - 1], repeat);

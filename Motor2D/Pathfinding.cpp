@@ -58,8 +58,9 @@ bool PathFinding::IsWalkable(const iPoint &pos, Collider *collider_to_ignore)
 // Utility: return the walkability value of a tile
 uchar PathFinding::GetTileAt(const iPoint &pos) const
 {
-    if (CheckBoundaries(pos))
+    if (CheckBoundaries(pos)) {
         return map[(pos.y * width) + pos.x];
+    }
 
     return INVALID_WALK_CODE;
 }
@@ -127,8 +128,9 @@ uint PathNode::FindWalkableAdjacents(PathList &list_to_fill, int range) const
             if (!(i == 0 && j == 0)) {
 
                 cell.create(pos.x + i, pos.y + j);
-                if (App->pathfinding->IsWalkable(cell))
+                if (App->pathfinding->IsWalkable(cell)) {
                     list_to_fill.pathNodeList.push_back(PathNode(-1, -1, cell, this));
+                }
             }
         }
     }
@@ -171,8 +173,9 @@ void PathNode::IdentifySuccessors(PathList &list_to_fill, iPoint startNode, iPoi
         PathNode jump_point(-1, -1, iPoint(-1, -1), this);
         bool succed = pathfinder->Jump(this->pos.x, this->pos.y, dx, dy, startNode, endNode, jump_point);
 
-        if (succed == true)
+        if (succed == true) {
             list_to_fill.pathNodeList.push_back(jump_point);
+        }
 
         ++neighbour;
     }
@@ -182,9 +185,9 @@ bool PathFinding::Jump(int current_x, int current_y, int dx, int dy, iPoint star
 {
     iPoint next(current_x + dx, current_y + dy);
 
-    if (IsWalkable(next, current_unit->collider) == false)
+    if (IsWalkable(next, current_unit->collider) == false) {
         return false;
-    else if (next.x == end.x && next.y == end.y) {
+    } else if (next.x == end.x && next.y == end.y) {
         new_node.pos = next;
         return true;
     }
@@ -264,8 +267,9 @@ void PathFinding::CalculatePath(Path *path)
             iPoint *start = &path->finished_path[0];
             iPoint *end = &path->finished_path[path->finished_path.size() - 1];
 
-            while (start < end)
+            while (start < end) {
                 SWAP(*start++, *end--);
+            }
 
             for (int i = 0; i < path->finished_path.size(); i++) {
                 iPoint current_world = App->map->MapToWorld(path->finished_path[i].x, path->finished_path[i].y);
@@ -360,21 +364,24 @@ vector<iPoint> PathFinding::CreatePath(const iPoint &origin, const iPoint &desti
 
 iPoint PathFinding::FindNearestAvailable(iPoint origin, int range, iPoint target)
 {
-    if (target.x == -1)
+    if (target.x == -1) {
         target = origin;
+    }
 
     PathList nodes;
     PathNode first_node(0, 0, origin, NULL);
 
     first_node.FindWalkableAdjacents(nodes, range);
 
-    for (list<PathNode>::iterator it = nodes.pathNodeList.begin(); it != nodes.pathNodeList.end(); it++)
+    for (list<PathNode>::iterator it = nodes.pathNodeList.begin(); it != nodes.pathNodeList.end(); it++) {
         (*it).CalculateF(target);
+    }
 
-    if (nodes.pathNodeList.empty())
+    if (nodes.pathNodeList.empty()) {
         return origin;
-    else
+    } else {
         return (*nodes.GetNodeLowestScore()).pos;
+    }
 }
 
 iPoint PathFinding::FindNearestWalkable(const iPoint &origin)
@@ -389,8 +396,9 @@ iPoint PathFinding::FindNearestWalkable(const iPoint &origin)
             for (int dy = -search_in_radius; dy < search_in_radius; dy++) {
                 ret.x = origin.x + dx;
                 ret.y = origin.y + dy;
-                if (IsWalkable(ret))
+                if (IsWalkable(ret)) {
                     return ret; // Found the nearest walkable tile
+                }
             }
         }
 

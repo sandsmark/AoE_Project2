@@ -63,15 +63,17 @@ public:
     void AnimForward()
     {
         current_frame += speed;
-        if (current_frame >= last_frame)
+        if (current_frame >= last_frame) {
             current_frame = 0;
+        }
     }
 
     void AnimBack()
     {
         current_frame -= speed;
-        if (current_frame < 0)
+        if (current_frame < 0) {
             current_frame = (float)last_frame - 1;
+        }
     }
 
     bool Finished()

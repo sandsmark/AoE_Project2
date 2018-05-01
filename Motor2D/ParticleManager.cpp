@@ -57,8 +57,9 @@ bool ParticleManager::Update(float dt)
 bool ParticleManager::PostUpdate()
 {
     for (list<Particle *>::iterator it = particles.begin(); it != particles.end(); ++it) {
-        if ((*it)->alive == false)
+        if ((*it)->alive == false) {
             DestroyParticle(*it);
+        }
     }
     return true;
 }
@@ -66,13 +67,15 @@ bool ParticleManager::PostUpdate()
 bool ParticleManager::CleanUp()
 {
     for (list<Particle *>::iterator it = particles.begin(); it != particles.end(); ++it) {
-        if (*it != nullptr)
+        if (*it != nullptr) {
             DestroyParticle(*it);
+        }
     }
 
     for (list<Emitter *>::iterator it = emitters.begin(); it != emitters.end(); ++it) {
-        if (*it != nullptr)
+        if (*it != nullptr) {
             DestroyEmitter(*it);
+        }
     }
 
     for (uint i = 0; i < info.size(); ++i) {
@@ -152,8 +155,9 @@ bool ParticleManager::DestroyParticle(Particle *curr)
         particles.remove(curr);
         //curr->CleanUp();
         delete curr;
-    } else
+    } else {
         ret = false;
+    }
     return ret;
 }
 
@@ -163,8 +167,9 @@ bool ParticleManager::DestroyEmitter(Emitter *curr)
     if (curr != nullptr) {
         emitters.remove(curr);
         delete curr;
-    } else
+    } else {
         ret = false;
+    }
     return ret;
 }
 
@@ -182,8 +187,9 @@ Arrow::Arrow(int spd, pair<int, int> source, pair<int, int> dest) :
     if (src.first >= dst.first) {
         flipped = false;
         time *= -1;
-    } else
+    } else {
         flipped = true;
+    }
 
     speed = spd;
 
@@ -192,8 +198,9 @@ Arrow::Arrow(int spd, pair<int, int> source, pair<int, int> dest) :
     uint distance = sqrt((dst.second - src.second) * (dst.second - src.second) + (dst.first - src.first) * (dst.first - src.first));
 
     dg = atan((dst.second - src.second) / (dst.first - src.first)) * (180 / M_PI);
-    if (flipped)
+    if (flipped) {
         dg *= -1;
+    }
 
     timer.Start();
 }
@@ -208,8 +215,9 @@ void Arrow::Update()
     if (pos.first >= dst.first) {
         flipped = false;
         time *= -1;
-    } else
+    } else {
         flipped = true;
+    }
 
     if (!flipped) {
         spd_x *= -1;
@@ -224,14 +232,16 @@ void Arrow::Update()
     float dg = atan(curr_spd.second / curr_spd.first);
     dg = dg * (180 / M_PI);
 
-    if (flipped)
+    if (flipped) {
         dg *= -1;
+    }
 
     int num;
     for (int i = -90, num = 0; i <= 90; i += 5, ++num) {
         if (i >= dg) {
-            if (num == 17)
+            if (num == 17) {
                 num = 18;
+            }
             blit = anim.frames[num];
             break;
         }
@@ -244,8 +254,9 @@ void Arrow::Update()
 void Arrow::Draw()
 {
     Sprite arrow;
-    if (flipped)
+    if (flipped) {
         arrow.flip = SDL_FLIP_HORIZONTAL;
+    }
 
     arrow.pos.x = pos.first;
     arrow.pos.y = pos.second;
@@ -259,11 +270,12 @@ bool Arrow::IsAlive()
     bool ret = true;
 
     if (!flipped) {
-        if (pos.first < dst.first || pos.first + collider.w < dst.first)
+        if (pos.first < dst.first || pos.first + collider.w < dst.first) {
             ret = false;
-    } else if (pos.first > dst.first || pos.first + collider.w > dst.first)
+        }
+    } else if (pos.first > dst.first || pos.first + collider.w > dst.first) {
         ret = false;
-    else if (timer.ReadSec() >= lifetime) {
+    } else if (timer.ReadSec() >= lifetime) {
         ret = false;
     }
     return ret;
@@ -388,14 +400,16 @@ void Emitter::Update(float dt)
         // Ideally you want to set up your own forces depending on the emitter.
         force.first = (float)(rand() % 8 + 1);
         bool negative = rand() % 2;
-        if (negative)
+        if (negative) {
             force.first *= -1;
+        }
         force.first += speed_orig.first;
         // speed_orig is 0 unless stated otherwise with the SetSpd() method.
         force.second = (float)(rand() % 8 + 1);
         negative = rand() % 2;
-        if (negative)
+        if (negative) {
             force.second *= -1;
+        }
         force.second += speed_orig.second;
         //
         App->particlemanager->CreateMovableParticle(pos, force, true, type);

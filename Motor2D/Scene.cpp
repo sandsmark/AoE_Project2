@@ -55,8 +55,9 @@ bool Scene::Start()
         if (App->map->Load("map_1.tmx") == true) {
             int w, h;
             uchar *data = NULL;
-            if (App->map->CreateWalkabilityMap(w, h, &data))
+            if (App->map->CreateWalkabilityMap(w, h, &data)) {
                 App->pathfinding->SetMap(w, h, data);
+            }
 
             RELEASE_ARRAY(data);
         }
@@ -309,8 +310,9 @@ bool Scene::Update(float dt)
     if (ui_menu.IsEnabled()) {
         App->gui->Focus(ui_menu.FocusArea());
 
-        if (buttons[QUITGAME]->current == CLICKUP)
+        if (buttons[QUITGAME]->current == CLICKUP) {
             App->quit = true;
+        }
 
         if (buttons[CANCEL]->current == CLICKUP) {
             ui_menu.WindowOff();
@@ -460,8 +462,9 @@ void Scene::UpdatePopulation()
     uint houses_count = 0;
     uint units_in_queue = 0;
     for (list<Building *>::iterator it = App->entityManager->player->buildings.begin(); it != App->entityManager->player->buildings.end(); ++it) {
-        if ((*it)->type == HOUSE)
+        if ((*it)->type == HOUSE) {
             houses_count++;
+        }
         units_in_queue += (*it)->units_in_queue.size();
     }
     villagers->SetString(to_string(App->entityManager->player->units.size() + units_in_queue) + '/' + to_string((houses_count * 5) + 2));
@@ -472,8 +475,9 @@ bool Scene::CheckUnitsRoom()
     uint houses_count = 0;
     uint units_in_queue = 0;
     for (list<Building *>::iterator it = App->entityManager->player->buildings.begin(); it != App->entityManager->player->buildings.end(); ++it) {
-        if ((*it)->type == HOUSE)
+        if ((*it)->type == HOUSE) {
             houses_count++;
+        }
         units_in_queue += (*it)->units_in_queue.size();
     }
     return ((App->entityManager->player->units.size() + units_in_queue) < (houses_count * 5) + 2);
@@ -483,8 +487,9 @@ bool Scene::CheckHousesRoom()
 {
     uint houses_count = 0;
     for (list<Building *>::iterator it = App->entityManager->player->buildings.begin(); it != App->entityManager->player->buildings.end(); ++it) {
-        if ((*it)->type == HOUSE)
+        if ((*it)->type == HOUSE) {
             houses_count++;
+        }
     }
     return (houses_count <= MAX_HOUSES);
 }

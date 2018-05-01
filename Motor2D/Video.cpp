@@ -51,17 +51,22 @@ bool Video::Awake(pugi::xml_node &config)
 // Called before quitting
 bool Video::CleanUp()
 {
-    if (!active)
+    if (!active) {
         return true;
+    }
 
-    if (texture)
+    if (texture) {
         SDL_DestroyTexture(texture);
-    if (video)
+    }
+    if (video) {
         THEORAPLAY_freeVideo(video);
-    if (audio)
+    }
+    if (audio) {
         THEORAPLAY_freeAudio(audio);
-    if (decoder)
+    }
+    if (decoder) {
         THEORAPLAY_stopDecode(decoder);
+    }
     SDL_CloseAudio();
     SDL_Quit();
 
@@ -86,17 +91,19 @@ void SDLCALL Video::audio_callback(void *userdata, Uint8 *stream, int len)
         int cpy = (item->audio->frames - item->offset) * channels;
         int i;
 
-        if (cpy > (len / sizeof(Sint16)))
+        if (cpy > (len / sizeof(Sint16))) {
             cpy = len / sizeof(Sint16);
+        }
 
         for (i = 0; i < cpy; i++) {
             const float val = *(src++);
-            if (val < -1.0f)
+            if (val < -1.0f) {
                 *(dst++) = -32768;
-            else if (val > 1.0f)
+            } else if (val > 1.0f) {
                 *(dst++) = 32767;
-            else
+            } else {
                 *(dst++) = (Sint16)(val * 32767.0f);
+            }
         }
 
         item->offset += (cpy / channels);
@@ -109,11 +116,13 @@ void SDLCALL Video::audio_callback(void *userdata, Uint8 *stream, int len)
         }
     }
 
-    if (!audio_queue)
+    if (!audio_queue) {
         audio_queue_tail = NULL;
+    }
 
-    if (len > 0)
+    if (len > 0) {
         memset(dst, '\0', len);
+    }
 }
 
 void Video::queue_audio(const THEORAPLAY_AudioPacket *audio)
@@ -129,10 +138,11 @@ void Video::queue_audio(const THEORAPLAY_AudioPacket *audio)
     item->next = NULL;
 
     SDL_LockAudio();
-    if (audio_queue_tail)
+    if (audio_queue_tail) {
         audio_queue_tail->next = item;
-    else
+    } else {
         audio_queue = item;
+    }
     audio_queue_tail = item;
     SDL_UnlockAudio();
 }
@@ -147,8 +157,9 @@ void Video::LoadVideo(const char *fname)
     // Wait until we have video and/or audio data, so we can set up hardware.
     while (!video) {
         //if (!audio) audio = THEORAPLAY_getAudio(decoder);
-        if (!video)
+        if (!video) {
             video = THEORAPLAY_getVideo(decoder);
+        }
         SDL_Delay(10);
     }
 
@@ -198,8 +209,9 @@ bool Video::Update(float dt)
         // ----------------------------------------------------------------
 
         // TODO 2: Get the video frame from the decoder if !video
-        if (!video)
+        if (!video) {
             video = THEORAPLAY_getVideo(decoder);
+        }
 
         // TODO 2: Get the audio packet from the decoder and queue it.
         /*	if ((audio = THEORAPLAY_getAudio(decoder)) != NULL)
@@ -216,11 +228,13 @@ bool Video::Update(float dt)
                     while ((video = THEORAPLAY_getVideo(decoder)) != NULL) {
                         THEORAPLAY_freeVideo(last);
                         last = video;
-                        if ((now - video->playms) < framems)
+                        if ((now - video->playms) < framems) {
                             break;
+                        }
                     }
-                    if (!video)
+                    if (!video) {
                         video = last;
+                    }
                 }
 
                 // Locking a portion of a texture for write only pixel access
@@ -234,14 +248,17 @@ bool Video::Update(float dt)
                 Uint8 *dst = (Uint8 *)pixels;
                 int i;
 
-                for (i = 0; i < h; i++, y += w, dst += pitch)
+                for (i = 0; i < h; i++, y += w, dst += pitch) {
                     memcpy(dst, y, w);
+                }
 
-                for (i = 0; i < h / 2; i++, u += w / 2, dst += pitch / 2)
+                for (i = 0; i < h / 2; i++, u += w / 2, dst += pitch / 2) {
                     memcpy(dst, u, w / 2);
+                }
 
-                for (i = 0; i < h / 2; i++, v += w / 2, dst += pitch / 2)
+                for (i = 0; i < h / 2; i++, v += w / 2, dst += pitch / 2) {
                     memcpy(dst, v, w / 2);
+                }
 
                 SDL_UnlockTexture(texture);
 
@@ -263,14 +280,18 @@ bool Video::Update(float dt)
 
 void Video::ResetValues()
 {
-    if (texture)
+    if (texture) {
         SDL_DestroyTexture(texture);
-    if (video)
+    }
+    if (video) {
         THEORAPLAY_freeVideo(video);
-    if (audio)
+    }
+    if (audio) {
         THEORAPLAY_freeAudio(audio);
-    if (decoder)
+    }
+    if (decoder) {
         THEORAPLAY_stopDecode(decoder);
+    }
 
     decoder = NULL;
     video = NULL;

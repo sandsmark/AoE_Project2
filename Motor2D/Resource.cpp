@@ -29,15 +29,17 @@ Resource::Resource(int posX, int posY, Resource *resource)
     blit_rect = resource->blit_rects.at(rectID);
 
     if (res_type >= MOUNT_1 && res_type <= MOUNT_6) {
-        if (selectionWidth)
+        if (selectionWidth) {
             collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y - selectionAreaCenterPoint.y + 200 }, selectionWidth, COLLIDER_RESOURCE, (Module *)App->entityManager, this);
-        else
+        } else {
             collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y - selectionAreaCenterPoint.y + 200 }, blit_rect.w / 2, COLLIDER_RESOURCE, (Module *)App->entityManager, this);
+        }
     } else {
-        if (selectionWidth)
+        if (selectionWidth) {
             collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y }, selectionWidth, COLLIDER_RESOURCE, (Module *)App->entityManager, this);
-        else
+        } else {
             collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y }, blit_rect.w / 2, COLLIDER_RESOURCE, (Module *)App->entityManager, this);
+        }
     }
 
     entityType = ENTITY_RESOURCE;
@@ -61,10 +63,11 @@ Resource::Resource(int posX, int posY, Resource *resource, SDL_Rect rect)
 
     blit_rect = rect;
 
-    if (selectionWidth)
+    if (selectionWidth) {
         collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y - selectionAreaCenterPoint.y }, selectionWidth, COLLIDER_RESOURCE, (Module *)App->entityManager, this);
-    else
+    } else {
         collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y - selectionAreaCenterPoint.y }, blit_rect.w / 2, COLLIDER_RESOURCE, (Module *)App->entityManager, this);
+    }
 
     entityType = ENTITY_RESOURCE;
 
@@ -106,7 +109,8 @@ void Resource::Destroy()
 
     state = DESTROYED;
 
-    if (collider != nullptr)
+    if (collider != nullptr) {
         App->collision->DeleteCollider(collider);
+    }
     App->entityManager->DeleteEntity(this);
 }

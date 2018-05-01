@@ -34,16 +34,18 @@ bool Map::Awake(pugi::xml_node &config)
 
 void Map::Draw()
 {
-    if (map_loaded == false)
+    if (map_loaded == false) {
         return;
+    }
 
     SDL_Rect cam = App->render->culling_cam;
 
     for (list<MapLayer *>::iterator it = data.layers.begin(); it != data.layers.end(); it++) {
         MapLayer *layer = *it;
 
-        if (layer->properties.Get("Nodraw") != 0)
+        if (layer->properties.Get("Nodraw") != 0) {
             continue;
+        }
 
         for (int y = 0; y < data.height; ++y) {
             for (int x = 0; x < data.width; ++x) {
@@ -58,8 +60,9 @@ void Map::Draw()
                         SDL_Rect r = tileset->GetTileRect(tile_id);
                         App->render->Blit(tileset->texture, tileWorld.x, tileWorld.y, &r);
 
-                        if (godmode == false)
+                        if (godmode == false) {
                             DrawSoftEdges(tileWorld.x, tileWorld.y, visibility);
+                        }
                     }
                 }
             }
@@ -70,8 +73,9 @@ void Map::Draw()
 int Properties::Get(const char *value, int default_value) const
 {
     for (list<Property *>::const_iterator it = propertyList.begin(); it != propertyList.end(); it++) {
-        if ((*it)->name == value)
+        if ((*it)->name == value) {
             return (*it)->value;
+        }
     }
 
     return default_value;
@@ -222,8 +226,9 @@ bool Map::Load(const char *file_name)
 
         ret = LoadLayer(layer, lay);
 
-        if (ret == true)
+        if (ret == true) {
             data.layers.push_back(lay);
+        }
     }
 
     if (ret == true) {
@@ -288,16 +293,19 @@ bool Map::LoadMap()
             int v = 0;
 
             sscanf(red.c_str(), "%x", &v);
-            if (v >= 0 && v <= 255)
+            if (v >= 0 && v <= 255) {
                 data.background_color.r = v;
+            }
 
             sscanf(green.c_str(), "%x", &v);
-            if (v >= 0 && v <= 255)
+            if (v >= 0 && v <= 255) {
                 data.background_color.g = v;
+            }
 
             sscanf(blue.c_str(), "%x", &v);
-            if (v >= 0 && v <= 255)
+            if (v >= 0 && v <= 255) {
                 data.background_color.b = v;
+            }
         }
 
         string orientation(map.attribute("orientation").as_string());
@@ -475,8 +483,9 @@ bool Map::CreateWalkabilityMap(int &width, int &height, uchar **buffer) const
     for (it = data.layers.begin(); it != data.layers.end(); it++) {
         MapLayer *layer = *it;
 
-        if (layer->properties.Get("Navigation", 0) == 0)
+        if (layer->properties.Get("Navigation", 0) == 0) {
             continue;
+        }
 
         uchar *map = new uchar[layer->width * layer->height];
         memset(map, 1, layer->width * layer->height);

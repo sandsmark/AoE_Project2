@@ -75,10 +75,11 @@ bool Console::PreUpdate()
 bool Console::Update(float dt)
 {
     if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN) {
-        if (!show)
+        if (!show) {
             show = true;
-        else
+        } else {
             show = false;
+        }
 
         //cscroll->ABar.SmallSquare->area.y = cscroll->BarRect->area.y + cscroll->BarRect->area.h - cscroll->ABar.SmallSquare->area.h;
     }
@@ -95,9 +96,11 @@ bool Console::Update(float dt)
             cscroll->UpdateThumbSize(h);
             ctext.push_back(ctextinput->str);
         }
-    } else
-        for (list<UIElement *>::iterator it = console_elements.begin(); it != console_elements.end(); ++it)
+    } else {
+        for (list<UIElement *>::iterator it = console_elements.begin(); it != console_elements.end(); ++it) {
             (*it)->enabled = false;
+        }
+    }
 
     return true;
 }

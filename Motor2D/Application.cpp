@@ -163,19 +163,23 @@ bool Application::Update()
     bool ret = true;
     PrepareUpdate();
 
-    if (ret == true)
+    if (ret == true) {
         ret = PreUpdate();
+    }
 
-    if (ret == true)
+    if (ret == true) {
         ret = DoUpdate();
+    }
 
-    if (ret == true)
+    if (ret == true) {
         ret = PostUpdate();
+    }
 
     FinishUpdate();
 
-    if (quit || input->GetWindowEvent(WE_QUIT) == true)
+    if (quit || input->GetWindowEvent(WE_QUIT) == true) {
         ret = false;
+    }
 
     return ret;
 }
@@ -190,10 +194,11 @@ pugi::xml_node Application::LoadConfig(pugi::xml_document &config_file) const
     pugi::xml_parse_result result = config_file.load_buffer(buf, size);
     RELEASE(buf);
 
-    if (result == NULL)
+    if (result == NULL) {
         LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
-    else
+    } else {
         ret = config_file.child("config");
+    }
 
     return ret;
 }
@@ -207,10 +212,11 @@ pugi::xml_node Application::LoadGameDataFile(pugi::xml_document &gameDatafile) c
     pugi::xml_parse_result result = gameDatafile.load_buffer(buf, size);
     RELEASE(buf);
 
-    if (result == NULL)
+    if (result == NULL) {
         LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
-    else
+    } else {
         ret = gameDatafile.child("GameData");
+    }
 
     return ret;
 }
@@ -224,10 +230,11 @@ pugi::xml_node Application::LoadHUDDataFile(pugi::xml_document &HUDDatafile) con
     pugi::xml_parse_result result = HUDDatafile.load_buffer(buf, size);
     RELEASE(buf);
 
-    if (result == NULL)
+    if (result == NULL) {
         LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
-    else
+    } else {
         ret = HUDDatafile.child("HUDData");
+    }
 
     return ret;
 }
@@ -241,10 +248,11 @@ pugi::xml_node Application::LoadParticleDataFile(pugi::xml_document &ParticleDat
     pugi::xml_parse_result result = ParticleDatafile.load_buffer(buf, size);
     RELEASE(buf);
 
-    if (result == NULL)
+    if (result == NULL) {
         LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
-    else
+    } else {
         ret = ParticleDatafile.child("ParticleData");
+    }
 
     return ret;
 }
@@ -262,11 +270,13 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
-    if (want_to_save == true)
+    if (want_to_save == true) {
         SavegameNow();
+    }
 
-    if (want_to_load == true)
+    if (want_to_load == true) {
         LoadGameNow();
+    }
 
     // Framerate calculations --
 
@@ -298,8 +308,9 @@ bool Application::PreUpdate()
 {
     bool ret = true;
     for (list<Module *>::iterator it = modules.begin(); it != modules.end(); it++) {
-        if ((*it)->active)
+        if ((*it)->active) {
             ret = (*it)->PreUpdate();
+        }
     }
 
     return ret;
@@ -310,8 +321,9 @@ bool Application::DoUpdate()
 {
     bool ret = true;
     for (list<Module *>::iterator it = modules.begin(); it != modules.end(); it++) {
-        if ((*it)->active)
+        if ((*it)->active) {
             ret = (*it)->Update(dt);
+        }
     }
 
     return ret;
@@ -322,8 +334,9 @@ bool Application::PostUpdate()
 {
     bool ret = true;
     for (list<Module *>::iterator it = modules.begin(); it != modules.end(); it++) {
-        if ((*it)->active)
+        if ((*it)->active) {
             ret = (*it)->PostUpdate();
+        }
     }
 
     return ret;
@@ -351,10 +364,11 @@ int Application::GetArgc() const
 // ---------------------------------------
 const char *Application::GetArgv(int index) const
 {
-    if (index < argc)
+    if (index < argc) {
         return args[index];
-    else
+    } else {
         return NULL;
+    }
 }
 
 // ---------------------------------------
@@ -426,14 +440,17 @@ bool Application::LoadGameNow()
             }
 
             data.reset();
-            if (ret == true)
+            if (ret == true) {
                 LOG("...finished loading", 0);
-            else
+            } else {
                 LOG("...loading process interrupted with error on module %s", (*it)->name.c_str());
-        } else
+            }
+        } else {
             LOG("Could not parse game state xml file %s. pugi error: %s", load_game.c_str(), result.description());
-    } else
+        }
+    } else {
         LOG("Could not load game state xml file %s", load_game.c_str());
+    }
 
     want_to_load = false;
     return ret;
@@ -465,8 +482,9 @@ bool Application::SavegameNow() const
         // we are done, so write data to disk
         fs->Save("save.xml", stream.str().c_str(), stream.str().length());
         LOG("... finished saving", save_game.c_str());
-    } else
+    } else {
         LOG("Save process halted from an error in module %s", (*it)->name.c_str());
+    }
 
     data.reset();
     want_to_save = false;

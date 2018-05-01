@@ -27,37 +27,42 @@ bool SceneManager::Start()
 {
     current_scene = menu_scene;
 
-    if (current_scene != nullptr && current_scene != level1_scene)
+    if (current_scene != nullptr && current_scene != level1_scene) {
         current_scene->Start();
+    }
 
     return true;
 }
 
 bool SceneManager::PreUpdate()
 {
-    if (current_scene != nullptr)
+    if (current_scene != nullptr) {
         current_scene->PreUpdate();
+    }
     return true;
 }
 
 bool SceneManager::Update(float dt)
 {
-    if (current_scene != nullptr)
+    if (current_scene != nullptr) {
         current_scene->Update(dt);
+    }
     return true;
 }
 
 bool SceneManager::PostUpdate()
 {
-    if (current_scene != nullptr)
+    if (current_scene != nullptr) {
         current_scene->PostUpdate();
+    }
     return true;
 }
 
 bool SceneManager::CleanUp()
 {
-    if (current_scene != nullptr)
+    if (current_scene != nullptr) {
         current_scene->CleanUp();
+    }
 
     for (list<SceneElement *>::iterator it = scenes.begin(); it != scenes.end(); ++it) {
         RELEASE(*it);

@@ -109,13 +109,15 @@ bool MenuScene::Start()
 
     if (App->audio->active == true) {
         mute_lbl = (Label *)App->gui->CreateLabel("MUTE", buttons[MUTE]->pos.first + x / 50, buttons[MUTE]->pos.second + y / 150, App->font->fonts[FOURTEEN]);
-    } else
+    } else {
         mute_lbl = (Label *)App->gui->CreateLabel("UNMUTE", buttons[MUTE]->pos.first + x / 50, buttons[MUTE]->pos.second + y / 150, App->font->fonts[FOURTEEN]);
+    }
 
     if (!App->win->IsFullScreen()) {
         window_lbl = (Label *)App->gui->CreateLabel("FULLSCREEN", buttons[SCREEN]->pos.first + x / 100, buttons[SCREEN]->pos.second + y / 150, App->font->fonts[FOURTEEN]);
-    } else
+    } else {
         window_lbl = (Label *)App->gui->CreateLabel("WINDOWED", buttons[SCREEN]->pos.first + x / 100, buttons[SCREEN]->pos.second + y / 150, App->font->fonts[FOURTEEN]);
+    }
 
     ui_menu.in_window.push_back(images[SETTINGS]);
     ui_menu.in_window.push_back(buttons[MUTE]);
@@ -171,8 +173,9 @@ bool MenuScene::Update(float dt)
             window_lbl->SetString("WINDOWED");
         }
     }
-    if (ui_menu.IsEnabled())
+    if (ui_menu.IsEnabled()) {
         App->gui->Focus(ui_menu.FocusArea());
+    }
 
     if (buttons[OPTIONS]->current == CLICKUP) {
         if (!ui_menu.IsEnabled()) {
@@ -211,8 +214,9 @@ bool MenuScene::PostUpdate()
         } else if (final_team == 1) {
             App->gui->DestroyUIElement(ring);
             ring = (Image *)App->gui->CreateImage("gui/ring.png", images[SAURONARMY]->pos.first, images[SAURONARMY]->pos.second, { 0, 0, 125, 70 });
-        } else if (final_team == -1)
+        } else if (final_team == -1) {
             App->gui->DestroyUIElement(ring);
+        }
     }
     return true;
 }

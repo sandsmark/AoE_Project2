@@ -62,12 +62,12 @@ bool Fonts::CleanUp()
 }
 
 // Load new texture from file path
-TTF_Font *const Fonts::Load(const char *path, int size)
+TTF_Font *Fonts::Load(const char *path, int size)
 {
     TTF_Font *font;
-    if (path != nullptr)
+    if (path != nullptr) {
         font = TTF_OpenFontRW(App->fs->Load(path), 1, size);
-    else {
+    } else {
         font = TTF_OpenFontRW(App->fs->Load(default_path), 1, size);
     }
     if (font == NULL) {
@@ -101,10 +101,11 @@ bool Fonts::CalcSize(const char *text, int &width, int &height, _TTF_Font *font)
 {
     bool ret = false;
 
-    if (TTF_SizeText((font) ? font : defaultFont, text, &width, &height) != 0)
+    if (TTF_SizeText((font) ? font : defaultFont, text, &width, &height) != 0) {
         LOG("Unable to calc size of text surface! SDL_ttf Error: %s\n", TTF_GetError());
-    else
+    } else {
         ret = true;
+    }
 
     return ret;
 }
