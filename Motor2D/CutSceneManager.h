@@ -298,7 +298,7 @@ public:
     bool HasFinished() const;
 
 private:
-    void Load(const char *path);
+    void LoadFile(const char *path);
 
     elements_groups GetElementGroup(const char *ele) const;
     CutsceneElement *GetElement(const char *ele) const;

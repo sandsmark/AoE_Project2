@@ -88,7 +88,7 @@ bool FileSystem::IsDirectory(const char *file) const
 }
 
 // Read a whole file and put it in a new buffer
-unsigned int FileSystem::Load(const char *file, char **buffer) const
+unsigned int FileSystem::LoadFile(const char *file, char **buffer) const
 {
     unsigned int ret = 0;
 
@@ -119,10 +119,10 @@ unsigned int FileSystem::Load(const char *file, char **buffer) const
 }
 
 // Read a whole file and put it in a new buffer
-SDL_RWops *FileSystem::Load(const char *file) const
+SDL_RWops *FileSystem::LoadFile(const char *file) const
 {
     char *buffer;
-    int size = Load(file, &buffer);
+    int size = LoadFile(file, &buffer);
 
     if (size > 0) {
         SDL_RWops *r = SDL_RWFromConstMem(buffer, size);

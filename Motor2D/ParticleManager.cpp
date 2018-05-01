@@ -35,7 +35,7 @@ bool ParticleManager::Start()
     LoadParticleData();
 
     for (uint i = 0; i < info.size(); ++i) {
-        info[i].texture = App->tex->Load(info[i].path.c_str());
+        info[i].texture = App->tex->LoadTexture(info[i].path.c_str());
     }
 
     return true;

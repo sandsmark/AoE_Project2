@@ -118,7 +118,7 @@ public:
     bool CleanUp();
 
     // Load new map
-    bool Load(const char *path);
+    bool LoadFile(const char *path);
 
     iPoint MapToWorld(int x, int y) const;
     iPoint WorldToMap(int x, int y) const;
@@ -130,6 +130,8 @@ public:
     void DrawSoftEdges(int x, int y, int visibility);
 
 private:
+    using Module::Load;
+
     bool LoadMap();
     bool LoadTilesetDetails(pugi::xml_node &tileset_node, TileSet *set);
     bool LoadTilesetImage(pugi::xml_node &tileset_node, TileSet *set);

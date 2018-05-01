@@ -190,7 +190,7 @@ pugi::xml_node Application::LoadConfig(pugi::xml_document &config_file) const
     pugi::xml_node ret;
 
     char *buf = NULL;
-    int size = App->fs->Load("config.xml", &buf);
+    int size = App->fs->LoadFile("config.xml", &buf);
     pugi::xml_parse_result result = config_file.load_buffer(buf, size);
     RELEASE(buf);
 
@@ -208,7 +208,7 @@ pugi::xml_node Application::LoadGameDataFile(pugi::xml_document &gameDatafile) c
     pugi::xml_node ret;
 
     char *buf = NULL;
-    int size = App->fs->Load("GameData.xml", &buf);
+    int size = App->fs->LoadFile("GameData.xml", &buf);
     pugi::xml_parse_result result = gameDatafile.load_buffer(buf, size);
     RELEASE(buf);
 
@@ -226,7 +226,7 @@ pugi::xml_node Application::LoadHUDDataFile(pugi::xml_document &HUDDatafile) con
     pugi::xml_node ret;
 
     char *buf = NULL;
-    int size = App->fs->Load("HUDData.xml", &buf);
+    int size = App->fs->LoadFile("HUDData.xml", &buf);
     pugi::xml_parse_result result = HUDDatafile.load_buffer(buf, size);
     RELEASE(buf);
 
@@ -244,7 +244,7 @@ pugi::xml_node Application::LoadParticleDataFile(pugi::xml_document &ParticleDat
     pugi::xml_node ret;
 
     char *buf = NULL;
-    int size = App->fs->Load("ParticleData.xml", &buf);
+    int size = App->fs->LoadFile("ParticleData.xml", &buf);
     pugi::xml_parse_result result = ParticleDatafile.load_buffer(buf, size);
     RELEASE(buf);
 
@@ -418,7 +418,7 @@ bool Application::LoadGameNow()
     bool ret = false;
 
     char *buffer;
-    uint size = fs->Load("save/save.xml", &buffer);
+    uint size = fs->LoadFile("save/save.xml", &buffer);
 
     if (size > 0) {
         pugi::xml_document data;

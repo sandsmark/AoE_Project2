@@ -77,8 +77,8 @@ bool FogOfWar::Start()
     data = new uint[dataSize];
 
     memset(data, 0, dataSize * sizeof(uint));
-    texture_grey = App->tex->Load(path_texture1.c_str());
-    texture_black = App->tex->Load(path_texture2.c_str());
+    texture_grey = App->tex->LoadTexture(path_texture1.c_str());
+    texture_black = App->tex->LoadTexture(path_texture2.c_str());
 
     return true;
 }

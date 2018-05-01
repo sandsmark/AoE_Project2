@@ -874,10 +874,10 @@ bool EntityManager::LoadGameData()
                 }
             }
 
-            unitTemplate->unitIdleTexture = App->tex->Load(idleTexturePath.c_str());
-            unitTemplate->unitMoveTexture = App->tex->Load(moveTexturePath.c_str());
-            unitTemplate->unitAttackTexture = App->tex->Load(attackTexturePath.c_str());
-            unitTemplate->unitDieTexture = App->tex->Load(dieTexturePath.c_str());
+            unitTemplate->unitIdleTexture = App->tex->LoadTexture(idleTexturePath.c_str());
+            unitTemplate->unitMoveTexture = App->tex->LoadTexture(moveTexturePath.c_str());
+            unitTemplate->unitAttackTexture = App->tex->LoadTexture(attackTexturePath.c_str());
+            unitTemplate->unitDieTexture = App->tex->LoadTexture(dieTexturePath.c_str());
 
             if (unitTemplate->type == SLAVE_VILLAGER || unitTemplate->type == ELF_VILLAGER) {
                 //Villager
@@ -904,7 +904,7 @@ bool EntityManager::LoadGameData()
                         villagerTemplate->choppingAnimations.push_back(chop);
                     }
                 }
-                villagerTemplate->unitChoppingTexture = App->tex->Load(chopTexturePath.c_str());
+                villagerTemplate->unitChoppingTexture = App->tex->LoadTexture(chopTexturePath.c_str());
 
                 villagerTemplate->gathering_speed = unitNodeInfo.child("Stats").child("GatheringSpeed").attribute("value").as_int();
                 villagerTemplate->max_capacity = unitNodeInfo.child("Stats").child("MaxCapacity").attribute("value").as_int();
@@ -921,16 +921,16 @@ bool EntityManager::LoadGameData()
             unitsDB.insert(pair<int, Unit *>(unitTemplate->type, unitTemplate));
         }
 
-        constructingPhase1 = App->tex->Load(gameData.child("Buildings").child("ConstructingPhase1").attribute("value").as_string());
-        constructingPhase2 = App->tex->Load(gameData.child("Buildings").child("ConstructingPhase2").attribute("value").as_string());
-        constructingPhase3 = App->tex->Load(gameData.child("Buildings").child("ConstructingPhase3").attribute("value").as_string());
+        constructingPhase1 = App->tex->LoadTexture(gameData.child("Buildings").child("ConstructingPhase1").attribute("value").as_string());
+        constructingPhase2 = App->tex->LoadTexture(gameData.child("Buildings").child("ConstructingPhase2").attribute("value").as_string());
+        constructingPhase3 = App->tex->LoadTexture(gameData.child("Buildings").child("ConstructingPhase3").attribute("value").as_string());
 
         for (buildingNodeInfo = gameData.child("Buildings").child("Building"); buildingNodeInfo; buildingNodeInfo = buildingNodeInfo.next_sibling("Building")) {
 
             Building *buildingTemplate = new Building();
 
             string idleTexturePath = buildingNodeInfo.child("Textures").child("Idle").attribute("value").as_string();
-            buildingTemplate->entityTexture = App->tex->Load(idleTexturePath.c_str());
+            buildingTemplate->entityTexture = App->tex->LoadTexture(idleTexturePath.c_str());
 
             buildingTemplate->name = buildingNodeInfo.child("Info").child("Name").attribute("value").as_string();
             buildingTemplate->faction = (Faction)buildingNodeInfo.child("Stats").child("Faction").attribute("value").as_int();
@@ -957,7 +957,7 @@ bool EntityManager::LoadGameData()
             Resource *resourceTemplate = new Resource();
 
             string idleTexturePath = resourceNodeInfo.child("Textures").child("Idle").attribute("value").as_string();
-            resourceTemplate->entityTexture = App->tex->Load(idleTexturePath.c_str());
+            resourceTemplate->entityTexture = App->tex->LoadTexture(idleTexturePath.c_str());
 
             resourceTemplate->Life = resourceNodeInfo.child("Stats").child("Life").attribute("value").as_int();
 

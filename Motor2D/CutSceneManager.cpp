@@ -117,7 +117,7 @@ void CutSceneManager::Play(const char *path, Scene *next_scene)
         App->sceneManager->ChangeScene(App->sceneManager->level1_scene, App->sceneManager->play_scene);
     }
 
-    Load(path);
+    LoadFile(path);
     scene_timer.Start();
     finished = false;
     this->next_scene = next_scene;
@@ -128,11 +128,11 @@ bool CutSceneManager::HasFinished() const
     return finished;
 }
 
-void CutSceneManager::Load(const char *path)
+void CutSceneManager::LoadFile(const char *path)
 {
     pugi::xml_document doc;
     char *buff;
-    int size = App->fs->Load(path, &buff);
+    int size = App->fs->LoadFile(path, &buff);
     pugi::xml_parse_result result = doc.load_buffer(buff, size);
     RELEASE(buff);
 
@@ -300,7 +300,7 @@ void CutSceneManager::ClearScene()
 void CutSceneManager::LoadMap(pugi::xml_node &node)
 {
     if (node.attribute("preload").as_bool() == false) {
-        if (App->map->Load(node.attribute("path").as_string())) {
+        if (App->map->LoadFile(node.attribute("path").as_string())) {
             int w, h;
             uchar *data = NULL;
             if (App->map->CreateWalkabilityMap(w, h, &data)) {
@@ -692,7 +692,7 @@ CutsceneMap::CutsceneMap(elements_groups group, const char *path, const char *na
 CutsceneImage::CutsceneImage(elements_groups group, const char *path, const char *name, bool active, iPoint pos, SDL_Rect rect, int layer) :
     CutsceneElement(group, path, name, active), pos(pos), layer(layer)
 {
-    texture = App->tex->Load(path);
+    texture = App->tex->LoadTexture(path);
     this->rect = rect;
 }
 
@@ -721,7 +721,7 @@ void CutsceneImage::Move(float x, float y)
 }
 void CutsceneImage::ChangeTex(const char *path)
 {
-    texture = App->tex->Load(path);
+    texture = App->tex->LoadTexture(path);
 }
 void CutsceneImage::ChangeRect(SDL_Rect r)
 {

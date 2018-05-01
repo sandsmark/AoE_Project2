@@ -30,7 +30,7 @@ bool Fonts::Awake(pugi::xml_node &conf)
     } else {
         default_path = conf.child("default_font").attribute("file").as_string(DEFAULT_FONT);
         int size = conf.child("default_font").attribute("size").as_int(DEFAULT_FONT_SIZE);
-        defaultFont = Load(default_path, size);
+        defaultFont = LoadFile(default_path, size);
     }
 
     return ret;
@@ -38,12 +38,12 @@ bool Fonts::Awake(pugi::xml_node &conf)
 
 bool Fonts::Start()
 {
-    Load(nullptr, 16);
-    Load(nullptr, 20);
-    Load(nullptr, 14);
-    Load(nullptr, 18);
-    Load(nullptr, 26);
-    Load(nullptr, 80);
+    LoadFile(nullptr, 16);
+    LoadFile(nullptr, 20);
+    LoadFile(nullptr, 14);
+    LoadFile(nullptr, 18);
+    LoadFile(nullptr, 26);
+    LoadFile(nullptr, 80);
     return true;
 }
 
@@ -62,13 +62,13 @@ bool Fonts::CleanUp()
 }
 
 // Load new texture from file path
-TTF_Font *Fonts::Load(const char *path, int size)
+TTF_Font *Fonts::LoadFile(const char *path, int size)
 {
     TTF_Font *font;
     if (path != nullptr) {
-        font = TTF_OpenFontRW(App->fs->Load(path), 1, size);
+        font = TTF_OpenFontRW(App->fs->LoadFile(path), 1, size);
     } else {
-        font = TTF_OpenFontRW(App->fs->Load(default_path), 1, size);
+        font = TTF_OpenFontRW(App->fs->LoadFile(default_path), 1, size);
     }
     if (font == NULL) {
         LOG("Could not load TTF font with path: %s. TTF_OpenFont: %s", path, TTF_GetError());

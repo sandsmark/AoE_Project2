@@ -21,7 +21,7 @@ public:
     bool CleanUp();
 
     // Load Texture
-    SDL_Texture *Load(const char *path);
+    SDL_Texture *LoadTexture(const char *path);
     SDL_Surface *LoadImageAsSurface(const char *path);
     bool UnLoad(SDL_Texture *texture);
     SDL_Texture *LoadStaticSurface(SDL_Surface *surface);
@@ -30,6 +30,10 @@ public:
 
 public:
     list<SDL_Texture *> textures;
+
+private:
+    using Module::Load;
+
 };
 
 #endif // __TEXTURES_H__

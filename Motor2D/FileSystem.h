@@ -31,12 +31,13 @@ public:
     }
 
     // Open for Read/Write
-    unsigned int Load(const char *file, char **buffer) const;
-    SDL_RWops *Load(const char *file) const;
+    unsigned int LoadFile(const char *file, char **buffer) const;
+    SDL_RWops *LoadFile(const char *file) const;
 
     unsigned int Save(const char *file, const char *buffer, unsigned int size) const;
 
 private:
+    using Module::Load;
 };
 
 #endif // __FILESYSTEM_H__

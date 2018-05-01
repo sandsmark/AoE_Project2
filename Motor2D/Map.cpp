@@ -182,13 +182,13 @@ bool Map::CleanUp()
 }
 
 // Load new map
-bool Map::Load(const char *file_name)
+bool Map::LoadFile(const char *file_name)
 {
     bool ret = true;
     string tmp = folder.c_str() + (string)file_name;
 
     char *buf;
-    int size = App->fs->Load(tmp.c_str(), &buf);
+    int size = App->fs->LoadFile(tmp.c_str(), &buf);
     pugi::xml_parse_result result = map_file.load_buffer(buf, size);
 
     RELEASE(buf);
@@ -355,7 +355,7 @@ bool Map::LoadTilesetImage(pugi::xml_node &tileset_node, TileSet *set)
         LOG("Error parsing tileset xml file: Cannot find 'image' tag.", 0);
         ret = false;
     } else {
-        set->texture = App->tex->Load(PATH(folder.c_str(), image.attribute("source").as_string()));
+        set->texture = App->tex->LoadTexture(PATH(folder.c_str(), image.attribute("source").as_string()));
         int w, h;
         SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
         set->tex_width = image.attribute("width").as_int();

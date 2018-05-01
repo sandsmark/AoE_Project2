@@ -52,7 +52,7 @@ bool Scene::Start()
     // Creating map ==================================================
 
     if (start == false) {
-        if (App->map->Load("map_1.tmx") == true) {
+        if (App->map->LoadFile("map_1.tmx") == true) {
             int w, h;
             uchar *data = NULL;
             if (App->map->CreateWalkabilityMap(w, h, &data)) {

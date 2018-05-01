@@ -36,7 +36,7 @@ bool QuestManager::Start()
     //Load QuestData File
     pugi::xml_document questDataFile;
     char *buff;
-    int size = App->fs->Load(path.c_str(), &buff);
+    int size = App->fs->LoadFile(path.c_str(), &buff);
     pugi::xml_parse_result result = questDataFile.load_buffer(buff, size);
     RELEASE(buff);
 

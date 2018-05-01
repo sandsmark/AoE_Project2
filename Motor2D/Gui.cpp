@@ -66,7 +66,7 @@ bool Gui::Start()
     LoadHUDData();
 
     for (uint i = 0; i < info.size(); ++i) {
-        info[i].texture = App->tex->Load(info[i].path.c_str());
+        info[i].texture = App->tex->LoadTexture(info[i].path.c_str());
     }
 
     return true;
@@ -263,7 +263,7 @@ UIElement *Gui::CreateImage(char *path, int x, int y, SDL_Rect section)
 {
     UIElement *ret = nullptr;
     SDL_Texture *tex;
-    tex = App->tex->Load(path);
+    tex = App->tex->LoadTexture(path);
 
     ret = new Image(section, x, y, tex);
     ret->ID = elements_counter;
@@ -277,7 +277,7 @@ UIElement *Gui::CreateImage(char *path, int x, int y)
 {
     UIElement *ret = nullptr;
     SDL_Texture *tex;
-    tex = App->tex->Load(path);
+    tex = App->tex->LoadTexture(path);
 
     ret = new Image(x, y, tex);
     ret->ID = elements_counter;
@@ -337,7 +337,7 @@ UIElement *Gui::CreateButton(char *path, int x, int y, vector<SDL_Rect> blit_sec
 {
     UIElement *ret = nullptr;
     SDL_Texture *tex;
-    tex = App->tex->Load(path);
+    tex = App->tex->LoadTexture(path);
 
     ret = new Button(x, y, blit_sections, detect_sections, Tier, tex);
     ret->ID = elements_counter;
@@ -380,7 +380,7 @@ UIElement *Gui::CreateQuad(SDL_Rect size, SDL_Color color)
 UIElement *Gui::CreateCursor(char *path, vector<SDL_Rect> cursor_list)
 {
     UIElement *ret = nullptr;
-    SDL_Texture *tex = App->tex->Load(path);
+    SDL_Texture *tex = App->tex->LoadTexture(path);
     ret = new Cursor(tex, cursor_list);
     return ret;
 }

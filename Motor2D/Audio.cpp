@@ -216,7 +216,7 @@ bool Audio::PlayMusic(const char *path, float fade_time)
         Mix_FreeMusic(music);
     }
 
-    music = Mix_LoadMUS_RW(App->fs->Load(path), 1);
+    music = Mix_LoadMUS_RW(App->fs->LoadFile(path), 1);
 
     if (music == NULL) {
         LOG("Cannot load music %s. Mix_GetError(): %s\n", path, Mix_GetError());
@@ -248,7 +248,7 @@ unsigned int Audio::LoadFx(const char *path)
         return 0;
     }
 
-    Mix_Chunk *chunk = Mix_LoadWAV_RW(App->fs->Load(path), 1);
+    Mix_Chunk *chunk = Mix_LoadWAV_RW(App->fs->LoadFile(path), 1);
 
     if (chunk == NULL) {
         LOG("Cannot load wav %s. Mix_GetError(): %s", path, Mix_GetError());
