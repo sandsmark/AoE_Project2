@@ -1,7 +1,7 @@
 #ifndef __MAP_H__
 #define __MAP_H__
 
-#include "PugiXml/src/pugixml.hpp"
+#include <pugixml.hpp>
 #include "Module.h"
 #include "p2Point.h"
 #include "Resource.h"
