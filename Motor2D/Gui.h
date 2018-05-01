@@ -86,6 +86,7 @@ class UIElement
 {
 public:
     UIElement(bool argenabled, int argx, int argy, ElementType argtype, SDL_Texture *argtexture);
+    virtual ~UIElement();
     virtual void Update() {}
     virtual void Draw() {}
     virtual void DebugMode() {}

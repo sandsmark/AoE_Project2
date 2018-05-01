@@ -127,9 +127,10 @@ bool Application::Awake()
     }
 
     if (ret == true) {
-        for (list<Module *>::iterator it = modules.begin(); it != modules.end(); it++) {
-            pugi::xml_node node = config.child((*it)->name.c_str());
-            ret = (*it)->Awake(node);
+        for (Module *module : modules) {
+            std::cout << "initializing " << module->name << std::endl;
+            pugi::xml_node node = config.child(module->name.c_str());
+            ret = module->Awake(node);
         }
     }
 
@@ -192,7 +193,7 @@ pugi::xml_node Application::LoadConfig(pugi::xml_document &config_file) const
     char *buf = nullptr;
     int size = App->fs->LoadFile("config.xml", &buf);
     pugi::xml_parse_result result = config_file.load_buffer(buf, size);
-    RELEASE(buf);
+    RELEASE_ARRAY(buf);
 
     if (result == NULL) {
         LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
@@ -210,7 +211,7 @@ pugi::xml_node Application::LoadGameDataFile(pugi::xml_document &gameDatafile) c
     char *buf = nullptr;
     int size = App->fs->LoadFile("GameData.xml", &buf);
     pugi::xml_parse_result result = gameDatafile.load_buffer(buf, size);
-    RELEASE(buf);
+    RELEASE_ARRAY(buf);
 
     if (result == NULL) {
         LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
@@ -228,7 +229,7 @@ pugi::xml_node Application::LoadHUDDataFile(pugi::xml_document &HUDDatafile) con
     char *buf = nullptr;
     int size = App->fs->LoadFile("HUDData.xml", &buf);
     pugi::xml_parse_result result = HUDDatafile.load_buffer(buf, size);
-    RELEASE(buf);
+    RELEASE_ARRAY(buf);
 
     if (result == NULL) {
         LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
@@ -246,7 +247,7 @@ pugi::xml_node Application::LoadParticleDataFile(pugi::xml_document &ParticleDat
     char *buf = nullptr;
     int size = App->fs->LoadFile("ParticleData.xml", &buf);
     pugi::xml_parse_result result = ParticleDatafile.load_buffer(buf, size);
-    RELEASE(buf);
+    RELEASE_ARRAY(buf);
 
     if (result == NULL) {
         LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
@@ -425,7 +426,7 @@ bool Application::LoadGameNow()
         pugi::xml_node root;
 
         pugi::xml_parse_result result = data.load_buffer(buffer, size);
-        RELEASE(buffer);
+        RELEASE_ARRAY(buffer);
 
         if (result != NULL) {
             LOG("Loading new Game State from %s...", load_game.c_str());

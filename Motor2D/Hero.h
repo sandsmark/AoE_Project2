@@ -31,6 +31,7 @@ public:
 class Skill
 {
 public:
+    virtual ~Skill();
     int cooldown = 0;
     int duration = 0;
     bool active = false;

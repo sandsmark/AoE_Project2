@@ -49,7 +49,7 @@ class Entity
 {
 public:
     Entity();
-    ~Entity();
+    virtual ~Entity();
     iPoint GetPosition() const;
     int GetEntityID() const;
 

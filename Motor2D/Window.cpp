@@ -61,6 +61,7 @@ bool Window::Awake(pugi::xml_node &config)
         } else {
             //Get window surface
             screen_surface = SDL_GetWindowSurface(window);
+            cout << "surface created" << endl;
         }
     }
 

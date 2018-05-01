@@ -83,7 +83,7 @@ public:
     int controls[__LAST_CONTROLS];
 
 private:
-    bool windowEvents[WE_COUNT];
+    bool windowEvents[WE_COUNT]{};
     KeyState *keyboard;
     KeyState mouse_buttons[NUM_MOUSE_BUTTONS];
     int mouse_motion_x = 0;

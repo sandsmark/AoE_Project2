@@ -65,10 +65,9 @@ bool Collision::Start()
 bool Collision::PreUpdate()
 {
     for (list<Collider *>::iterator it = colliders_to_delete.begin(); it != colliders_to_delete.end(); it++) {
-
         quadTree->Remove(*it);
-        colliders_to_delete.erase(it);
         RELEASE(*it);
+        it = colliders_to_delete.erase(it);
     }
 
     return true;

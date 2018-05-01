@@ -1246,8 +1246,7 @@ Collider *EntityManager::CheckCursorHover(iPoint cursor_pos)
 
     Collider *nearest_col = nullptr;
 
-    if ((nearest_col == App->collision->FindCollider(cursor_pos, 5))) {
-
+    if ((nearest_col = App->collision->FindCollider(cursor_pos, 5))) {
         if (nearest_col->type == COLLIDER_RESOURCE) {
             cursor_hover = HOVERING_RESOURCE;
         } else if (nearest_col->entity->faction == SAURON_ARMY) {

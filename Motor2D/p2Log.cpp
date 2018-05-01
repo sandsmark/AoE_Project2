@@ -12,5 +12,6 @@ void log(const char file[], int line, const char *format, ...)
     vsnprintf(tmp_string, 4096, format, ap);
     va_end(ap);
     snprintf(tmp_string2, 4096, "\n%s(%d) : %s", file, line, tmp_string);
-    printf("%s", tmp_string2);
+    std::cout << tmp_string2 << std::flush;
+//    printf("%s", tmp_string2);
 }

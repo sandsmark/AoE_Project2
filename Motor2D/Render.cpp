@@ -47,8 +47,14 @@ bool Render::Awake(pugi::xml_node &config)
         LOG("Could not create the renderer! SDL_Error: %s\n", SDL_GetError());
         ret = false;
     } else {
-        camera.w = App->win->screen_surface->w;
-        camera.h = App->win->screen_surface->h;
+        App->win->screen_surface = SDL_GetWindowSurface(App->win->window);
+//        std::cout << App->win << std::endl;
+//        std::cout << App->win->screen_surface << std::endl;
+//        std::cout << App->win->screen_surface->w << std::endl;
+
+        SDL_GetWindowSize(App->win->window, &camera.w, &camera.h);
+//        camera.w = App->win->screen_surface->w;
+//        camera.h = App->win->screen_surface->h;
         camera.x = 0;
         camera.y = 0;
     }

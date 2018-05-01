@@ -15,6 +15,7 @@ class Order;
 class Squad;
 
 enum unitType {
+    INVALID_UNIT = -1,
     ELVEN_LONGBLADE,
     DWARVEN_MAULER,
     GONDOR_SPEARMAN,

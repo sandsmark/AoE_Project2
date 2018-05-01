@@ -58,3 +58,7 @@ bool Hero::HeroUpdate()
 
     return true;
 }
+
+Skill::~Skill()
+{
+}

@@ -11,6 +11,7 @@
 #include "Audio.h"
 #include "SceneManager.h"
 #include <cstdlib>
+#include <algorithm>
 
 Gui::Gui() :
     Module()
@@ -259,6 +260,10 @@ UIElement::UIElement(bool argenabled, int argx, int argy, ElementType argtype, S
     current = FREE;
 }
 
+UIElement::~UIElement()
+{
+}
+
 UIElement *Gui::CreateImage(char *path, int x, int y, SDL_Rect section)
 {
     UIElement *ret = nullptr;
@@ -387,23 +392,26 @@ UIElement *Gui::CreateCursor(char *path, vector<SDL_Rect> cursor_list)
 
 void Gui::DestroyUIElement(UIElement *element)
 {
-    UIElement *c;
-    for (list<UIElement *>::iterator it = Elements.begin(); it != Elements.end(); ++it) {
-        if (element == (*it)) {
-            Elements.remove((*it));
-            (*it)->CleanUp();
-            RELEASE((element));
-        }
+    if (!element) {
+        return;
     }
+
+    list<UIElement *>::iterator it = std::find(std::begin(Elements), std::end(Elements), element);
+    if (it == Elements.end()) {
+        return;
+    }
+    Elements.erase(it);
+
+    element->CleanUp();
+    RELEASE((element));
 }
 
 void Gui::DestroyALLUIElements()
 {
-
     for (list<UIElement *>::iterator it = Elements.begin(); it != Elements.end(); ++it) {
         (*it)->CleanUp();
-        Elements.remove((*it));
-        RELEASE(((*it)));
+        RELEASE(*it);
+        it = Elements.erase(it);
     }
     Elements.clear();
 }
@@ -1124,11 +1132,9 @@ SDL_Rect WindowUI::FocusArea()
 }
 void WindowUI::CleanUp()
 {
-    for (list<UIElement *>::iterator it = in_window.begin(); it != in_window.end(); ++it) {
-        App->gui->DestroyUIElement((*it));
-        in_window.remove((*it));
+    for (UIElement *element : in_window) {
+        App->gui->DestroyUIElement(element);
     }
-
     in_window.clear();
 }
 
