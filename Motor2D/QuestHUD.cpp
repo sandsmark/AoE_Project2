@@ -174,7 +174,7 @@ void QuestHUD::RemoveQuest(int argid)
 
             c = (*it);
             (*it)->CleanUpQuest();
-            vec_quest.remove((*it));
+            it = vec_quest.erase(it);
         }
     }
 }

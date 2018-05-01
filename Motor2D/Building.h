@@ -11,6 +11,7 @@
 #define TECHBAR_WIDTH 50
 
 enum buildingType {
+    INVALID_BUILDING = -1,
     TOWN_CENTER,
     HOUSE,
     BARRACKS,

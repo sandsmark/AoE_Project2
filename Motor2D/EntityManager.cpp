@@ -106,8 +106,8 @@ bool EntityManager::Update(float arg_dt)
 
                     for (list<Order *>::iterator it2 = unit->order_list.begin(); it2 != unit->order_list.end(); it2++) {
                         RELEASE(*it2);
-                        unit->order_list.clear();
                     }
+                    unit->order_list.clear();
                 }
 
                 Collider *clicked_on = CheckCursorHover(mouse);
