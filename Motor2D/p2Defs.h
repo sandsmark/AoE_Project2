@@ -12,21 +12,21 @@
 #define NULL 0
 
 // Deletes a buffer
-#define RELEASE(x)       \
-    {                    \
-        if (x != NULL) { \
-            delete x;    \
-            x = NULL;    \
-        }                \
+#define RELEASE(x)          \
+    {                       \
+        if (x != nullptr) { \
+            delete x;       \
+            x = nullptr;    \
+        }                   \
     }
 
 // Deletes an array of buffers
-#define RELEASE_ARRAY(x) \
-    {                    \
-        if (x != NULL) { \
-            delete[] x;  \
-            x = NULL;    \
-        }                \
+#define RELEASE_ARRAY(x)    \
+    {                       \
+        if (x != nullptr) { \
+            delete[] x;     \
+            x = nullptr;    \
+        }                   \
     }
 
 #define IN_RANGE(value, min, max) (((value) >= (min) && (value) <= (max)) ? 1 : 0)
