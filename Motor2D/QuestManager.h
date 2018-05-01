@@ -8,7 +8,7 @@
 #include "Collision.h"
 #include "Building.h"
 
-class Collider;
+struct Collider;
 
 enum rewardType { NOTHING,
                   INCREASE_GOLD,

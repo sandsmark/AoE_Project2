@@ -17,7 +17,7 @@ using namespace std;
 #define EMITTER_SPEED 0.05
 
 struct SDL_Texture;
-class Collider;
+struct Collider;
 
 enum ParticleType {
     ARROW

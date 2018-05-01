@@ -1,5 +1,5 @@
 #ifndef _CONSOLE_H
-#define _CONSOLE_H_
+#define _CONSOLE_H
 
 #include "Module.h"
 #include "Fonts.h"

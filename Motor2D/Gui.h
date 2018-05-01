@@ -81,7 +81,7 @@ enum ScrollBarModel {
 
 class UnitSprite;
 class Info;
-class skill_button;
+struct skill_button;
 class UIElement
 {
 public:
