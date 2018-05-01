@@ -42,7 +42,7 @@ bool EntityManager::Awake(pugi::xml_node & config)
 
 bool EntityManager::Start()
 {
-	LOG("Starting EntityManager");
+    LOG("Starting EntityManager", 0);
 
 	bool ret = LoadGameData();
 	click_timer.Start();
@@ -330,7 +330,7 @@ bool EntityManager::PostUpdate()
 
 bool EntityManager::CleanUp()
 {
-	LOG("Freeing EntityManager");
+    LOG("Freeing EntityManager", 0);
 
 	for (list<Entity*>::iterator it = WorldEntityList.begin(); it != WorldEntityList.end(); it++) 
 		RELEASE((*it));

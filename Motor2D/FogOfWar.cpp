@@ -62,7 +62,7 @@ uint FogOfWar::Get(int x, int y)
 
 bool FogOfWar::Awake(pugi::xml_node& conf)
 {
-	LOG("Init True Type Font library");
+    LOG("Init True Type Font library", 0);
 	active = false;
 	path_texture1 = conf.child("texture").attribute("file1").as_string("");
 	path_texture2 = conf.child("texture").attribute("file2").as_string("");

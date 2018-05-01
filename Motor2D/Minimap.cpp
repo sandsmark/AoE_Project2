@@ -11,9 +11,8 @@
 #include "p2Log.h"
 #include <math.h>
 
-#include "SDL\include\SDL.h"
-#include "SDL_TTF\include\SDL_ttf.h"
-#pragma comment( lib, "SDL_ttf/libx86/SDL2_ttf.lib" )
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 Minimap::Minimap() : Module()
 {
@@ -73,7 +72,7 @@ bool Minimap::Update(float dt)
 
 			App->gui->ScreenMoves(movement);
 
-			uint x, y;
+            int x, y;
 
 			App->win->GetWindowSize(x, y);
 
@@ -152,7 +151,7 @@ void Minimap::DrawUnits()
 
 void Minimap::DrawCamera()
 {
-	uint x, y;
+    int x, y;
 	SDL_Rect rect;
 
 	App->win->GetWindowSize(x, y);

@@ -28,7 +28,7 @@ Render::~Render()
 // Called before render is available
 bool Render::Awake(pugi::xml_node& config)
 {
-	LOG("Create SDL rendering context");
+    LOG("Create SDL rendering context", 0);
 	bool ret = true;
 	// load flags
 	Uint32 flags = SDL_RENDERER_ACCELERATED;
@@ -37,7 +37,7 @@ bool Render::Awake(pugi::xml_node& config)
 	{
 		flags |= SDL_RENDERER_PRESENTVSYNC;
 		vsync = true;
-		LOG("Using vsync");
+        LOG("Using vsync", 0);
 	}
 
 	renderer = SDL_CreateRenderer(App->win->window, -1, flags);
@@ -64,7 +64,7 @@ bool Render::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool Render::Start()
 {
-	LOG("render start");
+    LOG("render start", 0);
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
 	return true;
@@ -172,7 +172,7 @@ bool Render::PostUpdate()
 // Called before quitting
 bool Render::CleanUp()
 {
-	LOG("Destroying SDL render");
+    LOG("Destroying SDL render", 0);
 	SDL_DestroyRenderer(renderer);
 	return true;
 }
@@ -301,7 +301,7 @@ bool Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, S
 	SDL_Point* p = NULL;
 	SDL_Point pivot;
 
-	if(pivot_x != INT_MAX && pivot_y != INT_MAX)
+    if(pivot_x != INT32_MAX && pivot_y != INT32_MAX)
 	{
 		pivot.x = pivot_x;
 		pivot.y = pivot_y;

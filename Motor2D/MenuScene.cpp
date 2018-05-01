@@ -29,7 +29,7 @@ bool MenuScene::Start()
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;
 
-	uint x, y;
+    int x, y;
 	App->win->GetWindowSize(x, y);
 	elements = App->gui->GetElements("MENUSCENE");
 
@@ -147,7 +147,7 @@ bool MenuScene::Update(float dt)
 {
 	if (App->video->want_to_play == false)
 	{
-		uint w, h;
+        int w, h;
 		App->win->GetWindowSize(w, h);
 		App->video->PlayVideo("VideoLogoNemesis.ogv");
 	}

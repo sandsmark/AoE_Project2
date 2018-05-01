@@ -1,5 +1,7 @@
 #include "SceneManager.h"
 
+SceneElement::~SceneElement() {}
+
 SceneManager::SceneManager()
 {
 	name = "sceneManager";
@@ -57,7 +59,7 @@ bool SceneManager::CleanUp()
 
 	for (list<SceneElement*>::iterator it = scenes.begin(); it != scenes.end(); ++it)
 	{
-		RELEASE(it._Ptr->_Myval);
+        RELEASE(*it);
 	}
 	return true;
 }

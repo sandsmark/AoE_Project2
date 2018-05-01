@@ -1,7 +1,7 @@
 #ifndef __SCENE_ELEMENT__H
 #define __SCENE_ELEMENT__H
 
-#include "PugiXml\src\pugixml.hpp"
+#include <pugixml.hpp>
 #include <list>
 #include <string>
 #include <vector>
@@ -10,6 +10,7 @@ using namespace std;
 
 class SceneElement {
 public:
+    virtual ~SceneElement();
 	SceneElement(char* _name) { name = _name; };
 	virtual bool Start() { return true; };
 	virtual bool PreUpdate() { return true; };

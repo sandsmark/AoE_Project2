@@ -31,7 +31,7 @@ Gui::~Gui()
 // Called before render is available
 bool Gui::Awake(pugi::xml_node& conf)
 {
-	LOG("Loading GUI atlas");
+    LOG("Loading GUI atlas", 0);
 	bool ret = true;
 
 	return ret;
@@ -112,9 +112,9 @@ bool Gui::PostUpdate()
 	{
 		for (list<UIElement*>::iterator it = Elements.begin(); it != Elements.end(); ++it)
 		{
-			if (it._Ptr->_Myval->enabled == true)
-				it._Ptr->_Myval->Update();
-			else if (it._Ptr->_Myval->type == BUTTON && it._Ptr->_Myval->current != FREE) it._Ptr->_Myval->current = FREE;
+            if ((*it)->enabled == true)
+                (*it)->Update();
+            else if ((*it)->type == BUTTON && (*it)->current != FREE) (*it)->current = FREE;
 		}
 	}
 	if (App->sceneManager->current_scene->name == "scene")
@@ -129,7 +129,7 @@ bool Gui::PostUpdate()
 // Called before quitting
 bool Gui::CleanUp()
 {
-	LOG("Freeing GUI");
+    LOG("Freeing GUI", 0);
 
 	cursor->CleanUp();
 
@@ -142,8 +142,8 @@ bool Gui::CleanUp()
 	{
 		for (list<UIElement*>::iterator it = Elements.begin(); it != Elements.end(); ++it)
 		{
-			App->tex->UnLoad(it._Ptr->_Myval->texture);
-			App->gui->DestroyUIElement(it._Ptr->_Myval);
+            App->tex->UnLoad((*it)->texture);
+            App->gui->DestroyUIElement((*it));
 		}
 	}
 	Elements.clear();
@@ -193,7 +193,7 @@ void Gui::ScreenMoves(pair<int, int> movement) {
 	{
 		for (list<UIElement*>::iterator it = Elements.begin(); it != Elements.end(); ++it)
 		{
-			it._Ptr->_Myval->Movement(movement);
+            (*it)->Movement(movement);
 		}
 	}
 }
@@ -223,19 +223,19 @@ void Gui::SetPriority()
 
 void Gui::Focus(SDL_Rect rect)
 {
-	for (list<UIElement*>::iterator it = Elements.begin(); it != Elements.end(); ++it)
-	{
-		if (it._Ptr->_Myval->pos.first < rect.x || it._Ptr->_Myval->pos.first > rect.x + rect.w ||
-			it._Ptr->_Myval->pos.second < rect.y || it._Ptr->_Myval->pos.second > rect.y + rect.h)
-			it._Ptr->_Myval->focused = false;
-	}
+    for (list<UIElement*>::iterator it = Elements.begin(); it != Elements.end(); ++it)
+    {
+        if ((*it)->pos.first < rect.x || (*it)->pos.first > rect.x + rect.w ||
+            (*it)->pos.second < rect.y || (*it)->pos.second > rect.y + rect.h)
+            (*it)->focused = false;
+    }
 }
 
 void Gui::Unfocus()
 {
 	for (list<UIElement*>::iterator it = Elements.begin(); it != Elements.end(); ++it)
 	{
-		it._Ptr->_Myval->focused = true;
+        (*it)->focused = true;
 	}
 }
 vector<Info> Gui::GetElements(string scene)
@@ -403,10 +403,10 @@ void Gui::DestroyUIElement(UIElement* element)
 	UIElement* c;
 	for (list<UIElement*>::iterator it = Elements.begin(); it != Elements.end(); ++it)
 	{
-		if (element == it._Ptr->_Myval)
+        if (element == (*it))
 		{
-			Elements.remove(it._Ptr->_Myval);
-			it._Ptr->_Myval->CleanUp();
+            Elements.remove((*it));
+            (*it)->CleanUp();
 			RELEASE((element));
 		}
 	}
@@ -417,9 +417,9 @@ void Gui::DestroyALLUIElements() {
 
 	for (list<UIElement*>::iterator it = Elements.begin(); it != Elements.end(); ++it)
 	{
-		it._Ptr->_Myval->CleanUp();
-		Elements.remove(it._Ptr->_Myval);
-		RELEASE((it._Ptr->_Myval));
+        (*it)->CleanUp();
+        Elements.remove((*it));
+        RELEASE(((*it)));
 	}
 	Elements.clear();
 }
@@ -1048,7 +1048,7 @@ void WindowUI::WindowOn()
 {
 	for (list<UIElement*>::iterator it = in_window.begin(); it != in_window.end(); ++it)
 	{
-		it._Ptr->_Myval->enabled = true;
+        (*it)->enabled = true;
 	}
 	enabled = true;
 }
@@ -1057,8 +1057,8 @@ void WindowUI::WindowOff()
 {
 	for (list<UIElement*>::iterator it = in_window.begin(); it != in_window.end(); ++it)
 	{
-		if (it._Ptr->_Myval != nullptr)
-			it._Ptr->_Myval->enabled = false;
+        if ((*it) != nullptr)
+            (*it)->enabled = false;
 	}
 	enabled = false;
 }
@@ -1076,8 +1076,8 @@ void WindowUI::CleanUp()
 {
 	for (list<UIElement*>::iterator it = in_window.begin(); it != in_window.end(); ++it)
 	{
-		App->gui->DestroyUIElement(it._Ptr->_Myval);
-		in_window.remove(it._Ptr->_Myval);
+        App->gui->DestroyUIElement((*it));
+        in_window.remove((*it));
 	}
 
 	in_window.clear();

@@ -6,7 +6,7 @@
 
 void QuestHUD::Start()
 {
-	uint x, y;
+    int x, y;
 	App->win->GetWindowSize(x, y);
 	winx = x; winy = y;
 
@@ -22,7 +22,7 @@ void QuestHUD::Start()
 
 void QuestHUD::Update()
 {
-	uint x, y;
+    int x, y;
 	App->win->GetWindowSize(x, y);
 	winx = x; winy = y;
 
@@ -183,10 +183,10 @@ void QuestHUD::RemoveQuest(int argid)
 	QuestsShown* c;
 
 	for (list<QuestsShown*>::iterator it = vec_quest.begin(); it != vec_quest.end(); ++it){
-		if (argid == it._Ptr->_Myval->id) {
+        if (argid == (*it)->id) {
 
-			c = it._Ptr->_Myval;
-			it._Ptr->_Myval->CleanUpQuest();
+            c = (*it);
+            (*it)->CleanUpQuest();
 			vec_quest.remove((*it));
 		}
 	}

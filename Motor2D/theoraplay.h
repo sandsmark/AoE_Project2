@@ -16,26 +16,26 @@ extern "C" {
 	typedef struct THEORAPLAY_Decoder THEORAPLAY_Decoder;
 
 	/* YV12 is YCrCb, not YCbCr; that's what SDL uses for YV12 overlays. */
-	typedef enum THEORAPLAY_VideoFormat
+    enum THEORAPLAY_VideoFormat : int
 	{
 		THEORAPLAY_VIDFMT_YV12,  /* NTSC colorspace, planar YCrCb 4:2:0 */
 		THEORAPLAY_VIDFMT_IYUV,  /* NTSC colorspace, planar YCbCr 4:2:0 */
 		THEORAPLAY_VIDFMT_RGB,   /* 24 bits packed pixel RGB */
 		THEORAPLAY_VIDFMT_RGBA   /* 32 bits packed pixel RGBA (full alpha). */
-	} THEORAPLAY_VideoFormat;
+    };
 
-	typedef struct THEORAPLAY_VideoFrame
+    struct THEORAPLAY_VideoFrame
 	{
 		unsigned int playms;
 		double fps;
 		unsigned int width;
 		unsigned int height;
-		THEORAPLAY_VideoFormat format;
+        THEORAPLAY_VideoFormat format;
 		unsigned char *pixels;
 		struct THEORAPLAY_VideoFrame *next;
-	} THEORAPLAY_VideoFrame;
+    };
 
-	typedef struct THEORAPLAY_AudioPacket
+    struct THEORAPLAY_AudioPacket
 	{
 		unsigned int playms;  /* playback start time in milliseconds. */
 		int channels;
@@ -43,14 +43,14 @@ extern "C" {
 		int frames;
 		float *samples;  /* frames * channels float32 samples. */
 		struct THEORAPLAY_AudioPacket *next;
-	} THEORAPLAY_AudioPacket;
+    };
 
 	THEORAPLAY_Decoder *THEORAPLAY_startDecodeFile(const char *fname,
 		const unsigned int maxframes,
-		THEORAPLAY_VideoFormat vidfmt);
+        THEORAPLAY_VideoFormat vidfmt);
 	THEORAPLAY_Decoder *THEORAPLAY_startDecode(THEORAPLAY_Io *io,
 		const unsigned int maxframes,
-		THEORAPLAY_VideoFormat vidfmt);
+        THEORAPLAY_VideoFormat vidfmt);
 	void THEORAPLAY_stopDecode(THEORAPLAY_Decoder *decoder);
 
 	int THEORAPLAY_isDecoding(THEORAPLAY_Decoder *decoder);

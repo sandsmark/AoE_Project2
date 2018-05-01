@@ -5,7 +5,7 @@
 #include "p2Log.h"
 #include "Window.h"
 
-#include "SDL_image/include/SDL_image.h"
+#include <SDL2/SDL_image.h>
 #pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
 
 Textures::Textures() : Module()
@@ -20,7 +20,7 @@ Textures::~Textures()
 // Called before render is available
 bool Textures::Awake(pugi::xml_node& config)
 {
-	LOG("Init Image library");
+    LOG("Init Image library", 0);
 	bool ret = true;
 	// load support for the PNG image format
 	int flags = IMG_INIT_PNG;
@@ -38,7 +38,7 @@ bool Textures::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool Textures::Start()
 {
-	LOG("start textures");
+    LOG("start textures", 0);
 	bool ret = true;
 	return ret;
 }
@@ -46,7 +46,7 @@ bool Textures::Start()
 // Called before quitting
 bool Textures::CleanUp()
 {
-	LOG("Freeing textures and Image library");
+    LOG("Freeing textures and Image library", 0);
 	for (list<SDL_Texture*>::iterator it = textures.begin(); it != textures.end(); it++) {
 		SDL_DestroyTexture((*it));
 	}

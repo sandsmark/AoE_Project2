@@ -1,7 +1,7 @@
 #ifndef __ANIMATION_H__
 #define __ANIMATION_H__
 
-#include "SDL/include/SDL_rect.h"
+#include <SDL2/SDL_rect.h>
 #include "p2Defs.h"
 #include <vector>
 //#define MAX_FRAMES 25

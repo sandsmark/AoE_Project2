@@ -35,7 +35,7 @@ public:
 
 public:
 	bool				show = false;
-	uint				window_w = 0, window_h = 0;
+    int				window_w = 0, window_h = 0;
 	list<string>		ctext;
 	list<UIElement*>	console_elements;
 	Quad*				cbackground = nullptr;

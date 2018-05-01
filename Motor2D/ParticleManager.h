@@ -1,8 +1,8 @@
 #ifndef __PARTICLEMANAGER_H__
 #define __PARTICLEMANAGER_H__
 
-#include "SDL\include\SDL_pixels.h"
-#include "SDL/include/SDL.h"
+#include <SDL2/SDL_pixels.h>
+#include <SDL2/SDL.h>
 #include "Module.h"
 #include "Timer.h"
 #include "Animation.h"
@@ -33,7 +33,7 @@ struct ParticleInfo {
 	SDL_Texture* texture;
 	uint states;
 
-	ParticleInfo::ParticleInfo(string argname, string argpath, int argid, int arglifespan, Animation arganim, uint argstates)
+    ParticleInfo(string argname, string argpath, int argid, int arglifespan, Animation arganim, uint argstates)
 		: name(argname), path(argpath), id(argid), lifespan(arglifespan), anim(arganim), states(argstates) {}
 };
 
@@ -130,7 +130,7 @@ private:
 	bool DestroyParticle(Particle* curr);
 	bool DestroyEmitter(Emitter * curr);
 public:
-	pair<uint, uint> window_size;
+    pair<int, int> window_size;
 	Timer update;
 private:
 	list<Particle*> particles;

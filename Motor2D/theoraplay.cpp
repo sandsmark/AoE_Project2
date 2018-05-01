@@ -16,7 +16,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include <tchar.h>
 #include <stdio.h>
 
 
@@ -38,9 +37,12 @@
 #endif
 
 #include "theoraplay.h"
-#include "theora/theoradec.h"
-#include "vorbis/codec.h"
-#include "unzip.h"
+
+extern "C" {
+#include <theora/theoradec.h>
+#include <vorbis/codec.h>
+#include <minizip/unzip.h>
+}
 #include <string>
 
 #include <experimental/filesystem>
@@ -127,7 +129,7 @@ typedef struct TheoraDecoder
 	volatile int hasaudio;
 	volatile int decode_error;
 
-	THEORAPLAY_VideoFormat vidfmt;
+    THEORAPLAY_VideoFormat vidfmt;
 	ConvertVideoFrameFn vidcvt;
 
 	VideoFrame *videolist;
@@ -582,33 +584,43 @@ static void *WorkerThreadEntry(void *_this)
 
 static long IoFopenRead(THEORAPLAY_Io *io, void *buf, long buflen)
 {
+#ifdef MSVC
 	FILE *f = (FILE *)io->userdata;
 	const size_t br = fread(buf, 1, buflen, f);
 	if ((br == 0) && ferror(f))
 		return -1;
 	return (long)br;
+#else
+    return unzReadCurrentFile(unzFile(io->userdata), buf, buflen);
+#endif
 } // IoFopenRead
 
 
 static void IoFopenClose(THEORAPLAY_Io *io)
 {
+#ifdef MSVC
 	FILE *f = (FILE *)io->userdata;
 	fclose(f);
+#else
+    unzClose(unzFile(io->userdata));
+#endif
+
 	free(io);
 } // IoFopenClose
 
 
 THEORAPLAY_Decoder *THEORAPLAY_startDecodeFile(const char *fname,
 	const unsigned int maxframes,
-	THEORAPLAY_VideoFormat vidfmt)
+    THEORAPLAY_VideoFormat vidfmt)
 {
 	THEORAPLAY_Io *io = (THEORAPLAY_Io *)malloc(sizeof(THEORAPLAY_Io));
 	if (io == NULL)
 		return NULL;
 
+#ifdef MSVC
 	HZIP hz;
-	hz = OpenZip(_T("data.zip"), 0);
-	SetUnzipBaseDir(hz, _T("."));
+    hz = OpenZip("data.zip", 0);
+    SetUnzipBaseDir(hz, ".");
 	ZIPENTRY ze; GetZipItem(hz, -1, &ze); int numitems = ze.index;
 	for (int zi = 0; zi<numitems; zi++)
 	{
@@ -629,17 +641,40 @@ THEORAPLAY_Decoder *THEORAPLAY_startDecodeFile(const char *fname,
 		free(io);
 		return NULL;
 	} // if
+    io->userdata = f;
+#else
+    unzFile hz = unzOpen("data.zip");
+    if (hz == NULL) {
+        printf("Failed to open data.zip\n");
+        free(io);
+        return NULL;
+    }
+    if (unzLocateFile(hz, fname, 0) != UNZ_OK) {
+        printf("Failed to find %s in data.zip\n", fname);
+        free(io);
+        unzClose(hz);
+        return NULL;
+    }
+
+    if (unzOpenCurrentFile(hz) != UNZ_OK) {
+        printf("Failed to open %s in data.zip\n", fname);
+        free(io);
+        unzClose(hz);
+        return NULL;
+    }
+    io->userdata = hz;
+#endif
 
 	io->read = IoFopenRead;
 	io->close = IoFopenClose;
-	io->userdata = f;
+
 	return THEORAPLAY_startDecode(io, maxframes, vidfmt);
 } // THEORAPLAY_startDecodeFile
 
 
 THEORAPLAY_Decoder *THEORAPLAY_startDecode(THEORAPLAY_Io *io,
 	const unsigned int maxframes,
-	THEORAPLAY_VideoFormat vidfmt)
+    THEORAPLAY_VideoFormat vidfmt)
 {
 	TheoraDecoder *ctx = NULL;
 	ConvertVideoFrameFn vidcvt = NULL;

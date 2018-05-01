@@ -2,6 +2,7 @@
 #define __P2DEFS_H__
 
 #include <stdio.h>
+#include <cstdint>
 
 //  NULL just in case ----------------------
 
@@ -36,10 +37,10 @@
 #define MAX( a, b ) ( ((a) > (b)) ? (a) : (b) )
 #define TO_BOOL( a )  ( (a != 0) ? true : false )
 
-typedef unsigned int uint;
-typedef unsigned __int32 uint32;
-typedef unsigned __int64 uint64;
-typedef unsigned char uchar;
+typedef uint32_t uint;
+typedef uint32_t uint32;
+typedef uint64_t uint64;
+typedef uint8_t uchar;
 
 template <class VALUE_TYPE> void SWAP(VALUE_TYPE& a, VALUE_TYPE& b)
 {
@@ -54,10 +55,10 @@ template <class VALUE_TYPE> void SWAP(VALUE_TYPE& a, VALUE_TYPE& b)
 #define HUGE_STR	8192
 
 // Joins a path and file
-inline const char* const PATH(const char* folder, const char* file)
+inline const char* PATH(const char* folder, const char* file)
 {
 	static char path[MID_STR];
-	sprintf_s(path, MID_STR, "%s/%s", folder, file);
+    snprintf(path, MID_STR, "%s/%s", folder, file);
 	return path;
 }
 

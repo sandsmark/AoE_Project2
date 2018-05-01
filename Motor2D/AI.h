@@ -47,7 +47,7 @@ public:
 	// Called before quitting
 	bool CleanUp() { return true; };
 
-	bool Load(pugi::xml_node&);
+    bool Load(pugi::xml_node&) override;
 	bool Save(pugi::xml_node&) const;
 	void LoadAI_Data(pugi::xml_node& gameData);
 

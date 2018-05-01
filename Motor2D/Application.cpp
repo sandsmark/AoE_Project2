@@ -132,7 +132,8 @@ bool Application::Awake()
 	if(ret == true)
 	{
 		for (list<Module*>::iterator it = modules.begin(); it != modules.end(); it++) {
-			ret = (*it)->Awake(config.child((*it)->name.c_str()));
+            pugi::xml_node node = config.child((*it)->name.c_str());
+            ret = (*it)->Awake(node);
 		}
 	}
 
@@ -432,14 +433,15 @@ bool Application::LoadGameNow()
 
 			list<Module*>::iterator it;
 			for (it = modules.begin(); it != modules.end(); it++) {
-				ret = (*it)->Load(root.child((*it)->name.c_str()));
+                pugi::xml_node node = root.child((*it)->name.c_str());
+                ret = (*it)->Load(node);
 			}
 
 			data.reset();
-			if(ret == true)
-				LOG("...finished loading");
-			else
-				LOG("...loading process interrupted with error on module %s", (*it)->name.c_str());
+            if(ret == true)
+                LOG("...finished loading", 0);
+            else
+                LOG("...loading process interrupted with error on module %s", (*it)->name.c_str());
 		}
 		else
 			LOG("Could not parse game state xml file %s. pugi error: %s", load_game.c_str(), result.description());
@@ -467,7 +469,8 @@ bool Application::SavegameNow() const
 	for (it = modules.begin(); it != modules.end(); it++)
 	{
 		root.append_child((*it)->name.c_str());
-		ret = (*it)->Save(root.child((*it)->name.c_str()));
+        pugi::xml_node node = root.child((*it)->name.c_str());
+        ret = (*it)->Save(node);
 	}
 
 	if(ret == true)

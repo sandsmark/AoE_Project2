@@ -77,7 +77,7 @@ bool Console::Update(float dt)
 
 	if (show) {
 		for (list<UIElement*>::iterator it = console_elements.begin(); it != console_elements.end(); ++it) {
-			it._Ptr->_Myval->enabled = true;
+            (*it)->enabled = true;
 		}
 		cinput->current = CLICKIN;
 		MoveEverything();
@@ -90,7 +90,7 @@ bool Console::Update(float dt)
 		}
 	}
 	else for (list<UIElement*>::iterator it = console_elements.begin(); it != console_elements.end(); ++it)
-		it._Ptr->_Myval->enabled = false;
+        (*it)->enabled = false;
 
 	return true;
 }

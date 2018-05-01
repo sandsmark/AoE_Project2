@@ -280,7 +280,7 @@ public:
 	// MULTIPLESELECTION
 private:
 	list<Image*> multiple;
-	uint x, y;
+    int x, y;
 	int max_width = 700;;
 
 	//SINGLEINFO
@@ -293,7 +293,7 @@ private:
 
 	Image* sword_img = nullptr;		Image* armor_img = nullptr;
 	uint id;
-	char armor[65], damage[65], currlife[65], maxlife[65];
+    string armor, damage, currlife, maxlife;
 	uint posx, posy;
 	//BUILDINGINFO
 	Building* selected_building = nullptr;
@@ -517,7 +517,7 @@ public:
 	vector<SDL_Rect> blit_sections;
 	vector<SDL_Rect> detect_sections;
 	ButtonTier tier;
-	Info::Info(string argname, uint argid, pair<int, int> argpos, string argpath, SDL_Rect argrect, string argscene, ElementType argtype) :
+    Info(string argname, uint argid, pair<int, int> argpos, string argpath, SDL_Rect argrect, string argscene, ElementType argtype) :
 		name(argname), id(argid), position(argpos), path(argpath), rect(argrect), scene(argscene), type(argtype) {}
 };
 

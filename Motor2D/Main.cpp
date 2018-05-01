@@ -5,13 +5,13 @@
 
 // This is needed here because SDL redefines main function
 // do not add any other libraries here, instead put them in their modules
-#include "Brofiler\Brofiler.h"
+#ifdef MSVC
+#include "Brofiler/Brofiler.h"
 #pragma comment( lib, "Brofiler/ProfilerCore32.lib" )
+#endif
 
 
-#include "SDL/include/SDL.h"
-#pragma comment( lib, "SDL/libx86/SDL2.lib" )
-#pragma comment( lib, "SDL/libx86/SDL2main.lib" )
+#include <SDL2/SDL.h>
 
 enum MainState
 {
@@ -28,21 +28,23 @@ Application* App = NULL;
 
 int main(int argc, char* args[])
 {
-	LOG("Engine starting ... %d");
+    LOG("Engine starting ... %d", 0);
 
 	MainState state = MainState::CREATE;
 	int result = EXIT_FAILURE;
 
 	while(state != EXIT)
 	{
+#ifdef MSVC
 		BROFILER_FRAME("MAIN");
+#endif
 
 		switch(state)
 		{
 
 			// Allocate the engine --------------------------------------------
 			case CREATE:
-			LOG("CREATION PHASE ===============================");
+            LOG("CREATION PHASE ===============================", 0);
 
 			App = new Application(argc, args);
 
@@ -55,12 +57,12 @@ int main(int argc, char* args[])
 
 			// Awake all modules -----------------------------------------------
 			case AWAKE:
-			LOG("AWAKE PHASE ===============================");
+            LOG("AWAKE PHASE ===============================", 0);
 			if(App->Awake() == true)
 				state = START;
 			else
 			{
-				LOG("ERROR: Awake failed");
+                LOG("ERROR: Awake failed", 0);
 				state = FAIL;
 			}
 
@@ -68,16 +70,16 @@ int main(int argc, char* args[])
 
 			// Call all modules before first frame  ----------------------------
 			case START:
-			LOG("START PHASE ===============================");
+            LOG("START PHASE ===============================", 0);
 			if(App->Start() == true)
 			{
 				state = LOOP;
-				LOG("UPDATE PHASE ===============================");
+                LOG("UPDATE PHASE ===============================", 0);
 			}
 			else
 			{
 				state = FAIL;
-				LOG("ERROR: Start failed");
+                LOG("ERROR: Start failed", 0);
 			}
 			break;
 
@@ -89,7 +91,7 @@ int main(int argc, char* args[])
 
 			// Cleanup allocated memory -----------------------------------------
 			case CLEAN:
-			LOG("CLEANUP PHASE ===============================");
+            LOG("CLEANUP PHASE ===============================", 0);
 			if(App->CleanUp() == true)
 			{
 				RELEASE(App);
@@ -103,14 +105,14 @@ int main(int argc, char* args[])
 
 			// Exit with errors and shame ---------------------------------------
 			case FAIL:
-			LOG("Exiting with errors :(");
+            LOG("Exiting with errors :(", 0);
 			result = EXIT_FAILURE;
 			state = EXIT;
 			break;
 		}
 	}
 
-	LOG("... Bye! :)\n");
+    LOG("... Bye! :)\n", 0);
 
 	// Dump memory leaks
 	return result;

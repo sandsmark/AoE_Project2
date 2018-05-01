@@ -1,8 +1,8 @@
 #include "Application.h"
 #include "FileSystem.h"
 #include "p2Log.h"
-#include "PhysFS/include/physfs.h"
-#include "SDL/include/SDL.h"
+#include <physfs.h>
+#include <SDL2/SDL.h>
 
 #pragma comment( lib, "PhysFS/libx86/physfs.lib" )
 
@@ -29,7 +29,7 @@ FileSystem::~FileSystem()
 // Called before render is available
 bool FileSystem::Awake(pugi::xml_node& config)
 {
-	LOG("Loading File System");
+    LOG("Loading File System", 0);
 	bool ret = true;
 
 	// Add all paths in configuration in order

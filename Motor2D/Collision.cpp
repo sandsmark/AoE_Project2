@@ -58,7 +58,7 @@ bool Collision::Awake(pugi::xml_node &)
 
 bool Collision::Start()
 {
-	uint w, h;
+    int w, h;
 	App->win->GetWindowSize(w, h);
 	quadTree = new StaticQuadTree();
 	return true;
@@ -89,7 +89,7 @@ bool Collision::Update(float dt)
 
 bool Collision::CleanUp()
 {
-	LOG("Freeing colliders");
+    LOG("Freeing colliders", 0);
 	list<Collider*>::reverse_iterator it = colliders.rbegin();
 
 	while (it != colliders.rend())

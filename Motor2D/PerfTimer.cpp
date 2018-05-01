@@ -4,7 +4,7 @@
 // ----------------------------------------------------
 
 #include "PerfTimer.h"
-#include "SDL\include\SDL_timer.h"
+#include <SDL2/SDL_timer.h>
 #include "p2Defs.h"
 
 uint64 PerfTimer::frequency = 0;

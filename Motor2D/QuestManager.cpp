@@ -23,7 +23,7 @@ bool QuestManager::Awake(pugi::xml_node& config)
 {
 	active = false;
 	//Load the path of QuestData file from Config
-	LOG("Loading QuestManager data");
+    LOG("Loading QuestManager data", 0);
 	path = config.child("data").attribute("file").as_string();
 	return true;
 }
@@ -53,9 +53,11 @@ bool QuestManager::Start()
 		new_quest->description = quest.attribute("description").as_string();
 		new_quest->reward = (rewardType)quest.attribute("reward").as_uint();
 		new_quest->id = quest.attribute("id").as_int();
-		new_quest->trigger = createEvent(quest.child("trigger"));
+        pugi::xml_node triggerNode = quest.child("trigger");
+        new_quest->trigger = createEvent(triggerNode);
 		new_quest->state = quest.attribute("state").as_uint();
-		new_quest->step = createEvent(quest.child("step"));
+        pugi::xml_node stepNode = quest.child("step");
+        new_quest->step = createEvent(stepNode);
 
 		// We first add the quest to the all quest list
 		AllQuests.push_back(new_quest);
@@ -105,7 +107,7 @@ bool QuestManager::TriggerCallback(Building* t)
 				ReachEvent* event = (ReachEvent*)(*it)->trigger;
 				if (event->building_type == t->type && t->isActive)
 				{
-					LOG("Quest Triggered");
+                    LOG("Quest Triggered", 0);
 					(*it)->state = 1;
 
 					// Check if both quests are completed
@@ -145,7 +147,7 @@ bool QuestManager::StepCallback(Building* t)
 
 				if (event->building_type == t->type && t->Life <= 0)
 				{
-					LOG("Quest completed");
+                    LOG("Quest completed", 0);
 					App->gui->hud->AlertText("Quest completed", 5);
 					App->sceneManager->level1_scene->questHUD.RemoveQuest((*it)->id);
 					(*it)->state = 2;

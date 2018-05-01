@@ -431,7 +431,8 @@ void CutSceneManager::UpdateElements(float dt)
 			if ((*ele)->active == true)
 			{
 				CutsceneImage* image = dynamic_cast<CutsceneImage*>(*ele);
-				App->render->Blit(image->GetTexture(), image->GetPos().x, image->GetPos().y, &image->GetRect());
+                SDL_Rect rect = image->GetRect();
+                App->render->Blit(image->GetTexture(), image->GetPos().x, image->GetPos().y, &rect);
 			}
 		}
 	}

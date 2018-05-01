@@ -2,7 +2,7 @@
 #define __FONTS_H__
 
 #include "Module.h"
-#include "SDL\include\SDL_pixels.h"
+#include <SDL2/SDL_pixels.h>
 
 #define DEFAULT_FONT "fonts/open_sans/timesbd.ttf"
 #define DEFAULT_FONT_SIZE 12
@@ -40,7 +40,7 @@ public:
 
 	vector<_TTF_Font*>	fonts;
 
-	_TTF_Font*			default = nullptr;
+    _TTF_Font*			defaultFont = nullptr;
 
 private:
 	const char* default_path;

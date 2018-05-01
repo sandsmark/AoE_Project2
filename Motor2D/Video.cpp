@@ -11,14 +11,10 @@
 
 #include <stdio.h>
 
-#pragma comment( lib, "ogg/libogg.lib" )
-#pragma comment( lib, "vorbis/libvorbis.lib" )
-#pragma comment( lib, "theora/libtheora.lib" )
-
 #include "theora/theoradec.h"
 #include "vorbis/codec.h"
 #include "theoraplay.h"
-#include <experimental\filesystem>
+#include <experimental/filesystem>
 namespace fs = experimental::filesystem;
 
 Video::Video() : Module()

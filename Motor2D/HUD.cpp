@@ -179,9 +179,9 @@ void HUD::Update() {
 									y += App->gui->SpriteUnits.front().GetRect().h + 5;
 								}
 								Unit* unit = (Unit*)(*it_unit);
-								if (it_sprite._Ptr->_Myval.GetID() == unit->type && it_unit._Ptr->_Myval->Life > 0) {
-									if (it_unit._Ptr->_Myval->MaxLife == 0) it_unit._Ptr->_Myval->MaxLife = it_unit._Ptr->_Myval->Life;
-									percent = ((it_unit._Ptr->_Myval->MaxLife - it_unit._Ptr->_Myval->Life) * 100) / it_unit._Ptr->_Myval->MaxLife;
+                                if (it_sprite->GetID() == unit->type && (*it_unit)->Life > 0) {
+                                    if ((*it_unit)->MaxLife == 0) (*it_unit)->MaxLife = (*it_unit)->Life;
+                                    percent = (((*it_unit)->MaxLife - (*it_unit)->Life) * 100) / (*it_unit)->MaxLife;
 									barPercent = (percent * App->gui->SpriteUnits.front().GetRect().w) / 100;
 									bar.rect.x = posx + x - App->render->camera.x;
 									bar.rect.y = posy + y - 30 - App->render->camera.y + App->gui->SpriteBuildings.front().GetRect().h;
@@ -233,8 +233,8 @@ void HUD::Update() {
 						}
 						else if (unit->Life > 0)
 						{
-							_itoa_s(unit->Defense, armor, 65, 10);
-							_itoa_s(unit->Attack, damage, 65, 10);
+                            damage = to_string(unit->Attack);
+                            armor = to_string(unit->Defense);
 
 							damage_val->SetString(damage);
 							armor_val->SetString(armor);
@@ -243,10 +243,10 @@ void HUD::Update() {
 							max_life = unit->MaxLife;
 							curr_life = unit->Life;
 
-							_itoa_s(curr_life, currlife, 65, 10);
+                            currlife = to_string(curr_life);
 							life_str += currlife;
 							life_str += "/";
-							_itoa_s(max_life, maxlife, 65, 10);
+                            maxlife = to_string(max_life);
 							life_str += maxlife;
 
 							life->SetString(life_str);
@@ -335,11 +335,11 @@ void HUD::Update() {
 									max_life = hero->skill->cooldown;
 									curr_life = (int)hero->skill_timer.ReadSec();
 									if (curr_life >= max_life) curr_life = max_life;
-									_itoa_s(curr_life, currlife, 65, 10);
+                                    currlife = to_string(curr_life);
 									life_str += "     ";
 									life_str += currlife;
 									life_str += "/";
-									_itoa_s(max_life, maxlife, 65, 10);
+                                    maxlife = to_string(max_life);
 									life_str += maxlife;
 									life_str += "(sec)";
 									life->SetString(life_str);
@@ -404,9 +404,9 @@ void HUD::Update() {
 					}
 					for (list<UnitSprite>::iterator it = App->gui->SpriteBuildings.begin(); it != App->gui->SpriteBuildings.end(); ++it)
 					{
-						if (it._Ptr->_Myval.GetID() == building->type)
+                        if (it->GetID() == building->type)
 						{
-							name->SetString(it._Ptr->_Myval.GetName());
+                            name->SetString(it->GetName());
 						}
 					}
 
@@ -576,9 +576,9 @@ void HUD::Update() {
 					}
 					for (list<UnitSprite>::iterator it = App->gui->SpriteResources.begin(); it != App->gui->SpriteResources.end(); ++it)
 					{
-						if (it._Ptr->_Myval.GetID() == resource->contains)
+                        if (it->GetID() == resource->contains)
 						{
-							name->SetString(it._Ptr->_Myval.GetName());
+                            name->SetString(it->GetName());
 						}
 					}
 					DrawResourceBar();

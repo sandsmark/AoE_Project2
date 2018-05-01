@@ -130,7 +130,7 @@ void HUD::HUDBuildingMenu()
 
 	bool create_units = false;
 	for (list<pair<unitType, buildingType>>::iterator it = App->entityManager->player->tech_tree->available_units.begin(); it != App->entityManager->player->tech_tree->available_units.end(); ++it) {
-		if (id == it._Ptr->_Myval.second) {
+        if (id == it->second) {
 			create_units = true;
 			break;
 		}
@@ -259,8 +259,8 @@ void HUD::HUDCreateUnits()
 
 	vector<unitType> available_units;
 	for (list<pair<unitType, buildingType>>::iterator it = App->entityManager->player->tech_tree->available_units.begin(); it != App->entityManager->player->tech_tree->available_units.end(); ++it) {
-		if (id == it._Ptr->_Myval.second)
-			available_units.push_back(it._Ptr->_Myval.first);
+        if (id == it->second)
+            available_units.push_back(it->first);
 	}
 
 	//TOWN_CENTER, HOUSE, ORC_BARRACKS, ARCHERY_RANGE, STABLES, SIEGE_WORKSHOP, MARKET, BLACKSMITH, MILL, OUTPOST, MONASTERY, CASTLE, SAURON_TOWER, FARM
@@ -398,23 +398,23 @@ void HUD::BlitInfoVillager()
 }
 void HUD::StartResourceInfo()
 {
-	char currlife[65], maxlife[65];
+    string maxlife;
 	string life_str;
 
 	Resource* resource = (Resource*)App->entityManager->selectedEntityList.front();
 
 	for (list<UnitSprite>::iterator it = App->gui->SpriteResources.begin(); it != App->gui->SpriteResources.end(); ++it)
 	{
-		if (it._Ptr->_Myval.GetID() == resource->contains)
+        if (it->GetID() == resource->contains)
 		{
 			id = resource->contains;
-			single = (Image*)App->gui->CreateImage("gui/ResourcesMiniatures.png", posx - App->render->camera.x, posy - App->render->camera.y, it._Ptr->_Myval.GetRect());
-			name = (Label*)App->gui->CreateLabel(it._Ptr->_Myval.GetName(), posx - App->render->camera.x, posy - 20 - App->render->camera.y, nullptr);
+            single = (Image*)App->gui->CreateImage("gui/ResourcesMiniatures.png", posx - App->render->camera.x, posy - App->render->camera.y, it->GetRect());
+            name = (Label*)App->gui->CreateLabel(it->GetName(), posx - App->render->camera.x, posy - 20 - App->render->camera.y, nullptr);
 		}
 	}
 
 	max_life = App->entityManager->selectedEntityList.front()->Life;
-	_itoa_s(max_life, maxlife, 65, 10);
+    maxlife = to_string(max_life);
 	life_str += maxlife;
 
 	life = (Label*)App->gui->CreateLabel(life_str, posx + 50 - App->render->camera.x, posy + 35 - App->render->camera.y, nullptr);
@@ -422,26 +422,26 @@ void HUD::StartResourceInfo()
 
 void HUD::StartBuildingInfo()
 {
-	char currlife[65], maxlife[65];
+    string currlife, maxlife;
 	string life_str;
 
 	Building* building = (Building*)App->entityManager->selectedEntityList.front();
 
 	for (list<UnitSprite>::iterator it = App->gui->SpriteBuildings.begin(); it != App->gui->SpriteBuildings.end(); ++it)
 	{
-		if (it._Ptr->_Myval.GetID() == building->type)
+        if (it->GetID() == building->type)
 		{
 			id = building->type;
-			single = (Image*)App->gui->CreateImage("gui/BuildingMiniatures.png", posx - App->render->camera.x, posy - App->render->camera.y, it._Ptr->_Myval.GetRect());
-			name = (Label*)App->gui->CreateLabel(it._Ptr->_Myval.GetName(), posx - App->render->camera.x, posy - 20 - App->render->camera.y, nullptr);
+            single = (Image*)App->gui->CreateImage("gui/BuildingMiniatures.png", posx - App->render->camera.x, posy - App->render->camera.y, it->GetRect());
+            name = (Label*)App->gui->CreateLabel(it->GetName(), posx - App->render->camera.x, posy - 20 - App->render->camera.y, nullptr);
 		}
 	}
 	max_life = App->entityManager->selectedEntityList.front()->MaxLife;
 	curr_life = App->entityManager->selectedEntityList.front()->Life;
-	_itoa_s(curr_life, currlife, 65, 10);
+    currlife = to_string(curr_life);
 	life_str += currlife;
 	life_str += "/";
-	_itoa_s(max_life, maxlife, 65, 10);
+    maxlife = to_string(max_life);
 	life_str += maxlife;
 	life = (Label*)App->gui->CreateLabel(life_str, posx + 50 - App->render->camera.x, posy + 35 - App->render->camera.y, nullptr);
 
@@ -449,7 +449,7 @@ void HUD::StartBuildingInfo()
 }
 
 void HUD::GetSelection() {
-	char armor[65], damage[65], currlife[65], maxlife[65];
+    string armor, damage, currlife, maxlife;
 	string life_str;
 	Unit* unit = nullptr;
 	switch (type) {
@@ -460,15 +460,15 @@ void HUD::GetSelection() {
 
 		for (list<UnitSprite>::iterator it = App->gui->SpriteUnits.begin(); it != App->gui->SpriteUnits.end(); ++it)
 		{
-			if (it._Ptr->_Myval.GetID() == unit->type)
+            if (it->GetID() == unit->type)
 			{
 				id = unit->type;
-				single = (Image*)App->gui->CreateImage("gui/UnitMiniatures.png", posx - App->render->camera.x, posy - App->render->camera.y, it._Ptr->_Myval.GetRect());
-				name = (Label*)App->gui->CreateLabel(it._Ptr->_Myval.GetName(), posx - App->render->camera.x, posy - 25 - App->render->camera.y, nullptr);
+                single = (Image*)App->gui->CreateImage("gui/UnitMiniatures.png", posx - App->render->camera.x, posy - App->render->camera.y, it->GetRect());
+                name = (Label*)App->gui->CreateLabel(it->GetName(), posx - App->render->camera.x, posy - 25 - App->render->camera.y, nullptr);
 			}
 		}
-		_itoa_s(App->entityManager->selectedEntityList.front()->Defense, armor, 65, 10);
-		_itoa_s(App->entityManager->selectedEntityList.front()->Attack, damage, 65, 10);
+        armor = to_string(App->entityManager->selectedEntityList.front()->Defense);
+        damage = to_string(App->entityManager->selectedEntityList.front()->Attack);
 		sword_img = (Image*)App->gui->CreateImage("gui/game_scene_ui.png", posx - App->render->camera.x, posy + 50 - App->render->camera.y, SDL_Rect{ 0,19, 38, 22 });
 		armor_img = (Image*)App->gui->CreateImage("gui/game_scene_ui.png", posx - App->render->camera.x, posy + 75 - App->render->camera.y, SDL_Rect{ 0,63, 37, 19 });
 		damage_val = (Label*)App->gui->CreateLabel(damage, posx + 50 - App->render->camera.x, posy + 50 - App->render->camera.y, nullptr);
@@ -476,10 +476,10 @@ void HUD::GetSelection() {
 		max_life = App->entityManager->selectedEntityList.front()->MaxLife;
 		curr_life = App->entityManager->selectedEntityList.front()->Life;
 
-		_itoa_s(curr_life, currlife, 65, 10);
+        currlife = to_string(curr_life);
 		life_str += currlife;
 		life_str += "/";
-		_itoa_s(max_life, maxlife, 65, 10);
+        maxlife = to_string(max_life);
 		life_str += maxlife;
 
 		life = (Label*)App->gui->CreateLabel(life_str, posx + 50 - App->render->camera.x, posy + 35 - App->render->camera.y, nullptr);
@@ -504,9 +504,9 @@ void HUD::GetSelection() {
 					x = 0;
 					y += App->gui->SpriteUnits.front().GetRect().h + 5;
 				}
-				if (it_sprite._Ptr->_Myval.GetID() == unit->type)
+                if (it_sprite->GetID() == unit->type)
 				{
-					Image* unit = (Image*)App->gui->CreateImage("gui/UnitMiniatures.png", posx - App->render->camera.x + x, posy - 30 - App->render->camera.y + y, it_sprite._Ptr->_Myval.GetRect());
+                    Image* unit = (Image*)App->gui->CreateImage("gui/UnitMiniatures.png", posx - App->render->camera.x + x, posy - 30 - App->render->camera.y + y, it_sprite->GetRect());
 					x += App->gui->SpriteUnits.front().GetRect().w;
 					multiple.push_back(unit);
 				}
@@ -520,9 +520,9 @@ void HUD::ClearMultiple()
 {
 	for (list<Image*>::iterator it = multiple.begin(); it != multiple.end(); ++it)
 	{
-		if (it._Ptr->_Myval != nullptr)
+        if (*it != nullptr)
 		{
-			App->gui->DestroyUIElement(it._Ptr->_Myval);
+            App->gui->DestroyUIElement(*it);
 		}
 	}
 	multiple.clear();
@@ -653,13 +653,13 @@ void HUD::DrawResourceBar()
 	int barPercent;
 	max_life = App->entityManager->selectedEntityList.front()->MaxLife;
 	curr_life = App->entityManager->selectedEntityList.front()->Life;
-	_itoa_s(curr_life, currlife, 65, 10);
+    currlife = to_string(curr_life);
 	life_str += currlife;
 	life_str += "/";
-	_itoa_s(max_life, maxlife, 65, 10);
+    maxlife = to_string(max_life);
 	life_str += maxlife;
 	life->SetString(life_str);
-	if (currlife > 0) {
+    if (curr_life > 0) {
 		if (max_life == 0) max_life = curr_life;
 		percent = ((max_life - curr_life) * 100) / max_life;
 		barPercent = (percent * App->gui->SpriteBuildings.front().GetRect().w) / 100;
@@ -687,13 +687,13 @@ void HUD::DrawBuildingBar()
 	int percent, barPercent;
 	max_life = App->entityManager->selectedEntityList.front()->MaxLife;
 	curr_life = App->entityManager->selectedEntityList.front()->Life;
-	_itoa_s(curr_life, currlife, 65, 10);
+    currlife = to_string(curr_life);
 	life_str += currlife;
 	life_str += "/";
-	_itoa_s(max_life, maxlife, 65, 10);
+    maxlife = to_string(max_life);
 	life_str += maxlife;
 	life->SetString(life_str);
-	if (currlife > 0) {
+    if (curr_life > 0) {
 		if (max_life == 0) max_life = curr_life;
 		percent = ((max_life - curr_life) * 100) / max_life;
 		barPercent = (percent * App->gui->SpriteBuildings.front().GetRect().w) / 100;

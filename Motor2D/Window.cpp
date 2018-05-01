@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "Window.h"
-#include "SDL/include/SDL.h"
+#include <SDL2/SDL.h>
 #include "p2Log.h"
 
 
@@ -19,7 +19,7 @@ Window::~Window()
 // Called before render is available
 bool Window::Awake(pugi::xml_node& config)
 {
-	LOG("Init SDL window & surface");
+    LOG("Init SDL window & surface", 0);
 	bool ret = true;
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -80,7 +80,7 @@ bool Window::Awake(pugi::xml_node& config)
 // Called before quitting
 bool Window::CleanUp()
 {
-	LOG("Destroying SDL window and quitting all SDL systems");
+    LOG("Destroying SDL window and quitting all SDL systems", 0);
 
 	//Destroy window
 	if (window != NULL)
@@ -100,7 +100,7 @@ void Window::SetTitle(const char* new_title)
 	SDL_SetWindowTitle(window, new_title);
 }
 
-void Window::GetWindowSize(uint& width, uint& height) const
+void Window::GetWindowSize(int& width, int& height) const
 {
 	width = this->width;
 	height = this->height;

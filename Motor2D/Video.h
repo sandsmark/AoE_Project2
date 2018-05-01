@@ -4,7 +4,7 @@
 #include "Module.h"
 #include "PerfTimer.h"
 
-enum THEORAPLAY_VideoFormat;
+enum THEORAPLAY_VideoFormat : int;
 struct THEORAPLAY_AudioPacket;
 struct THEORAPLAY_Decoder;
 struct THEORAPLAY_VideoFrame;

@@ -2,9 +2,9 @@
 #define _ENTITY_
 
 #include "p2Point.h"
-#include "SDL\include\SDL.h"
+#include <SDL2/SDL.h>
 #include "Timer.h"
-#include "PugiXml\src\pugixml.hpp"
+#include <pugixml.hpp>
 
 using namespace std;
 

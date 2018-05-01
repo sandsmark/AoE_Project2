@@ -7,13 +7,13 @@
 #define __MODULE_H__
 
 #include "p2Defs.h"
-#include "PugiXml\src\pugixml.hpp"
+#include <pugixml.hpp>
 #include <list>
 #include <string>
 #include <vector>
 #include <map>
 #include <iostream>
-#include "SDL\include\SDL.h"
+#include <SDL2/SDL.h>
 
 using namespace std;
 

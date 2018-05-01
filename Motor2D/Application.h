@@ -4,9 +4,9 @@
 #include "Module.h"
 #include "PerfTimer.h"
 #include "Timer.h"
-#include "PugiXml\src\pugixml.hpp"
+#include <pugixml.hpp>
 #include "p2Defs.h"
-#include "Brofiler\Brofiler.h"
+#include "Brofiler/Brofiler.h"
 
 // Modules
 class Window;

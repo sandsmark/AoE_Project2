@@ -45,12 +45,12 @@ bool ParticleManager::Update(float dt)
 	update.Start();
 	for (list<Particle*>::iterator it = particles.begin(); it != particles.end(); ++it)
 	{
-		it._Ptr->_Myval->Update();
+        (*it)->Update();
 	}
 	update.Start();
 	for (list<Emitter*>::iterator it = emitters.begin(); it != emitters.end(); ++it)
 	{
-		it._Ptr->_Myval->Update(dt);
+        (*it)->Update(dt);
 	}
 	return true;
 }
@@ -59,8 +59,8 @@ bool ParticleManager::PostUpdate()
 {
 	for (list<Particle*>::iterator it = particles.begin(); it != particles.end(); ++it)
 	{
-		if (it._Ptr->_Myval->alive == false)
-			DestroyParticle(it._Ptr->_Myval);
+        if ((*it)->alive == false)
+            DestroyParticle(*it);
 	}
 	return true;
 }
@@ -69,14 +69,14 @@ bool ParticleManager::CleanUp()
 {
 	for (list<Particle*>::iterator it = particles.begin(); it != particles.end(); ++it)
 	{
-		if (it._Ptr->_Myval != nullptr)
-			DestroyParticle(it._Ptr->_Myval);
+        if (*it != nullptr)
+            DestroyParticle(*it);
 	}
 
 	for (list<Emitter*>::iterator it = emitters.begin(); it != emitters.end(); ++it)
 	{
-		if (it._Ptr->_Myval != nullptr)
-			DestroyEmitter(it._Ptr->_Myval);
+        if (*it != nullptr)
+            DestroyEmitter(*it);
 	}
 
 	for (uint i = 0; i < info.size(); ++i) {
@@ -102,7 +102,7 @@ Particle * ParticleManager::CreateArrow(int spd, pair<uint, uint> source, pair<u
 		particles.push_back(ret);
 	}
 	else {
-		LOG("Maximum particles achieved.");
+        LOG("Maximum particles achieved.", 0);
 	}
 	return ret;
 }
@@ -122,7 +122,7 @@ Particle * ParticleManager::CreateMovableParticle(pair<float, float> startingpos
 		particles.push_back(ret);
 	}
 	else {
-		LOG("Maximum particles achieved.");
+        LOG("Maximum particles achieved.", 0);
 	}
 	return ret;
 }
@@ -141,7 +141,7 @@ Particle * ParticleManager::CreateStaticBucle(pair<float, float> startingpositio
 		particles.push_back(ret);
 	}
 	else {
-		LOG("Maximum particles achieved.");
+        LOG("Maximum particles achieved.", 0);
 	}
 	return ret;
 }

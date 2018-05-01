@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "Map.h"
 #include "EntityManager.h"
-#include "PathFinding.h"
+#include "Pathfinding.h"
 #include "Orders.h"
 #include "p2Log.h"
 
@@ -19,7 +19,7 @@ PathFinding::~PathFinding()
 // Called before quitting
 bool PathFinding::CleanUp()
 {
-	LOG("Freeing pathfinding library");
+    LOG("Freeing pathfinding library", 0);
 
 	RELEASE_ARRAY(map);
 	return true;
@@ -368,12 +368,12 @@ vector<iPoint> PathFinding::CreatePath(const iPoint& origin, const iPoint& desti
 
 			if (IsWalkable(current_origin))
 			{
-				LOG("Found new origin walkable");
+                LOG("Found new origin walkable", 0);
 			}
 
 			if (current_origin.x == -1 && current_origin.y == -1)
 			{
-				LOG("Path no created: Origin no walkable && no near walkable tiles available");
+                LOG("Path no created: Origin no walkable && no near walkable tiles available", 0);
 				return ret;
 			}
 

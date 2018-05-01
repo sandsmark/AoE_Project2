@@ -2,7 +2,7 @@
 #include "Input.h"
 #include "Window.h"
 #include "p2Log.h"
-#include "SDL/include/SDL.h"
+#include <SDL2/SDL.h>
 
 #define MAX_KEYS 300
 
@@ -24,7 +24,7 @@ Input::~Input()
 // Called before render is available
 bool Input::Awake(pugi::xml_node& config)
 {
-	LOG("Init SDL input event system");
+    LOG("Init SDL input event system", 0);
 	bool ret = true;
 	SDL_Init(0);
 
@@ -161,7 +161,7 @@ bool Input::PreUpdate()
 // Called before quitting
 bool Input::CleanUp()
 {
-	LOG("Quitting SDL event subsystem");
+    LOG("Quitting SDL event subsystem", 0);
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }

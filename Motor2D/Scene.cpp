@@ -5,7 +5,7 @@
 #include "Render.h"
 #include "Window.h"
 #include "Map.h"
-#include "PathFinding.h"
+#include "Pathfinding.h"
 #include "Scene.h"
 #include "p2Log.h"
 #include "Orders.h"
@@ -36,7 +36,7 @@ Scene::~Scene()
 // Called before render is available
 bool Scene::Awake(pugi::xml_node & config)
 {
-	LOG("Loading Scene");
+    LOG("Loading Scene", 0);
 	bool ret = true;
 	active = false;
 	return ret;
@@ -78,7 +78,7 @@ bool Scene::Start()
 
 	// Loading UI ====================================================
 
-	uint x, y;
+    int x, y;
 	App->win->GetWindowSize(x, y);
 
 	elements = App->gui->GetElements("LEVEL");
@@ -193,7 +193,8 @@ bool Scene::Start()
 	App->fog->Start();
 
 	//Resources
-	App->map->LoadResources(App->map->map_file.child("map"));
+    pugi::xml_node mapNode = App->map->map_file.child("map");
+    App->map->LoadResources(mapNode);
 
 	// Units
 	App->entityManager->CreateUnit(TOWN_HALL_POS_X + 300, TOWN_HALL_POS_Y, ELVEN_CAVALRY);
@@ -397,7 +398,7 @@ bool Scene::PostUpdate()
 	bool ret = true;
 
 	if ((App->entityManager->player->Town_center->Life <= 0 && game_finished == false) || (App->entityManager->player->units.size() <= 0 && App->entityManager->player->resources.food < 50 && game_finished == false)) {
-		uint w, h;
+        int w, h;
 		App->win->GetWindowSize(w, h);
 		game_finished = true;
 		Label* defeat = (Label*)App->gui->CreateLabel("DEFEAT", w/3 - App->render->camera.x, h/3 - App->render->camera.y, App->font->fonts[EIGHTY]);
@@ -408,7 +409,7 @@ bool Scene::PostUpdate()
 	}
 
 	else if (App->entityManager->AI_faction->Town_center->Life <= 0 && game_finished == false) {
-		uint w, h;
+        int w, h;
 		App->win->GetWindowSize(w, h);
 		Label* victory = (Label*)App->gui->CreateLabel("VICTORY", w/3 - App->render->camera.x, h/3 - App->render->camera.y, App->font->fonts[EIGHTY]);
 		App->audio->PlayFx(VICTORY);
@@ -430,7 +431,7 @@ bool Scene::PostUpdate()
 // Called before quitting
 bool Scene::CleanUp()
 {
-	LOG("Freeing scene");
+    LOG("Freeing scene", 0);
 
 	App->entityManager->player->tech_tree->Reset(FREE_MEN);
 	App->entityManager->AI_faction->tech_tree->Reset(SAURON_ARMY);

@@ -5,6 +5,8 @@
 #include "Module.h"
 #include <string>
 #include "Render.h"
+#include "Unit.h"
+#include "Building.h"
 #include "Timer.h"
 #include <list>
 #include <queue>
@@ -17,9 +19,6 @@ class Label;
 class UIElement;
 class Scene;
 class Building;
-
-enum unitType;
-enum buildingType;
 
 enum elements_groups
 {

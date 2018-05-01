@@ -6,9 +6,8 @@
 #include "Render.h"
 #include <sstream>
 
-#include "SDL/include/SDL.h"
-#include "SDL_mixer\include\SDL_mixer.h"
-#pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 
 Audio::Audio() : Module()
 {
@@ -23,7 +22,7 @@ Audio::~Audio()
 // Called before render is available
 bool Audio::Awake(pugi::xml_node& config)
 {
-	LOG("Loading Audio Mixer");
+    LOG("Loading Audio Mixer", 0);
 	bool ret = true;
 	SDL_Init(0);
 
@@ -173,7 +172,7 @@ bool Audio::CleanUp()
 	if (!active)
 		return true;
 
-	LOG("Freeing sound FX, closing Mixer and Audio subsystem");
+    LOG("Freeing sound FX, closing Mixer and Audio subsystem", 0);
 
 	if (music != NULL)
 	{

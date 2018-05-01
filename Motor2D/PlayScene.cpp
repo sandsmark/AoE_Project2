@@ -15,7 +15,7 @@ bool PlayScene::Start()
 {
 	// Loading UI ====================================================
 
-	uint x, y;
+    int x, y;
 	App->win->GetWindowSize(x, y);
 
 	elements = App->gui->GetElements("LEVEL");

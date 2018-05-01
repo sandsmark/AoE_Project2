@@ -22,7 +22,7 @@ Map::~Map()
 // Called before render is available
 bool Map::Awake(pugi::xml_node& config)
 {
-	LOG("Loading Map Parser");
+    LOG("Loading Map Parser", 0);
 	bool ret = true;
 
 	folder = config.child("folder").child_value();
@@ -117,7 +117,7 @@ iPoint Map::MapToWorld(int x, int y) const
 	}
 	else
 	{
-		LOG("Unknown map type");
+        LOG("Unknown map type", 0);
 		ret.x = x; ret.y = y;
 	}
 
@@ -143,7 +143,7 @@ iPoint Map::WorldToMap(int x, int y) const
 	}
 	else
 	{
-		LOG("Unknown map type");
+        LOG("Unknown map type", 0);
 		ret.x = x; ret.y = y;
 	}
 
@@ -165,7 +165,7 @@ SDL_Rect TileSet::GetTileRect(int id) const
 // Called before quitting
 bool Map::CleanUp()
 {
-	LOG("Unloading map");
+    LOG("Unloading map", 0);
 
 	// Remove all tilesets
 	list<TileSet*>::iterator tileSetIt;
@@ -261,7 +261,7 @@ bool Map::Load(const char* file_name)
 		while(tile_set_it != data.tilesets.end())
 		{
 			TileSet* s = *tile_set_it;
-			LOG("Tileset ----");
+            LOG("Tileset ----", 0);
 			LOG("name: %s firstgid: %d", s->name.c_str(), s->firstgid);
 			LOG("tile width: %d tile height: %d", s->tile_width, s->tile_height);
 			LOG("spacing: %d margin: %d", s->spacing, s->margin);
@@ -272,7 +272,7 @@ bool Map::Load(const char* file_name)
 		while(item_layer_it != data.layers.end())
 		{
 			MapLayer* l = *item_layer_it;
-			LOG("Layer ----");
+            LOG("Layer ----", 0);
 			LOG("name: %s", l->name.c_str());
 			LOG("tile width: %d tile height: %d", l->width, l->height);
 			item_layer_it++;
@@ -294,7 +294,7 @@ bool Map::LoadMap()
 
 	if(map == NULL)
 	{
-		LOG("Error parsing map xml file: Cannot find 'map' tag.");
+        LOG("Error parsing map xml file: Cannot find 'map' tag.", 0);
 		ret = false;
 	}
 	else
@@ -319,13 +319,13 @@ bool Map::LoadMap()
 
 			int v = 0;
 
-			sscanf_s(red.c_str(), "%x", &v);
+            sscanf(red.c_str(), "%x", &v);
 			if(v >= 0 && v <= 255) data.background_color.r = v;
 
-			sscanf_s(green.c_str(), "%x", &v);
+            sscanf(green.c_str(), "%x", &v);
 			if(v >= 0 && v <= 255) data.background_color.g = v;
 
-			sscanf_s(blue.c_str(), "%x", &v);
+            sscanf(blue.c_str(), "%x", &v);
 			if(v >= 0 && v <= 255) data.background_color.b = v;
 		}
 
@@ -384,7 +384,7 @@ bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 
 	if(image == NULL)
 	{
-		LOG("Error parsing tileset xml file: Cannot find 'image' tag.");
+        LOG("Error parsing tileset xml file: Cannot find 'image' tag.", 0);
 		ret = false;
 	}
 	else
@@ -425,7 +425,7 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 
 	if(layer_data == NULL)
 	{
-		LOG("Error parsing map xml file: Cannot find 'layer/data' tag.");
+        LOG("Error parsing map xml file: Cannot find 'layer/data' tag.", 0);
 		ret = false;
 		RELEASE(layer);
 	}
