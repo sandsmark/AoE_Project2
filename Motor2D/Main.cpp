@@ -3,13 +3,6 @@
 #include "Application.h"
 #include "p2Log.h"
 
-// This is needed here because SDL redefines main function
-// do not add any other libraries here, instead put them in their modules
-#ifdef MSVC
-#include "Brofiler/Brofiler.h"
-#pragma comment( lib, "Brofiler/ProfilerCore32.lib" )
-#endif
-
 
 #include <SDL2/SDL.h>
 
@@ -35,10 +28,6 @@ int main(int argc, char* args[])
 
 	while(state != EXIT)
 	{
-#ifdef MSVC
-		BROFILER_FRAME("MAIN");
-#endif
-
 		switch(state)
 		{
 

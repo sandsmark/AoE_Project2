@@ -109,9 +109,4 @@ SOURCES += AI.cpp \
            Villager.cpp \
            Window.cpp \
 
-win32 {
- HEADERS += Brofiler/Brofiler.h
-} else {
-}
-
 LIBS += -lpugixml -lSDL2_mixer -lSDL2_ttf -lSDL2_image -lSDL2 -lphysfs -ltheoradec -lvorbis -logg -lminizip -lstdc++fs

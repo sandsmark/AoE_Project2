@@ -25,12 +25,12 @@ enum COLLIDER_TYPE
 struct Collider
 {
 	iPoint pos = { 0,0 };
-	int r = 0;
+    int r = 0;
 	int quadtree_node = 0;
 	bool colliding = false;
-	COLLIDER_TYPE type = COLLIDER_NONE;
-	Entity* entity = nullptr;
-	Module* callback = nullptr;
+    COLLIDER_TYPE type = COLLIDER_NONE;
+    Entity* entity = nullptr;
+    Module* callback = nullptr;
 
 	Collider(iPoint position, int radius, COLLIDER_TYPE type, Module* callback, Entity* entity) :
 		pos(position),

@@ -54,7 +54,7 @@ public:
 	}
 
 	// Called each loop iteration
-	virtual bool Update(float dt)
+    virtual bool Update(float /*dt*/)
 	{
 		return true;
 	}
@@ -81,7 +81,7 @@ public:
 		return true;
 	}
 
-	virtual void OnCollision(Collider& c1, Collider& c2)
+    virtual void OnCollision(Collider& /*c1*/, Collider& /*c2*/)
 	{}
 
 
