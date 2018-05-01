@@ -10,7 +10,7 @@
 #include "Gui.h"
 #include "Audio.h"
 #include "SceneManager.h"
-#include <stdlib.h>
+#include <cstdlib>
 
 Gui::Gui() :
     Module()

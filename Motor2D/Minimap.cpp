@@ -9,7 +9,7 @@
 #include "Window.h"
 #include "Gui.h"
 #include "p2Log.h"
-#include <math.h>
+#include <cmath>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>

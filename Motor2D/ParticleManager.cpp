@@ -5,9 +5,9 @@
 #include "Textures.h"
 #include "p2Defs.h"
 #include "p2Log.h"
-#include <stdlib.h>
-#include <time.h>
-#include <math.h>
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
 
 ParticleManager::ParticleManager() :
     Module()

@@ -1,7 +1,7 @@
 #ifndef __p2Log_H__
 #define __p2Log_H__
 
-#include <stdio.h>
+#include <cstdio>
 
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__)
 

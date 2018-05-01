@@ -11,11 +11,11 @@
 //  code.
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-#include <stdio.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cassert>
+#include <cstdio>
 
 #ifdef _WIN32
 #pragma comment(lib, "ogg/libogg.lib")

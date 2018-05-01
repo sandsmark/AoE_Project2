@@ -1,7 +1,7 @@
 #ifndef __P2DEFS_H__
 #define __P2DEFS_H__
 
-#include <stdio.h>
+#include <cstdio>
 #include <cstdint>
 
 //  NULL just in case ----------------------

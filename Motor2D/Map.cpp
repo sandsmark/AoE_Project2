@@ -4,7 +4,7 @@
 #include "Textures.h"
 #include "Map.h"
 #include "p2Log.h"
-#include <math.h>
+#include <cmath>
 #include "EntityManager.h"
 #include "Resource.h"
 #include "FogOfWar.h"

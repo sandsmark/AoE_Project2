@@ -4,7 +4,7 @@
 #include "EntityManager.h"
 #include "Pathfinding.h"
 #include "p2Log.h"
-#include "math.h"
+#include <cmath>
 #include "Map.h"
 #include "Application.h"
 #include "Collision.h"

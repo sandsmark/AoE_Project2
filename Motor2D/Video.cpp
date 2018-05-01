@@ -9,7 +9,7 @@
 #include "Audio.h"
 #include <sstream>
 
-#include <stdio.h>
+#include <cstdio>
 
 #include "theora/theoradec.h"
 #include "vorbis/codec.h"

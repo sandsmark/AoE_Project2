@@ -10,7 +10,7 @@
 #include "SceneManager.h"
 #include "Window.h"
 #include "Orders.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include "TechTree.h"
 #include "EntityManager.h"
 #include "Hero.h"

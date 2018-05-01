@@ -6,7 +6,7 @@
 #include "Collision.h"
 #include "StaticQuadtree.h"
 #include "Pathfinding.h"
-#include <time.h>
+#include <ctime>
 #include <algorithm>
 
 bool AI::Awake(pugi::xml_node &gameData)

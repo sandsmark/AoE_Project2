@@ -6,7 +6,7 @@
 #define __P2POINT_H__
 
 #include "p2Defs.h"
-#include <math.h>
+#include <cmath>
 
 template <class TYPE>
 class p2Point

@@ -8,7 +8,7 @@
 #include "Collision.h"
 #include "p2Log.h"
 #include "Orders.h"
-#include "math.h"
+#include <cmath>
 #include "AI.h"
 #include "SceneManager.h"
 #include "Audio.h"
