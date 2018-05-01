@@ -60,9 +60,9 @@ public:
     Unit(int posX, int posY, Unit *unit);
     ~Unit();
 
-    bool Update(float dt);
-    bool Draw();
-    void Destroy();
+    bool Update(float dt) override;
+    bool Draw() override;
+    void Destroy() override;
 
     void LookAt(fPoint dest);
     void SetTexture(EntityState state);

@@ -42,9 +42,9 @@ class MoveToOrder : public Order
 public:
     MoveToOrder(Unit *unit, iPoint destWorld);
 
-    void Start(Unit *unit);
-    void Execute(Unit *unit);
-    bool CheckCompletion(Unit *unit);
+    void Start(Unit *unit) override;
+    void Execute(Unit *unit) override;
+    bool CheckCompletion(Unit *unit) override;
 
 private:
     iPoint lastPathPos = { 0, 0 };
@@ -55,9 +55,9 @@ class UnitAttackOrder : public Order
 public:
     UnitAttackOrder() { order_type = ATTACK; }
 
-    void Start(Unit *unit);
-    void Execute(Unit *unit);
-    bool CheckCompletion(Unit *unit);
+    void Start(Unit *unit) override;
+    void Execute(Unit *unit) override;
+    bool CheckCompletion(Unit *unit) override;
 };
 
 class GatherOrder : public Order
@@ -65,9 +65,9 @@ class GatherOrder : public Order
 public:
     GatherOrder() { order_type = GATHER; }
 
-    void Start(Unit *unit);
-    void Execute(Unit *unit);
-    bool CheckCompletion(Unit *unit);
+    void Start(Unit *unit) override;
+    void Execute(Unit *unit) override;
+    bool CheckCompletion(Unit *unit) override;
 };
 
 class BuildOrder : public Order
@@ -75,9 +75,9 @@ class BuildOrder : public Order
 public:
     BuildOrder() { order_type = BUILD; }
 
-    void Start(Unit *unit);
-    void Execute(Unit *unit);
-    bool CheckCompletion(Unit *unit);
+    void Start(Unit *unit) override;
+    void Execute(Unit *unit) override;
+    bool CheckCompletion(Unit *unit) override;
 };
 
 #endif

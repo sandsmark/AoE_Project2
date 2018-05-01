@@ -80,7 +80,7 @@ class CutsceneUnit : public CutsceneElement
 {
 public:
     CutsceneUnit(elements_groups group, const char *path, const char *name, unitType type, bool active = true, iPoint pos = { 0, 0 });
-    ~CutsceneUnit();
+    ~CutsceneUnit() override;
 
     Unit *GetUnit() const;
     void SetNull();
@@ -94,7 +94,7 @@ class CutsceneBuilding : public CutsceneElement
 {
 public:
     CutsceneBuilding(elements_groups group, const char *path, const char *name, buildingType type, bool active = true, iPoint pos = { 0, 0 });
-    ~CutsceneBuilding();
+    ~CutsceneBuilding() override;
 
     Building *GetBuilding() const;
     void SetNull();
@@ -108,7 +108,7 @@ class CutsceneMusic : public CutsceneElement
 {
 public:
     CutsceneMusic(elements_groups group, const char *path, const char *name, bool active = true);
-    ~CutsceneMusic();
+    ~CutsceneMusic() override;
 
     bool IsPlaying() const;
 
@@ -122,7 +122,7 @@ class CutsceneSoundEffect : public CutsceneElement
 {
 public:
     CutsceneSoundEffect(elements_groups group, const char *path, const char *name, bool active = true, int loops = 0);
-    ~CutsceneSoundEffect();
+    ~CutsceneSoundEffect() override;
 
     int GetID() const;
     int GetLoops() const;
@@ -138,7 +138,7 @@ class CutsceneText : public CutsceneElement
 {
 public:
     CutsceneText(elements_groups group, const char *path, const char *name, bool active = true, iPoint pos = { 0, 0 });
-    ~CutsceneText();
+    ~CutsceneText() override;
 
     void SetText(char *txt);
     Label *GetText() const;
@@ -279,18 +279,18 @@ class CutSceneManager : public Module
 {
 public:
     CutSceneManager();
-    ~CutSceneManager();
+    ~CutSceneManager() override;
 
-    bool Awake(pugi::xml_node &config);
+    bool Awake(pugi::xml_node &config) override;
 
     // Called before the first frame
-    bool Start();
+    bool Start() override;
 
     // Called each loop iteration
-    bool Update(float dt);
+    bool Update(float dt) override;
 
     // Called before quitting
-    bool CleanUp();
+    bool CleanUp() override;
 
     int GetNextID() const;
 

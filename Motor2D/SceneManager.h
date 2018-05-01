@@ -14,25 +14,25 @@ public:
     SceneManager();
 
     // Destructor
-    virtual ~SceneManager();
+    ~SceneManager() override;
 
     // Called when before render is available
-    bool Awake(pugi::xml_node &);
+    bool Awake(pugi::xml_node &) override;
 
     // Call before first frame
-    bool Start();
+    bool Start() override;
 
     // Called before all Updates
-    bool PreUpdate();
+    bool PreUpdate() override;
 
     // Update Elements
-    bool Update(float dt);
+    bool Update(float dt) override;
 
     // Called after all Updates
-    bool PostUpdate();
+    bool PostUpdate() override;
 
     // Called before quitting
-    bool CleanUp();
+    bool CleanUp() override;
 
     void ChangeScene(SceneElement *last_scene, SceneElement *new_scene);
 

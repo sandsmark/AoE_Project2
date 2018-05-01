@@ -49,12 +49,12 @@ class FogOfWar : public Module
 {
 public:
     FogOfWar();
-    ~FogOfWar();
-    bool Awake(pugi::xml_node &conf);
-    bool Start();
+    ~FogOfWar() override;
+    bool Awake(pugi::xml_node &conf) override;
+    bool Start() override;
 
     void Update(iPoint prev_pos, iPoint next_pos, uint id);
-    bool CleanUp();
+    bool CleanUp() override;
 
     bool AddEntity(Entity *new_entity);
 
@@ -80,8 +80,8 @@ public:
     bool IsVisible(iPoint char_pos, Entity *e);
     bool IsFrontier(iPoint point, in_fog_entity &player);
     uint Get(int x, int y);
-    bool Save(pugi::xml_node &data) const;
-    bool Load(pugi::xml_node &data);
+    bool Save(pugi::xml_node &data) const override;
+    bool Load(pugi::xml_node &data) override;
     void DeleteEntityFog(uint id);
 
     // Atlas

@@ -45,13 +45,13 @@ public:
     Building(int posX, int posY, Building *building);
     ~Building();
 
-    bool Update(float dt);
-    bool Draw();
-    void Destroy();
+    bool Update(float dt) override;
+    bool Draw() override;
+    void Destroy() override;
     void GetBuildingBoundaries();
 
-    bool Load(pugi::xml_node &);
-    bool Save(pugi::xml_node &) const;
+    bool Load(pugi::xml_node &) override;
+    bool Save(pugi::xml_node &) const override;
     void drawTechnology(int, int);
     void drawUnitsInQueue(int MaxTime, int Time, bool isHero);
     iPoint techpos;

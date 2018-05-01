@@ -13,13 +13,13 @@ public:
     FileSystem();
 
     // Destructor
-    virtual ~FileSystem();
+    ~FileSystem() override;
 
     // Called before render is available
-    bool Awake(pugi::xml_node &);
+    bool Awake(pugi::xml_node &) override;
 
     // Called before quitting
-    bool CleanUp();
+    bool CleanUp() override;
 
     // Utility functions
     bool AddPath(const char *path_or_zip, const char *mount_point = NULL);

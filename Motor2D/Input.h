@@ -38,19 +38,19 @@ public:
     Input();
 
     // Destructor
-    virtual ~Input();
+    ~Input() override;
 
     // Called before render is available
-    bool Awake(pugi::xml_node &);
+    bool Awake(pugi::xml_node &) override;
 
     // Called before the first frame
-    bool Start();
+    bool Start() override;
 
     // Called each loop iteration
-    bool PreUpdate();
+    bool PreUpdate() override;
 
     // Called before quitting
-    bool CleanUp();
+    bool CleanUp() override;
 
     // Gather relevant win events
     bool GetWindowEvent(EventWindow ev);

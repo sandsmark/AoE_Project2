@@ -30,28 +30,28 @@ public:
     AI() { name = "AI"; };
 
     // Destructor
-    virtual ~AI(){};
+    ~AI() override{};
 
     // Called when before render is available
-    bool Awake(pugi::xml_node &);
+    bool Awake(pugi::xml_node &) override;
 
     // Call before first frame
-    bool Start();
+    bool Start() override;
 
     // Called before all Updates
-    bool PreUpdate() { return true; };
+    bool PreUpdate() override { return true; };
 
     // Update Elements
-    bool Update(float dt);
+    bool Update(float dt) override;
 
     // Called after all Updates
-    bool PostUpdate() { return true; };
+    bool PostUpdate() override { return true; };
 
     // Called before quitting
-    bool CleanUp() { return true; };
+    bool CleanUp() override { return true; };
 
     bool Load(pugi::xml_node &) override;
-    bool Save(pugi::xml_node &) const;
+    bool Save(pugi::xml_node &) const override;
     void LoadAI_Data(pugi::xml_node &gameData);
 
     void QueueUnits();

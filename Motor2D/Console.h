@@ -13,25 +13,25 @@ public:
     Console();
 
     // Destructor
-    virtual ~Console();
+    ~Console() override;
 
     // Called when before render is available
-    bool Awake(pugi::xml_node &);
+    bool Awake(pugi::xml_node &) override;
 
     // Call before first frame
-    bool Start();
+    bool Start() override;
 
     // Called before all Updates
-    bool PreUpdate();
+    bool PreUpdate() override;
 
     // Called after all Updates
-    bool Update(float dt);
+    bool Update(float dt) override;
 
     // Called before quitting
-    bool CleanUp();
+    bool CleanUp() override;
 
     // Load and save before
-    bool Save(pugi::xml_node &) const;
+    bool Save(pugi::xml_node &) const override;
 
 public:
     bool show = false;

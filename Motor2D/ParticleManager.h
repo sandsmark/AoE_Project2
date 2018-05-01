@@ -71,9 +71,9 @@ public:
     vector<SDL_Rect> blits;
     SDL_Rect collider, blit;
     bool flipped = false;
-    void Update();
-    void Draw();
-    bool IsAlive();
+    void Update() override;
+    void Draw() override;
+    bool IsAlive() override;
 };
 
 class MovableParticle : public Particle
@@ -82,18 +82,18 @@ public:
     MovableParticle(bool gravity, pair<float, float> startingforce, pair<float, float> startingposition);
     pair<float, float> spd, force;
     bool gravity = false;
-    void Update();
-    void Draw();
-    bool IsAlive();
+    void Update() override;
+    void Draw() override;
+    bool IsAlive() override;
 };
 class StaticBucle : public Particle
 {
 public:
     StaticBucle(pair<float, float> startingposition, bool);
     bool finite = false;
-    void Update();
-    void Draw();
-    bool IsAlive();
+    void Update() override;
+    void Draw() override;
+    bool IsAlive() override;
 };
 
 class Emitter
@@ -120,17 +120,17 @@ class ParticleManager : public Module
 public:
     ParticleManager();
 
-    virtual ~ParticleManager();
+    ~ParticleManager() override;
 
-    bool Awake(pugi::xml_node &);
+    bool Awake(pugi::xml_node &) override;
 
-    bool Start();
+    bool Start() override;
 
-    bool Update(float dt);
+    bool Update(float dt) override;
 
-    bool PostUpdate();
+    bool PostUpdate() override;
 
-    bool CleanUp();
+    bool CleanUp() override;
     bool LoadParticleData();
 
     Particle *CreateArrow(int spd, pair<uint, uint> source, pair<uint, uint> destination);

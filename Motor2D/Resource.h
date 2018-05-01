@@ -37,8 +37,8 @@ public:
     Resource(int posX, int posY, Resource *resource, SDL_Rect rect);
     ~Resource();
 
-    bool Draw();
-    void Destroy();
+    bool Draw() override;
+    void Destroy() override;
 
 public:
     resourceItem res_type = BLACK_TREE;

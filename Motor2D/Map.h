@@ -106,16 +106,16 @@ public:
     Map();
 
     // Destructor
-    virtual ~Map();
+    ~Map() override;
 
     // Called before render is available
-    bool Awake(pugi::xml_node &conf);
+    bool Awake(pugi::xml_node &conf) override;
 
     // Called each loop iteration
     void Draw();
 
     // Called before quitting
-    bool CleanUp();
+    bool CleanUp() override;
 
     // Load new map
     bool LoadFile(const char *path);

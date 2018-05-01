@@ -31,28 +31,28 @@ public:
     EntityManager();
 
     // Destructor
-    virtual ~EntityManager();
+    ~EntityManager() override;
 
     // Called when before render is available
-    bool Awake(pugi::xml_node &);
+    bool Awake(pugi::xml_node &) override;
 
     // Call before first frame
-    bool Start();
+    bool Start() override;
 
     // Called before all Updates
-    bool PreUpdate();
+    bool PreUpdate() override;
 
     // Update Elements
-    bool Update(float dt);
+    bool Update(float dt) override;
 
     // Called after all Updates
-    bool PostUpdate();
+    bool PostUpdate() override;
 
     // Called before quitting
-    bool CleanUp();
+    bool CleanUp() override;
 
-    bool Load(pugi::xml_node &);
-    bool Save(pugi::xml_node &) const;
+    bool Load(pugi::xml_node &) override;
+    bool Save(pugi::xml_node &) const override;
 
     bool LoadGameData();
 

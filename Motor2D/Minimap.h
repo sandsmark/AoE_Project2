@@ -10,16 +10,16 @@ public:
     Minimap();
 
     //Destructor
-    virtual ~Minimap();
+    ~Minimap() override;
 
     //Start Elements
-    bool Start();
+    bool Start() override;
 
     // Update Elements
-    bool Update(float dt);
+    bool Update(float dt) override;
 
     //Called before quitting
-    bool CleanUp();
+    bool CleanUp() override;
 
     //Initialize minimap
     void GetClickableArea(std::pair<int, int> position);

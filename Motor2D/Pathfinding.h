@@ -28,10 +28,10 @@ public:
     PathFinding();
 
     // Destructor
-    virtual ~PathFinding();
+    ~PathFinding() override;
 
     // Called before quitting
-    bool CleanUp();
+    bool CleanUp() override;
 
     // Sets up the walkability map
     void SetMap(uint width, uint height, uchar *data);

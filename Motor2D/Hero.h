@@ -66,14 +66,14 @@ public:
         multiplier = 2.5;
     }
 
-    void Activate(Hero *hero)
+    void Activate(Hero *hero) override
     {
         active = true;
         hero->skill_timer.Start();
         hero->Attack *= multiplier;
     }
 
-    void Deactivate(Hero *hero)
+    void Deactivate(Hero *hero) override
     {
         active = false;
         hero->Attack /= multiplier;
@@ -97,14 +97,14 @@ public:
         multiplier = 3;
     }
 
-    void Activate(Hero *hero)
+    void Activate(Hero *hero) override
     {
         active = true;
         hero->skill_timer.Start();
         hero->unitMovementSpeed *= multiplier;
     }
 
-    void Deactivate(Hero *hero)
+    void Deactivate(Hero *hero) override
     {
         active = false;
         hero->unitMovementSpeed /= multiplier;
@@ -128,7 +128,7 @@ public:
         multiplier = 2.5;
     }
 
-    void Activate(Hero *hero)
+    void Activate(Hero *hero) override
     {
         active = true;
         hero->skill_timer.Start();
@@ -137,7 +137,7 @@ public:
         }
     }
 
-    void Deactivate(Hero *hero)
+    void Deactivate(Hero *hero) override
     {
         active = false;
         for (vector<Animation>::iterator it = hero->attackingAnimations.begin(); it != hero->attackingAnimations.end(); it++) {

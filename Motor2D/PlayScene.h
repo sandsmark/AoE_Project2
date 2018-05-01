@@ -12,13 +12,13 @@ class PlayScene : public SceneElement
 {
 public:
     PlayScene();
-    ~PlayScene();
+    ~PlayScene() override;
 
-    bool Start();
-    bool PreUpdate();
-    bool Update(float dt);
-    bool PostUpdate();
-    bool CleanUp();
+    bool Start() override;
+    bool PreUpdate() override;
+    bool Update(float dt) override;
+    bool PostUpdate() override;
+    bool CleanUp() override;
 
 private:
     vector<Info> elements;

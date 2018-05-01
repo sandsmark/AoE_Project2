@@ -22,16 +22,16 @@ public:
     Video();
 
     // Destructor
-    virtual ~Video();
+    ~Video() override;
 
     // Called before render is available
-    bool Awake(pugi::xml_node &);
+    bool Awake(pugi::xml_node &) override;
 
     // Update videoframes and audiopackets
-    bool Update(float dt);
+    bool Update(float dt) override;
 
     // Called before quitting
-    bool CleanUp();
+    bool CleanUp() override;
 
     // Play a video file
     void PlayVideo(const char *fname);

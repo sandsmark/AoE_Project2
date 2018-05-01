@@ -66,14 +66,14 @@ class QuestManager : public Module
 {
 public:
     QuestManager();
-    ~QuestManager();
+    ~QuestManager() override;
 
-    bool Awake(pugi::xml_node &);
-    bool Start();
-    bool CleanUp();
+    bool Awake(pugi::xml_node &) override;
+    bool Start() override;
+    bool CleanUp() override;
 
-    bool Load(pugi::xml_node &);
-    bool Save(pugi::xml_node &) const;
+    bool Load(pugi::xml_node &) override;
+    bool Save(pugi::xml_node &) const override;
 
     Event *createEvent(pugi::xml_node &);
 

@@ -114,12 +114,12 @@ public:
     Image(SDL_Rect argsection, int x, int y, SDL_Texture *argtexture);
     Image(int x, int y, SDL_Texture *argtexture);
     MouseState MouseDetect();
-    void Movement(pair<int, int> movement);
+    void Movement(pair<int, int> movement) override;
 
-    void Update();
-    void Draw();
-    void DebugMode();
-    void CleanUp();
+    void Update() override;
+    void Draw() override;
+    void DebugMode() override;
+    void CleanUp() override;
 
     SDL_Rect section;
 };
@@ -130,15 +130,15 @@ public:
     Label(char *text, int x, int y, _TTF_Font *font);
     Label(string text, int x, int y, _TTF_Font *font);
     Label(char *text, SDL_Rect area, _TTF_Font *font);
-    void Movement(pair<int, int> movement);
+    void Movement(pair<int, int> movement) override;
 
-    void Update();
-    void Draw();
+    void Update() override;
+    void Draw() override;
     void SetText(char *text);
     void SetString(string text);
     void SetSize(int size);
     void SetColor(SDL_Color color);
-    void CleanUp();
+    void CleanUp() override;
     string str;
 
 private:
@@ -154,13 +154,13 @@ class Button : public UIElement
 public:
     Button(int x, int y, vector<SDL_Rect> blit_sections, vector<SDL_Rect> detect_sections, ButtonTier tier, SDL_Texture *texture);
 
-    void Update();
-    void CleanUp();
+    void Update() override;
+    void CleanUp() override;
 
     void Draw(SDL_Rect section);
-    void Movement(pair<int, int> movement);
+    void Movement(pair<int, int> movement) override;
     MouseState MouseDetect();
-    void DebugMode();
+    void DebugMode() override;
     string name;
     string desc;
 
@@ -174,10 +174,10 @@ class InputText : public UIElement
 {
 public:
     InputText(int x, int y, SDL_Rect detect_area, _TTF_Font *font);
-    void DebugMode();
-    void Update();
-    void Draw();
-    void CleanUp();
+    void DebugMode() override;
+    void Update() override;
+    void Draw() override;
+    void CleanUp() override;
     MouseState MouseDetect();
 
     int width = 0, height = 0;
@@ -213,7 +213,7 @@ class ScrollBar : public UIElement
 {
 public:
     ScrollBar(int x, int y, ScrollBarModel model);
-    void Update();
+    void Update() override;
     int GetData();
     // BAR 1
     int data = 0, max_y = 0, min_y = 0;
@@ -224,7 +224,7 @@ public:
     // BAR 2
     void UpdateThumbSize(int h);
     void SetBar(SDL_Rect BlitSquare, SDL_Rect thumb); // TO START THE BAR
-    void DebugMode();
+    void DebugMode() override;
     MouseState MouseDetect();
 
     Quad *BlitSquare = nullptr;
@@ -238,11 +238,11 @@ class Quad : public UIElement
 {
 public:
     Quad(SDL_Rect area, SDL_Color color);
-    void CleanUp();
-    void Update();
-    void Draw();
+    void CleanUp() override;
+    void Update() override;
+    void Draw() override;
     void SetArea(SDL_Rect area);
-    void Movement(pair<int, int> movement);
+    void Movement(pair<int, int> movement) override;
 
     SDL_Rect area;
     SDL_Color color;
@@ -252,10 +252,10 @@ class Cursor : public UIElement
 {
 public:
     Cursor(SDL_Texture *tex, vector<SDL_Rect> area);
-    void Update();
-    void Draw();
+    void Update() override;
+    void Draw() override;
     void SetCursor(int id);
-    void CleanUp();
+    void CleanUp() override;
 
 private:
     int id = 0;
@@ -449,24 +449,24 @@ public:
     Gui();
 
     // Destructor
-    virtual ~Gui();
+    ~Gui() override;
 
     // Called when before render is available
-    bool Awake(pugi::xml_node &);
+    bool Awake(pugi::xml_node &) override;
 
     // Call before first frame
-    bool Start();
+    bool Start() override;
 
     // Called before all Updates
-    bool PreUpdate();
+    bool PreUpdate() override;
 
-    bool Update(float dt);
+    bool Update(float dt) override;
 
     // Called after all Updates
-    bool PostUpdate();
+    bool PostUpdate() override;
 
     // Called before quitting
-    bool CleanUp();
+    bool CleanUp() override;
 
     // Load and save before
     bool SaveToScreen(pugi::xml_node &) const;
