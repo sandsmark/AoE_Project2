@@ -11,26 +11,26 @@
 class PlayScene : public SceneElement
 {
 public:
-	PlayScene();
-	~PlayScene();
+    PlayScene();
+    ~PlayScene();
 
-	bool Start();
-	bool PreUpdate();
-	bool Update(float dt);
-	bool PostUpdate();
-	bool CleanUp();
+    bool Start();
+    bool PreUpdate();
+    bool Update(float dt);
+    bool PostUpdate();
+    bool CleanUp();
 
 private:
-	vector<Info> elements;
-	vector<Image*> images;
-	vector<Button*> buttons;
+    vector<Info> elements;
+    vector<Image *> images;
+    vector<Button *> buttons;
 
 public:
-	int woodCount = 0;
-	int foodCount = 0;
-	int goldCount = 0;
-	int stoneCount = 0;
-	Label* wood = nullptr, *food = nullptr, *gold = nullptr, *stone = nullptr, *villagers = nullptr;
+    int woodCount = 0;
+    int foodCount = 0;
+    int goldCount = 0;
+    int stoneCount = 0;
+    Label *wood = nullptr, *food = nullptr, *gold = nullptr, *stone = nullptr, *villagers = nullptr;
 };
 
 #endif

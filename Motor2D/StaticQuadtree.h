@@ -10,17 +10,17 @@
 class StaticQuadTree
 {
 public:
-	StaticQuadTree();
-	~StaticQuadTree();
-	void ClearTree();
-	void UpdateCol(Collider* col);
-	void Insert(Collider* col);
-	void Remove(Collider* col);
-	void Retrieve(list<Collider*> &potentialColliders, Collider* col);
-	int Locate(Collider* col);
+    StaticQuadTree();
+    ~StaticQuadTree();
+    void ClearTree();
+    void UpdateCol(Collider *col);
+    void Insert(Collider *col);
+    void Remove(Collider *col);
+    void Retrieve(list<Collider *> &potentialColliders, Collider *col);
+    int Locate(Collider *col);
 
 public:
-	vector<list<Collider*>> nodes;
+    vector<list<Collider *>> nodes;
 };
 
 #endif // !_QUAD_TREE_H_

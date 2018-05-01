@@ -2,16 +2,17 @@
 
 Villager::Villager() {}
 
+Villager::Villager(int posx, int posy, Villager *unit) :
+    Unit(posx, posy, (Unit *)unit)
+{
 
-Villager::Villager(int posx, int posy, Villager* unit) : Unit(posx, posy, (Unit*) unit){
+    gathering_speed = unit->gathering_speed;
+    max_capacity = unit->max_capacity;
 
-	gathering_speed = unit->gathering_speed;
-	max_capacity = unit->max_capacity;
+    unitChoppingTexture = unit->unitChoppingTexture;
+    choppingAnimations = unit->choppingAnimations;
 
-	unitChoppingTexture = unit->unitChoppingTexture;
-	choppingAnimations = unit->choppingAnimations;
+    IsVillager = true;
 
-	IsVillager = true;
-
-	entityType = ENTITY_UNIT;
+    entityType = ENTITY_UNIT;
 }

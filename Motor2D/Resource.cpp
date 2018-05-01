@@ -12,110 +12,101 @@ Resource::Resource()
 {
 }
 
-Resource::Resource(int posX, int posY, Resource* resource)
+Resource::Resource(int posX, int posY, Resource *resource)
 {
-	entityPosition.x = posX;
-	entityPosition.y = posY;
-	name = resource->name;
-	res_type = resource->res_type;
-	contains = resource->contains;
-	MaxLife = resource->Life;
-	Life = resource->Life;
-	entityTexture = resource->entityTexture;
-	selectionWidth = resource->selectionWidth;
-	selectionAreaCenterPoint = resource->selectionAreaCenterPoint;
-	
-	int rectID = rand() % resource->blit_rects.size();
-	blit_rect = resource->blit_rects.at(rectID);
+    entityPosition.x = posX;
+    entityPosition.y = posY;
+    name = resource->name;
+    res_type = resource->res_type;
+    contains = resource->contains;
+    MaxLife = resource->Life;
+    Life = resource->Life;
+    entityTexture = resource->entityTexture;
+    selectionWidth = resource->selectionWidth;
+    selectionAreaCenterPoint = resource->selectionAreaCenterPoint;
 
-	if (res_type >= MOUNT_1 && res_type <= MOUNT_6)
-	{
-		if (selectionWidth)
-			collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y - selectionAreaCenterPoint.y + 200 }, selectionWidth, COLLIDER_RESOURCE, (Module*)App->entityManager, this);
-		else
-			collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y - selectionAreaCenterPoint.y + 200 }, blit_rect.w / 2, COLLIDER_RESOURCE, (Module*)App->entityManager, this);
-	}
-	else
-	{
-		if (selectionWidth)
-			collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y}, selectionWidth, COLLIDER_RESOURCE, (Module*)App->entityManager, this);
-		else
-			collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y}, blit_rect.w / 2, COLLIDER_RESOURCE, (Module*)App->entityManager, this);
-	}
+    int rectID = rand() % resource->blit_rects.size();
+    blit_rect = resource->blit_rects.at(rectID);
 
-	entityType = ENTITY_RESOURCE;
-	
-	faction = NATURE;
-	App->fog->AddEntity(this);
+    if (res_type >= MOUNT_1 && res_type <= MOUNT_6) {
+        if (selectionWidth)
+            collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y - selectionAreaCenterPoint.y + 200 }, selectionWidth, COLLIDER_RESOURCE, (Module *)App->entityManager, this);
+        else
+            collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y - selectionAreaCenterPoint.y + 200 }, blit_rect.w / 2, COLLIDER_RESOURCE, (Module *)App->entityManager, this);
+    } else {
+        if (selectionWidth)
+            collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y }, selectionWidth, COLLIDER_RESOURCE, (Module *)App->entityManager, this);
+        else
+            collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y }, blit_rect.w / 2, COLLIDER_RESOURCE, (Module *)App->entityManager, this);
+    }
 
+    entityType = ENTITY_RESOURCE;
+
+    faction = NATURE;
+    App->fog->AddEntity(this);
 }
 
-Resource::Resource(int posX, int posY, Resource* resource, SDL_Rect rect)
+Resource::Resource(int posX, int posY, Resource *resource, SDL_Rect rect)
 {
-	entityPosition.x = posX;
-	entityPosition.y = posY;
+    entityPosition.x = posX;
+    entityPosition.y = posY;
 
-	res_type = resource->res_type;
-	contains = resource->contains;
-	MaxLife = resource->Life;
-	Life = resource->Life;
-	entityTexture = resource->entityTexture;
-	selectionWidth = resource->selectionWidth;
-	selectionAreaCenterPoint = resource->selectionAreaCenterPoint;
+    res_type = resource->res_type;
+    contains = resource->contains;
+    MaxLife = resource->Life;
+    Life = resource->Life;
+    entityTexture = resource->entityTexture;
+    selectionWidth = resource->selectionWidth;
+    selectionAreaCenterPoint = resource->selectionAreaCenterPoint;
 
-	blit_rect = rect;
+    blit_rect = rect;
 
-	if (selectionWidth)
-		collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y - selectionAreaCenterPoint.y }, selectionWidth, COLLIDER_RESOURCE, (Module*)App->entityManager, this);
-	else
-		collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y - selectionAreaCenterPoint.y }, blit_rect.w / 2, COLLIDER_RESOURCE, (Module*)App->entityManager, this);
-	
-	entityType = ENTITY_RESOURCE;
+    if (selectionWidth)
+        collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y - selectionAreaCenterPoint.y }, selectionWidth, COLLIDER_RESOURCE, (Module *)App->entityManager, this);
+    else
+        collider = App->collision->AddCollider({ entityPosition.x, entityPosition.y - selectionAreaCenterPoint.y }, blit_rect.w / 2, COLLIDER_RESOURCE, (Module *)App->entityManager, this);
 
-	faction = NATURE;
-	App->fog->AddEntity(this);
+    entityType = ENTITY_RESOURCE;
+
+    faction = NATURE;
+    App->fog->AddEntity(this);
 }
-
 
 Resource::~Resource()
 {
 }
 
-
 bool Resource::Draw()
 {
-	Sprite resource;
+    Sprite resource;
 
-	if (res_type >= MOUNT_1 && res_type <= MOUNT_6)
-	{
-		resource.pos.x = entityPosition.x - (blit_rect.w / 2);
-		resource.pos.y = entityPosition.y - selectionAreaCenterPoint.y - 200;
-		resource.texture = entityTexture;
-	}
-	else
-	{
-		resource.pos.x = entityPosition.x - (blit_rect.w / 2);
-		resource.pos.y = entityPosition.y - selectionAreaCenterPoint.y + 15;
-		resource.texture = entityTexture;
-	}
+    if (res_type >= MOUNT_1 && res_type <= MOUNT_6) {
+        resource.pos.x = entityPosition.x - (blit_rect.w / 2);
+        resource.pos.y = entityPosition.y - selectionAreaCenterPoint.y - 200;
+        resource.texture = entityTexture;
+    } else {
+        resource.pos.x = entityPosition.x - (blit_rect.w / 2);
+        resource.pos.y = entityPosition.y - selectionAreaCenterPoint.y + 15;
+        resource.texture = entityTexture;
+    }
 
-	if (collider != nullptr) {
-		resource.priority = collider->pos.y;
-	}
-	else {
-		resource.priority = entityPosition.y/* - (r.h / 2) + r.h*/;
-	}
-	resource.rect = blit_rect;
+    if (collider != nullptr) {
+        resource.priority = collider->pos.y;
+    } else {
+        resource.priority = entityPosition.y /* - (r.h / 2) + r.h*/;
+    }
+    resource.rect = blit_rect;
 
-	App->render->sprites_toDraw.push_back(resource);
-	return true;
+    App->render->sprites_toDraw.push_back(resource);
+    return true;
 }
 
+void Resource::Destroy()
+{
 
-void Resource::Destroy() {
+    state = DESTROYED;
 
-	state = DESTROYED;
-
-	if (collider != nullptr) App->collision->DeleteCollider(collider);
-	App->entityManager->DeleteEntity(this);
+    if (collider != nullptr)
+        App->collision->DeleteCollider(collider);
+    App->entityManager->DeleteEntity(this);
 }

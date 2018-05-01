@@ -10,75 +10,80 @@
 
 class Collider;
 
-enum rewardType { NOTHING, INCREASE_GOLD, CREATE_HERO };
-enum eventType { DESTROY_EVENT, REACH_EVENT };
+enum rewardType { NOTHING,
+                  INCREASE_GOLD,
+                  CREATE_HERO };
+enum eventType { DESTROY_EVENT,
+                 REACH_EVENT };
 
 class Event
 {
 public:
-	Event(eventType type) : type(type) {};
-	~Event() {};
+    Event(eventType type) :
+        type(type){};
+    ~Event(){};
 
-	eventType type;
+    eventType type;
 };
 
 class ReachEvent : public Event
 {
 public:
-	ReachEvent(eventType type) :Event(type) {};
-	~ReachEvent() {};
+    ReachEvent(eventType type) :
+        Event(type){};
+    ~ReachEvent(){};
 
-	buildingType building_type;
+    buildingType building_type;
 };
 
-class DestroyEvent : public Event 
+class DestroyEvent : public Event
 {
 public:
-	DestroyEvent(eventType type) : Event(type) {};
-	~DestroyEvent() {};
+    DestroyEvent(eventType type) :
+        Event(type){};
+    ~DestroyEvent(){};
 
-	buildingType building_type;
+    buildingType building_type;
 };
 
 class Quest
 {
 public:
-	Quest() {};
-	~Quest();
+    Quest(){};
+    ~Quest();
 
 public:
-	string name;
-	string description;
-	rewardType reward;
-	int id;
-	uint state;
-	Event* trigger = nullptr;
-	Event* step = nullptr;
+    string name;
+    string description;
+    rewardType reward;
+    int id;
+    uint state;
+    Event *trigger = nullptr;
+    Event *step = nullptr;
 };
 
 class QuestManager : public Module
 {
 public:
+    QuestManager();
+    ~QuestManager();
 
-	QuestManager();
-	~QuestManager();
+    bool Awake(pugi::xml_node &);
+    bool Start();
+    bool CleanUp();
 
-	bool Awake(pugi::xml_node&);
-	bool Start();
-	bool CleanUp();
+    bool Load(pugi::xml_node &);
+    bool Save(pugi::xml_node &) const;
 
-	bool Load(pugi::xml_node&);
-	bool Save(pugi::xml_node&) const;
+    Event *createEvent(pugi::xml_node &);
 
-	Event* createEvent(pugi::xml_node&);
+    bool TriggerCallback(Building *t);
+    bool StepCallback(Building *t);
 
-	bool TriggerCallback(Building* t);
-	bool StepCallback(Building* t);
-
-	list<Quest*> AllQuests;
+    list<Quest *> AllQuests;
 
 private:
-	string path;
+    string path;
 };
 
 #endif

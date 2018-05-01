@@ -10,35 +10,33 @@ int close_sdl_rwops(SDL_RWops *rw);
 class FileSystem : public Module
 {
 public:
+    FileSystem();
 
-	FileSystem();
+    // Destructor
+    virtual ~FileSystem();
 
-	// Destructor
-	virtual ~FileSystem();
+    // Called before render is available
+    bool Awake(pugi::xml_node &);
 
-	// Called before render is available
-	bool Awake(pugi::xml_node&);
+    // Called before quitting
+    bool CleanUp();
 
-	// Called before quitting
-	bool CleanUp();
+    // Utility functions
+    bool AddPath(const char *path_or_zip, const char *mount_point = NULL);
+    bool Exists(const char *file) const;
+    bool IsDirectory(const char *file) const;
+    const char *GetSaveDirectory() const
+    {
+        return "save/";
+    }
 
-	// Utility functions
-	bool AddPath(const char* path_or_zip, const char* mount_point = NULL);
-	bool Exists(const char* file) const;
-	bool IsDirectory(const char* file) const;
-	const char* GetSaveDirectory() const
-	{
-		return "save/";
-	}
+    // Open for Read/Write
+    unsigned int Load(const char *file, char **buffer) const;
+    SDL_RWops *Load(const char *file) const;
 
-	// Open for Read/Write
-	unsigned int Load(const char* file, char** buffer) const;
-	SDL_RWops* Load(const char* file) const;
-
-	unsigned int Save(const char* file, const char* buffer, unsigned int size) const;
+    unsigned int Save(const char *file, const char *buffer, unsigned int size) const;
 
 private:
-
 };
 
 #endif // __FILESYSTEM_H__

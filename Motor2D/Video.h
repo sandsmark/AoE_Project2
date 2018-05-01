@@ -11,67 +11,66 @@ struct THEORAPLAY_VideoFrame;
 
 struct AudioQueue
 {
-	const THEORAPLAY_AudioPacket *audio;
-	int offset;
-	struct AudioQueue *next;
+    const THEORAPLAY_AudioPacket *audio;
+    int offset;
+    struct AudioQueue *next;
 };
 
 class Video : public Module
 {
 public:
+    Video();
 
-	Video();
+    // Destructor
+    virtual ~Video();
 
-	// Destructor
-	virtual ~Video();
+    // Called before render is available
+    bool Awake(pugi::xml_node &);
 
-	// Called before render is available
-	bool Awake(pugi::xml_node&);
+    // Update videoframes and audiopackets
+    bool Update(float dt);
 
-	// Update videoframes and audiopackets
-	bool Update(float dt);
+    // Called before quitting
+    bool CleanUp();
 
-	// Called before quitting
-	bool CleanUp();
+    // Play a video file
+    void PlayVideo(const char *fname);
 
-	// Play a video file
-	void PlayVideo(const char *fname);
-
-	// Audio methods
-	static void SDLCALL audio_callback(void *userdata, Uint8 *stream, int len);
-	static void queue_audio(const THEORAPLAY_AudioPacket *audio);
-	bool want_to_play;
-
-private:
-	void ResetValues();
-
-	// Load video file
-	void LoadVideo(const char *fname);
+    // Audio methods
+    static void SDLCALL audio_callback(void *userdata, Uint8 *stream, int len);
+    static void queue_audio(const THEORAPLAY_AudioPacket *audio);
+    bool want_to_play;
 
 private:
-	THEORAPLAY_Decoder* decoder;
-	const THEORAPLAY_VideoFrame* video;
-	const THEORAPLAY_AudioPacket* audio;
-	SDL_Window* screen;
-	SDL_Texture* texture;
-	SDL_AudioSpec spec;
-	SDL_Event event;
+    void ResetValues();
 
-	Uint32 baseticks;
-	Uint32 framems;
-	int init_failed;
-	int quit;
+    // Load video file
+    void LoadVideo(const char *fname);
 
-	void* pixels;
-	int pitch;
+private:
+    THEORAPLAY_Decoder *decoder;
+    const THEORAPLAY_VideoFrame *video;
+    const THEORAPLAY_AudioPacket *audio;
+    SDL_Window *screen;
+    SDL_Texture *texture;
+    SDL_AudioSpec spec;
+    SDL_Event event;
 
-	static AudioQueue* audio_queue;
-	static AudioQueue* audio_queue_tail;
+    Uint32 baseticks;
+    Uint32 framems;
+    int init_failed;
+    int quit;
 
-	SDL_Rect rendering_rect;
+    void *pixels;
+    int pitch;
 
-	bool videoPlaying = false;
-	string videoName;
+    static AudioQueue *audio_queue;
+    static AudioQueue *audio_queue_tail;
+
+    SDL_Rect rendering_rect;
+
+    bool videoPlaying = false;
+    string videoName;
 };
 
 #endif // __VIDEO_H__

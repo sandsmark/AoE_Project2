@@ -11,87 +11,84 @@
 
 struct Sprite
 {
-	SDL_Rect rect = { 0, 0, 0, 0 };
-	SDL_Texture* texture = nullptr;
-	iPoint pos = { 0, 0 };
-	int priority = 0;
-	SDL_RendererFlip flip = SDL_FLIP_NONE;
-	int r = 0;
-	int g = 0;
-	int b = 0;
-	int a = 255;
-	int radius = 0;
-	bool filled = true;
-	bool change_color = false;
+    SDL_Rect rect = { 0, 0, 0, 0 };
+    SDL_Texture *texture = nullptr;
+    iPoint pos = { 0, 0 };
+    int priority = 0;
+    SDL_RendererFlip flip = SDL_FLIP_NONE;
+    int r = 0;
+    int g = 0;
+    int b = 0;
+    int a = 255;
+    int radius = 0;
+    bool filled = true;
+    bool change_color = false;
 };
 
 struct CameraLimit
 {
-	int up, down, left, right;
+    int up, down, left, right;
 };
 
 class Render : public Module
 {
 public:
+    Render();
 
-	Render();
+    // Destructor
+    virtual ~Render();
 
-	// Destructor
-	virtual ~Render();
+    // Called before render is available
+    bool Awake(pugi::xml_node &);
 
-	// Called before render is available
-	bool Awake(pugi::xml_node&);
+    // Called before the first frame
+    bool Start();
 
-	// Called before the first frame
-	bool Start();
+    // Called each loop iteration
+    bool PreUpdate();
+    bool PostUpdate();
 
-	// Called each loop iteration
-	bool PreUpdate();
-	bool PostUpdate();
+    // Called before quitting
+    bool CleanUp();
 
-	// Called before quitting
-	bool CleanUp();
+    // Load / Save
+    bool Load(pugi::xml_node &);
+    bool Save(pugi::xml_node &) const;
 
-	// Load / Save
-	bool Load(pugi::xml_node&);
-	bool Save(pugi::xml_node&) const;
+    // Utils
+    void SetViewPort(const SDL_Rect &rect);
+    void ResetViewPort();
+    iPoint ScreenToWorld(int x, int y) const;
 
-	// Utils
-	void SetViewPort(const SDL_Rect& rect);
-	void ResetViewPort();
-	iPoint ScreenToWorld(int x, int y) const;
-	
-	// Draw & Blit
-    bool Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE, bool use_camera = true, float speed = 1.0f, double angle = 0, int pivot_x = INT32_MAX, int pivot_y = INT32_MAX) const;
-	bool DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, bool filled = true,  Uint8 a = 255, bool use_camera = true) const;
-	bool DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool use_camera = true) const;
-	bool DrawCircle(int x1, int y1, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool isIsometric = false, bool use_camera = true) const;
-	bool DrawIsometricRect(iPoint center, uint width) const;
-	bool DrawIsometricCircle(int x1, int y1, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool use_camera = true) const;
-	
-	// Set background color
-	void SetBackgroundColor(SDL_Color color);
+    // Draw & Blit
+    bool Blit(SDL_Texture *texture, int x, int y, const SDL_Rect *section = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE, bool use_camera = true, float speed = 1.0f, double angle = 0, int pivot_x = INT32_MAX, int pivot_y = INT32_MAX) const;
+    bool DrawQuad(const SDL_Rect &rect, Uint8 r, Uint8 g, Uint8 b, bool filled = true, Uint8 a = 255, bool use_camera = true) const;
+    bool DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool use_camera = true) const;
+    bool DrawCircle(int x1, int y1, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool isIsometric = false, bool use_camera = true) const;
+    bool DrawIsometricRect(iPoint center, uint width) const;
+    bool DrawIsometricCircle(int x1, int y1, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool use_camera = true) const;
 
-	//Move camera with cursor
-	pair<int,int> MoveCameraWithCursor(float dt);
-	bool CullingCam(iPoint point);
+    // Set background color
+    void SetBackgroundColor(SDL_Color color);
+
+    //Move camera with cursor
+    pair<int, int> MoveCameraWithCursor(float dt);
+    bool CullingCam(iPoint point);
 
 public:
+    SDL_Renderer *renderer = nullptr;
+    SDL_Rect camera;
+    SDL_Rect viewport;
+    SDL_Color background;
+    SDL_Rect culling_cam;
+    std::deque<Sprite> sprites_toDraw;
+    std::deque<Sprite> ui_toDraw;
+    Sprite cursor;
 
-	SDL_Renderer*	renderer = nullptr;
-	SDL_Rect		camera;
-	SDL_Rect		viewport;
-	SDL_Color		background;
-	SDL_Rect		culling_cam;
-	std::deque<Sprite> sprites_toDraw;
-	std::deque<Sprite> ui_toDraw;
-	Sprite cursor;
-
-	CameraLimit cameraScene;
+    CameraLimit cameraScene;
 
 private:
-
-	bool			vsync = false;
+    bool vsync = false;
 };
 
 #endif // __RENDER_H__

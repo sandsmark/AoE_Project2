@@ -17,271 +17,275 @@
 #include <experimental/filesystem>
 namespace fs = experimental::filesystem;
 
-Video::Video() : Module()
+Video::Video() :
+    Module()
 {
-	decoder = NULL;
-	video = NULL;
-	audio = NULL;
-	screen = NULL;
-	texture = NULL;
-	pixels = NULL;
+    decoder = NULL;
+    video = NULL;
+    audio = NULL;
+    screen = NULL;
+    texture = NULL;
+    pixels = NULL;
 
-	baseticks = 0;
-	framems = 0;
-	init_failed = 0;
-	quit = 0;
-	pitch = 0;
-	want_to_play = false;
+    baseticks = 0;
+    framems = 0;
+    init_failed = 0;
+    quit = 0;
+    pitch = 0;
+    want_to_play = false;
 
-	name = "video";
+    name = "video";
 }
 
 // Destructor
 Video::~Video()
-{}
+{
+}
 
 // Called before render is available
-bool Video::Awake(pugi::xml_node& config)
+bool Video::Awake(pugi::xml_node &config)
 {
-	return true;
+    return true;
 }
 
 // Called before quitting
 bool Video::CleanUp()
 {
-	if (!active)
-		return true;
+    if (!active)
+        return true;
 
-	if (texture) SDL_DestroyTexture(texture);
-	if (video) THEORAPLAY_freeVideo(video);
-	if (audio) THEORAPLAY_freeAudio(audio);
-	if (decoder) THEORAPLAY_stopDecode(decoder);
-	SDL_CloseAudio();
-	SDL_Quit();
+    if (texture)
+        SDL_DestroyTexture(texture);
+    if (video)
+        THEORAPLAY_freeVideo(video);
+    if (audio)
+        THEORAPLAY_freeAudio(audio);
+    if (decoder)
+        THEORAPLAY_stopDecode(decoder);
+    SDL_CloseAudio();
+    SDL_Quit();
 
-	return true;
+    return true;
 }
-
 
 // Audio =============================================================================================
 
-AudioQueue* Video::audio_queue = NULL;
-AudioQueue* Video::audio_queue_tail = NULL;
+AudioQueue *Video::audio_queue = NULL;
+AudioQueue *Video::audio_queue_tail = NULL;
 
 void SDLCALL Video::audio_callback(void *userdata, Uint8 *stream, int len)
 {
-	Sint16 *dst = (Sint16 *)stream;
+    Sint16 *dst = (Sint16 *)stream;
 
-	while (audio_queue && (len > 0)) {
-		volatile AudioQueue *item = audio_queue;
-		AudioQueue *next = item->next;
-		const int channels = item->audio->channels;
+    while (audio_queue && (len > 0)) {
+        volatile AudioQueue *item = audio_queue;
+        AudioQueue *next = item->next;
+        const int channels = item->audio->channels;
 
-		const float *src = item->audio->samples + (item->offset * channels);
-		int cpy = (item->audio->frames - item->offset) * channels;
-		int i;
+        const float *src = item->audio->samples + (item->offset * channels);
+        int cpy = (item->audio->frames - item->offset) * channels;
+        int i;
 
-		if (cpy > (len / sizeof(Sint16)))
-			cpy = len / sizeof(Sint16);
+        if (cpy > (len / sizeof(Sint16)))
+            cpy = len / sizeof(Sint16);
 
-		for (i = 0; i < cpy; i++) {
-			const float val = *(src++);
-			if (val < -1.0f)
-				*(dst++) = -32768;
-			else if (val > 1.0f)
-				*(dst++) = 32767;
-			else
-				*(dst++) = (Sint16)(val * 32767.0f);
-		}
+        for (i = 0; i < cpy; i++) {
+            const float val = *(src++);
+            if (val < -1.0f)
+                *(dst++) = -32768;
+            else if (val > 1.0f)
+                *(dst++) = 32767;
+            else
+                *(dst++) = (Sint16)(val * 32767.0f);
+        }
 
-		item->offset += (cpy / channels);
-		len -= cpy * sizeof(Sint16);
+        item->offset += (cpy / channels);
+        len -= cpy * sizeof(Sint16);
 
-		if (item->offset >= item->audio->frames) {
-			THEORAPLAY_freeAudio(item->audio);
-			SDL_free((void *)item);
-			audio_queue = next;
-		}
-	}
+        if (item->offset >= item->audio->frames) {
+            THEORAPLAY_freeAudio(item->audio);
+            SDL_free((void *)item);
+            audio_queue = next;
+        }
+    }
 
-	if (!audio_queue)
-		audio_queue_tail = NULL;
+    if (!audio_queue)
+        audio_queue_tail = NULL;
 
-	if (len > 0)
-		memset(dst, '\0', len);
+    if (len > 0)
+        memset(dst, '\0', len);
 }
-
 
 void Video::queue_audio(const THEORAPLAY_AudioPacket *audio)
 {
-	AudioQueue *item = (AudioQueue *)SDL_malloc(sizeof(AudioQueue));
-	if (!item) {
-		THEORAPLAY_freeAudio(audio);
-		return;
-	}
+    AudioQueue *item = (AudioQueue *)SDL_malloc(sizeof(AudioQueue));
+    if (!item) {
+        THEORAPLAY_freeAudio(audio);
+        return;
+    }
 
-	item->audio = audio;
-	item->offset = 0;
-	item->next = NULL;
+    item->audio = audio;
+    item->offset = 0;
+    item->next = NULL;
 
-	SDL_LockAudio();
-	if (audio_queue_tail)
-		audio_queue_tail->next = item;
-	else
-		audio_queue = item;
-	audio_queue_tail = item;
-	SDL_UnlockAudio();
+    SDL_LockAudio();
+    if (audio_queue_tail)
+        audio_queue_tail->next = item;
+    else
+        audio_queue = item;
+    audio_queue_tail = item;
+    SDL_UnlockAudio();
 }
 
 // Video ===========================================================================================
 
 void Video::LoadVideo(const char *fname)
 {
-	// TODO 1: Start decoding the file. One simple line of code. Use THEORAPLAY_VIDFMT_IYUV.
-	decoder = THEORAPLAY_startDecodeFile(fname, 30, THEORAPLAY_VIDFMT_IYUV);
-	
-	// Wait until we have video and/or audio data, so we can set up hardware.
-	while (!video) {
-		//if (!audio) audio = THEORAPLAY_getAudio(decoder);
-		if (!video) video = THEORAPLAY_getVideo(decoder);
-		SDL_Delay(10);
-	}
+    // TODO 1: Start decoding the file. One simple line of code. Use THEORAPLAY_VIDFMT_IYUV.
+    decoder = THEORAPLAY_startDecodeFile(fname, 30, THEORAPLAY_VIDFMT_IYUV);
 
-	framems = (video->fps == 0.0) ? 0 : ((Uint32)(1000.0 / video->fps));
+    // Wait until we have video and/or audio data, so we can set up hardware.
+    while (!video) {
+        //if (!audio) audio = THEORAPLAY_getAudio(decoder);
+        if (!video)
+            video = THEORAPLAY_getVideo(decoder);
+        SDL_Delay(10);
+    }
 
-	// Setting up the screen where we want to display our video
-	screen = App->win->window;
-	texture = SDL_CreateTexture(App->render->renderer, SDL_PIXELFORMAT_IYUV, SDL_TEXTUREACCESS_STREAMING, video->width, video->height);
+    framems = (video->fps == 0.0) ? 0 : ((Uint32)(1000.0 / video->fps));
 
-	init_failed = quit = (!screen || !texture);
+    // Setting up the screen where we want to display our video
+    screen = App->win->window;
+    texture = SDL_CreateTexture(App->render->renderer, SDL_PIXELFORMAT_IYUV, SDL_TEXTUREACCESS_STREAMING, video->width, video->height);
 
-	//memset(&spec, '\0', sizeof(SDL_AudioSpec));
-	//spec.freq = audio->freq;
-	//spec.format = AUDIO_S16SYS;
-	//spec.channels = audio->channels;
-	//spec.samples = 2048;
-	//spec.callback = audio_callback;
+    init_failed = quit = (!screen || !texture);
 
-	// Tip! Module Video needs "the control" of the sound. If not SDL_OpenAudio will not initialize.
-	// Right now module Audio has init the audio previously.
-	//SDL_QuitSubSystem(SDL_INIT_AUDIO);
-	//init_failed = quit = (init_failed || (SDL_OpenAudio(&spec, NULL) != 0));
+    //memset(&spec, '\0', sizeof(SDL_AudioSpec));
+    //spec.freq = audio->freq;
+    //spec.format = AUDIO_S16SYS;
+    //spec.channels = audio->channels;
+    //spec.samples = 2048;
+    //spec.callback = audio_callback;
 
-	//SDL_PauseAudio(0);
+    // Tip! Module Video needs "the control" of the sound. If not SDL_OpenAudio will not initialize.
+    // Right now module Audio has init the audio previously.
+    //SDL_QuitSubSystem(SDL_INIT_AUDIO);
+    //init_failed = quit = (init_failed || (SDL_OpenAudio(&spec, NULL) != 0));
+
+    //SDL_PauseAudio(0);
 }
 
 void Video::PlayVideo(const char *fname)
 {
-	// Loading video ---------------------
-	videoName = fname;
-	//videoName = "..\\Game\\" + videoName;
+    // Loading video ---------------------
+    videoName = fname;
+    //videoName = "..\\Game\\" + videoName;
 
-	ResetValues();
-	LoadVideo(fname);
+    ResetValues();
+    LoadVideo(fname);
 
-	// Playing video ---------------------
+    // Playing video ---------------------
 
-	baseticks = SDL_GetTicks();
-	want_to_play = true;
+    baseticks = SDL_GetTicks();
+    want_to_play = true;
 }
 
 bool Video::Update(float dt)
 {
-	while (want_to_play && !quit && THEORAPLAY_isDecoding(decoder))
-	{
-		Uint32 now = SDL_GetTicks() - baseticks;
-		videoPlaying = true;
-		// ----------------------------------------------------------------
+    while (want_to_play && !quit && THEORAPLAY_isDecoding(decoder)) {
+        Uint32 now = SDL_GetTicks() - baseticks;
+        videoPlaying = true;
+        // ----------------------------------------------------------------
 
-		// TODO 2: Get the video frame from the decoder if !video
-		if (!video)
-			video = THEORAPLAY_getVideo(decoder);
+        // TODO 2: Get the video frame from the decoder if !video
+        if (!video)
+            video = THEORAPLAY_getVideo(decoder);
 
-		// TODO 2: Get the audio packet from the decoder and queue it.
-		/*	if ((audio = THEORAPLAY_getAudio(decoder)) != NULL)
+        // TODO 2: Get the audio packet from the decoder and queue it.
+        /*	if ((audio = THEORAPLAY_getAudio(decoder)) != NULL)
 		queue_audio(audio);*/
 
-		// Setting the texture --------------------------------------------
+        // Setting the texture --------------------------------------------
 
-		// TODO 3: Make sure that the code commented below is only done if the frame is completed.
-		if (video && (video->playms <= now))
-		{
+        // TODO 3: Make sure that the code commented below is only done if the frame is completed.
+        if (video && (video->playms <= now)) {
 
-			if (video && (video->playms <= now))
-			{
-				if (framems && ((now - video->playms) >= framems))
-				{
-					const THEORAPLAY_VideoFrame *last = video;
-					while ((video = THEORAPLAY_getVideo(decoder)) != NULL)
-					{
-						THEORAPLAY_freeVideo(last);
-						last = video;
-						if ((now - video->playms) < framems)
-							break;
-					}
-					if (!video)
-						video = last;
-				}
+            if (video && (video->playms <= now)) {
+                if (framems && ((now - video->playms) >= framems)) {
+                    const THEORAPLAY_VideoFrame *last = video;
+                    while ((video = THEORAPLAY_getVideo(decoder)) != NULL) {
+                        THEORAPLAY_freeVideo(last);
+                        last = video;
+                        if ((now - video->playms) < framems)
+                            break;
+                    }
+                    if (!video)
+                        video = last;
+                }
 
-				// Locking a portion of a texture for write only pixel access
+                // Locking a portion of a texture for write only pixel access
 
-				SDL_LockTexture(texture, NULL, &pixels, &pitch);
-				const int w = video->width;
-				const int h = video->height;
-				const Uint8 *y = (const Uint8 *)video->pixels;
-				const Uint8 *u = y + (w * h);
-				const Uint8 *v = u + ((w / 2) * (h / 2));
-				Uint8 *dst = (Uint8*)pixels;
-				int i;
+                SDL_LockTexture(texture, NULL, &pixels, &pitch);
+                const int w = video->width;
+                const int h = video->height;
+                const Uint8 *y = (const Uint8 *)video->pixels;
+                const Uint8 *u = y + (w * h);
+                const Uint8 *v = u + ((w / 2) * (h / 2));
+                Uint8 *dst = (Uint8 *)pixels;
+                int i;
 
-				for (i = 0; i < h; i++, y += w, dst += pitch)
-					memcpy(dst, y, w);
+                for (i = 0; i < h; i++, y += w, dst += pitch)
+                    memcpy(dst, y, w);
 
-				for (i = 0; i < h / 2; i++, u += w / 2, dst += pitch / 2)
-					memcpy(dst, u, w / 2);
+                for (i = 0; i < h / 2; i++, u += w / 2, dst += pitch / 2)
+                    memcpy(dst, u, w / 2);
 
-				for (i = 0; i < h / 2; i++, v += w / 2, dst += pitch / 2)
-					memcpy(dst, v, w / 2);
+                for (i = 0; i < h / 2; i++, v += w / 2, dst += pitch / 2)
+                    memcpy(dst, v, w / 2);
 
-				SDL_UnlockTexture(texture);
+                SDL_UnlockTexture(texture);
 
-				THEORAPLAY_freeVideo(video);
-				video = NULL;
-			}
-		}
-		// TODO 4: Render the texture. Use SDL_RenderCopy and the rendering rect (if you want).
-		SDL_RenderClear(App->render->renderer);
-		SDL_RenderCopy(App->render->renderer, texture, NULL, NULL);
-		SDL_RenderPresent(App->render->renderer);
-	}
-	if (videoPlaying && THEORAPLAY_isDecoding(decoder) == 0) {
-		videoPlaying = false;
-		fs::remove(videoName.c_str());
-	}
-	return true;
+                THEORAPLAY_freeVideo(video);
+                video = NULL;
+            }
+        }
+        // TODO 4: Render the texture. Use SDL_RenderCopy and the rendering rect (if you want).
+        SDL_RenderClear(App->render->renderer);
+        SDL_RenderCopy(App->render->renderer, texture, NULL, NULL);
+        SDL_RenderPresent(App->render->renderer);
+    }
+    if (videoPlaying && THEORAPLAY_isDecoding(decoder) == 0) {
+        videoPlaying = false;
+        fs::remove(videoName.c_str());
+    }
+    return true;
 }
 
 void Video::ResetValues()
 {
-	if (texture) SDL_DestroyTexture(texture);
-	if (video) THEORAPLAY_freeVideo(video);
-	if (audio) THEORAPLAY_freeAudio(audio);
-	if (decoder) THEORAPLAY_stopDecode(decoder);
+    if (texture)
+        SDL_DestroyTexture(texture);
+    if (video)
+        THEORAPLAY_freeVideo(video);
+    if (audio)
+        THEORAPLAY_freeAudio(audio);
+    if (decoder)
+        THEORAPLAY_stopDecode(decoder);
 
-	decoder = NULL;
-	video = NULL;
-	audio = NULL;
-	screen = NULL;
-	texture = NULL;
-	pixels = NULL;
+    decoder = NULL;
+    video = NULL;
+    audio = NULL;
+    screen = NULL;
+    texture = NULL;
+    pixels = NULL;
 
-	baseticks = 0;
-	framems = 0;
-	init_failed = 0;
-	quit = 0;
-	pitch = 0;
-	want_to_play = false;
+    baseticks = 0;
+    framems = 0;
+    init_failed = 0;
+    quit = 0;
+    pitch = 0;
+    want_to_play = false;
 
-	audio_queue = NULL;
-	audio_queue_tail = NULL;
+    audio_queue = NULL;
+    audio_queue_tail = NULL;
 }

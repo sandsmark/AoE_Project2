@@ -6,17 +6,16 @@
 class PerfTimer
 {
 public:
+    // Constructor
+    PerfTimer();
 
-	// Constructor
-	PerfTimer();
-
-	void Start();
-	double ReadMs() const;
-	uint64 ReadTicks() const;
+    void Start();
+    double ReadMs() const;
+    uint64 ReadTicks() const;
 
 private:
-	uint64	started_at;
-	static uint64 frequency;
+    uint64 started_at;
+    static uint64 frequency;
 };
 
 #endif //__PERFTIMER_H__

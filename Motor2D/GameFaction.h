@@ -9,38 +9,42 @@ class Unit;
 class Villager;
 class Building;
 
-class GameFaction{
+class GameFaction
+{
 public:
+    GameFaction(Faction argfaction) :
+        faction(argfaction)
+    {
+        tech_tree = new TechTree();
+        Reset();
+    }
 
-	GameFaction(Faction argfaction) : faction(argfaction) { tech_tree = new TechTree(); Reset(); }
+    ~GameFaction()
+    {
+        RELEASE(tech_tree);
+    }
 
-	~GameFaction() 
-	{
-		RELEASE(tech_tree);
-	}
+    void Reset()
+    {
+        resources.SetToZero();
+        Town_center = nullptr;
 
-	void Reset() {
-		resources.SetToZero();
-		Town_center = nullptr;
+        units.clear();
+        villagers.clear();
+        buildings.clear();
 
-		units.clear();
-		villagers.clear();
-		buildings.clear();
+        tech_tree->Reset(faction);
+    }
 
-		tech_tree->Reset(faction);
-	}
+    StoredResources resources;
+    Faction faction;
+    TechTree *tech_tree = nullptr;
 
-	StoredResources resources;
-	Faction faction;
-	TechTree* tech_tree = nullptr;
+    Building *Town_center = nullptr;
 
-	Building* Town_center = nullptr;
-
-	list<Unit*> units;
-	list<Villager*> villagers;
-	list<Building*> buildings;
-
+    list<Unit *> units;
+    list<Villager *> villagers;
+    list<Building *> buildings;
 };
 
 #endif // !_GAMEFACTION_
-

@@ -6,33 +6,30 @@
 class Textures : public Module
 {
 public:
+    Textures();
 
-	Textures();
+    // Destructor
+    virtual ~Textures();
 
-	// Destructor
-	virtual ~Textures();
+    // Called before render is available
+    bool Awake(pugi::xml_node &);
 
-	// Called before render is available
-	bool Awake(pugi::xml_node&);
+    // Called before the first frame
+    bool Start();
 
-	// Called before the first frame
-	bool Start();
+    // Called before quitting
+    bool CleanUp();
 
-	// Called before quitting
-	bool CleanUp();
-
-	// Load Texture
-	SDL_Texture* const	Load(const char* path);
-	SDL_Surface* const	LoadImageAsSurface(const char* path);
-	bool				UnLoad(SDL_Texture* texture);
-	SDL_Texture* const	LoadStaticSurface(SDL_Surface* surface);
-	SDL_Texture* const	LoadStreamingTextureFromSurface(SDL_Surface* surface);
-	void				GetSize(const SDL_Texture* texture, uint& width, uint& height) const;
+    // Load Texture
+    SDL_Texture *const Load(const char *path);
+    SDL_Surface *const LoadImageAsSurface(const char *path);
+    bool UnLoad(SDL_Texture *texture);
+    SDL_Texture *const LoadStaticSurface(SDL_Surface *surface);
+    SDL_Texture *const LoadStreamingTextureFromSurface(SDL_Surface *surface);
+    void GetSize(const SDL_Texture *texture, uint &width, uint &height) const;
 
 public:
-
-	list<SDL_Texture*>	textures;
+    list<SDL_Texture *> textures;
 };
-
 
 #endif // __TEXTURES_H__

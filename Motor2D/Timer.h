@@ -6,16 +6,15 @@
 class Timer
 {
 public:
+    // Constructor
+    Timer();
 
-	// Constructor
-	Timer();
-
-	void Start();
-	uint32 Read() const;
-	float ReadSec() const;
+    void Start();
+    uint32 Read() const;
+    float ReadSec() const;
 
 private:
-	uint32	started_at;
+    uint32 started_at;
 };
 
 #endif //__TIMER_H__

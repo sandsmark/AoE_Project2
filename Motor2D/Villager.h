@@ -8,28 +8,24 @@
 class Villager : public Unit
 {
 public:
-	Villager();
-	Villager(int posx, int posy, Villager* unit = nullptr);
-
+    Villager();
+    Villager(int posx, int posy, Villager *unit = nullptr);
 
 public:
-	//STATS
-	int gathering_speed = 0;
-	int max_capacity = 0;
-	int curr_capacity = 0;
-	resourceType resource_carried = NONE;
-	int buildingSpeed = 200;
+    //STATS
+    int gathering_speed = 0;
+    int max_capacity = 0;
+    int curr_capacity = 0;
+    resourceType resource_carried = NONE;
+    int buildingSpeed = 200;
 
-	//ANIMATIONS
-	SDL_Texture* unitChoppingTexture = nullptr;
+    //ANIMATIONS
+    SDL_Texture *unitChoppingTexture = nullptr;
 
-	vector<Animation> choppingAnimations;
-	vector<Animation> minningAnimations;
-	vector<Animation> collectingAnimalsAnimations;
-	vector<Animation> collectingPlantsAnimations;
-
+    vector<Animation> choppingAnimations;
+    vector<Animation> minningAnimations;
+    vector<Animation> collectingAnimalsAnimations;
+    vector<Animation> collectingPlantsAnimations;
 };
-
-
 
 #endif

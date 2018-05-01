@@ -10,47 +10,43 @@ using namespace std;
 class Console : public Module
 {
 public:
-	Console();
+    Console();
 
-	// Destructor
-	virtual ~Console();
+    // Destructor
+    virtual ~Console();
 
-	// Called when before render is available
-	bool Awake(pugi::xml_node&);
+    // Called when before render is available
+    bool Awake(pugi::xml_node &);
 
-	// Call before first frame
-	bool Start();
+    // Call before first frame
+    bool Start();
 
-	// Called before all Updates
-	bool PreUpdate();
+    // Called before all Updates
+    bool PreUpdate();
 
-	// Called after all Updates
-	bool Update(float dt);
+    // Called after all Updates
+    bool Update(float dt);
 
-	// Called before quitting
-	bool CleanUp();
+    // Called before quitting
+    bool CleanUp();
 
-	// Load and save before
-	bool Save(pugi::xml_node&) const;
+    // Load and save before
+    bool Save(pugi::xml_node &) const;
 
 public:
-	bool				show = false;
-    int				window_w = 0, window_h = 0;
-	list<string>		ctext;
-	list<UIElement*>	console_elements;
-	Quad*				cbackground = nullptr;
-	Quad*				cinput = nullptr;
-	ScrollBar*			cscroll = nullptr;
-	InputText*			ctextinput = nullptr;
-	int					h = 0;
+    bool show = false;
+    int window_w = 0, window_h = 0;
+    list<string> ctext;
+    list<UIElement *> console_elements;
+    Quad *cbackground = nullptr;
+    Quad *cinput = nullptr;
+    ScrollBar *cscroll = nullptr;
+    InputText *ctextinput = nullptr;
+    int h = 0;
 
 private:
-	void				SetConsoleText();
-	void				MoveEverything();
-
+    void SetConsoleText();
+    void MoveEverything();
 };
-
-
-
 
 #endif // CONSOLE_H
